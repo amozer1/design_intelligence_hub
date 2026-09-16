@@ -36,15 +36,15 @@ section[data-testid="stSidebar"] {
 
 section[data-testid="stSidebar"] * {
 
-    color: white !important;
+    color: #FFFFFF !important;
 }
 
 
 /* ==================================================
-   SECTION HEADERS
+   SECTION LABELS
 ================================================== */
 
-.stCaption {
+section[data-testid="stSidebar"] .stCaption {
 
     color: #A6B5F6 !important;
 
@@ -52,31 +52,33 @@ section[data-testid="stSidebar"] * {
 
     font-weight: 700 !important;
 
-    letter-spacing: 1px !important;
-
     text-transform: uppercase !important;
 
-    margin-top: 18px !important;
+    letter-spacing: 1px !important;
 
-    margin-bottom: 18px !important;
+    margin-top: 10px !important;
+
+    margin-bottom: 15px !important;
 }
 
 
 /* ==================================================
-   SIDEBAR CARD PANELS
+   SIDEBAR CARDS ONLY
+   IMPORTANT:
+   Scoped to sidebar so it does NOT affect
+   Streamlit toolbar/header/main page
 ================================================== */
 
+section[data-testid="stSidebar"]
 div[data-testid="stVerticalBlockBorderWrapper"] {
 
     background: #081A42 !important;
 
     border: 1px solid #12346E !important;
 
-    border-radius: 20px !important;
+    border-radius: 18px !important;
 
-    padding: 0 !important;
-
-    margin-bottom: 65px !important;
+    margin-bottom: 24px !important;
 
     box-shadow:
         0 0 12px rgba(42, 88, 255, 0.15);
@@ -84,24 +86,25 @@ div[data-testid="stVerticalBlockBorderWrapper"] {
 
 
 /* ==================================================
-   INNER CARD SPACING
+   INNER CARD PADDING
 ================================================== */
 
+section[data-testid="stSidebar"]
 div[data-testid="stVerticalBlockBorderWrapper"] > div {
 
-    padding: 36px !important;
+    padding: 24px !important;
 }
 
 
 /* ==================================================
-   FRAMEWORK + NAVIGATION ITEMS
+   FRAMEWORK / NAVIGATION ITEMS
 ================================================== */
 
 section[data-testid="stSidebar"] p {
 
-    line-height: 2 !important;
+    line-height: 1.8 !important;
 
-    margin-bottom: 10px !important;
+    margin-bottom: 8px !important;
 }
 
 
@@ -109,6 +112,7 @@ section[data-testid="stSidebar"] p {
    ACTIVE PROJECT
 ================================================== */
 
+section[data-testid="stSidebar"]
 div[data-testid="stAlert"] {
 
     background:
@@ -121,14 +125,9 @@ div[data-testid="stAlert"] {
     border: none !important;
 
     border-radius: 12px !important;
-
-    padding: 8px !important;
-
-    margin-top: 10px !important;
-
-    margin-bottom: 12px !important;
 }
 
+section[data-testid="stSidebar"]
 div[data-testid="stAlert"] * {
 
     color: white !important;
@@ -141,6 +140,7 @@ div[data-testid="stAlert"] * {
    SNAPSHOT CARD
 ================================================== */
 
+section[data-testid="stSidebar"]
 div[data-testid="stInfo"] {
 
     background: #17254B !important;
@@ -150,11 +150,10 @@ div[data-testid="stInfo"] {
     border-radius: 12px !important;
 }
 
+section[data-testid="stSidebar"]
 div[data-testid="stInfo"] * {
 
     color: white !important;
-
-    font-weight: 600 !important;
 }
 
 
@@ -162,6 +161,7 @@ div[data-testid="stInfo"] * {
    METRICS
 ================================================== */
 
+section[data-testid="stSidebar"]
 div[data-testid="metric-container"] {
 
     background: transparent !important;
@@ -170,36 +170,52 @@ div[data-testid="metric-container"] {
 
     box-shadow: none !important;
 
-    padding-top: 10px !important;
-
-    padding-bottom: 10px !important;
-
-    margin-bottom: 16px !important;
+    margin-bottom: 12px !important;
 }
 
+section[data-testid="stSidebar"]
 div[data-testid="metric-container"] label {
 
     color: #B6C0E0 !important;
-
-    font-size: 12px !important;
 }
 
+section[data-testid="stSidebar"]
 div[data-testid="stMetricValue"] {
 
     color: white !important;
 
     font-weight: 700 !important;
-
-    font-size: 1.4rem !important;
 }
 
 
 /* ==================================================
-   DIVIDER
+   DIVIDERS
 ================================================== */
 
-hr {
-    border-color: rgba(255,255,255,.08) !important;
+section[data-testid="stSidebar"] hr {
+
+    border-color:
+    rgba(255,255,255,.08) !important;
+}
+
+
+/* ==================================================
+   MAIN PAGE CARDS
+================================================== */
+
+.page-card {
+
+    background: #081A42;
+
+    border: 1px solid #12346E;
+
+    border-radius: 16px;
+
+    padding: 24px;
+
+    color: white;
+
+    margin-bottom: 24px;
 }
 
 
@@ -215,7 +231,7 @@ hr {
 
     border-radius: 16px;
 
-    padding: 26px;
+    padding: 24px;
 }
 
 .kpi-value {
@@ -232,26 +248,6 @@ hr {
     color: #B6C0E0;
 
     font-size: 13px;
-}
-
-
-/* ==================================================
-   PAGE CARDS
-================================================== */
-
-.page-card {
-
-    background: #081A42;
-
-    border: 1px solid #12346E;
-
-    border-radius: 18px;
-
-    padding: 30px;
-
-    color: white;
-
-    margin-bottom: 24px;
 }
 
 
