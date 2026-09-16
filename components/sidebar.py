@@ -302,4 +302,43 @@ def build_sidebar(metrics, snapshot):
             unsafe_allow_html=True
         )
 
-        
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        # ==================================================
+        # PROJECT BASELINE
+        # ==================================================
+
+        st.markdown(
+            '<div class="section-header">Project Baseline</div>',
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            f"""
+            <div class="health-card">
+
+                <div class="metric-line">
+                    <span>Baseline Finish</span>
+                    <span>
+                        {metrics['baseline_finish'].strftime('%d %b %Y')}
+                    </span>
+                </div>
+
+                <div class="metric-line">
+                    <span>Current Forecast</span>
+                    <span>
+                        {metrics['forecast_finish'].strftime('%d %b %Y')}
+                    </span>
+                </div>
+
+                <div class="metric-line">
+                    <span>Programme Drift</span>
+                    <span class="red">
+                        +{metrics['programme_drift']} Days
+                    </span>
+                </div>
+
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
