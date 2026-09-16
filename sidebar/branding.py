@@ -6,53 +6,59 @@ def render_branding():
     st.markdown("""
     <style>
 
-    .branding-wrapper{
-        padding-bottom:12px;
+    .branding-container{
+        padding-bottom:8px;
     }
 
     .branding-row{
         display:flex;
         align-items:flex-start;
-        gap:12px;
+        gap:10px;
     }
 
     .branding-logo{
-        width:52px;
+        width:42px;
         flex-shrink:0;
     }
 
     .branding-title{
-        color:white;
-        font-size:18px;
+        color:#FFFFFF;
+        font-size:17px;
         font-weight:700;
         line-height:1.05;
         margin:0;
+        padding:0;
     }
 
     .branding-tagline{
-        color:#C7D2FE;
+        color:#B8C7D9;
         font-size:11px;
-        margin-top:4px;
+        line-height:1.2;
+        margin-top:3px;
     }
 
     .branding-divider{
         height:1px;
         background:rgba(80,120,255,.15);
-        margin-top:12px;
+        margin-top:10px;
     }
 
     </style>
     """, unsafe_allow_html=True)
 
-    col1, col2 = st.columns([1, 3])
+    logo_col, text_col = st.columns(
+        [1, 4],
+        gap="small"
+    )
 
-    with col1:
+    with logo_col:
+
         st.image(
             "assets/logo.png",
-            width=52
+            width=42
         )
 
-    with col2:
+    with text_col:
 
         st.markdown("""
         <div class="branding-title">
@@ -63,7 +69,8 @@ def render_branding():
         <div class="branding-tagline">
             Design Smarter. Deliver Better.
         </div>
-        """, unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True)
 
     st.markdown(
         '<div class="branding-divider"></div>',
