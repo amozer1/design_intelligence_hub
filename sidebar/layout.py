@@ -5,119 +5,56 @@ def render_sidebar():
 
     with st.sidebar:
 
-        # ==========================================
+        # ==================================================
         # BRANDING
-        # ==========================================
+        # ==================================================
 
-        st.title("🎯 Design Intelligence Hub")
+        branding_container = st.container()
 
-        st.caption(
-            "Design Smarter. Deliver Better."
-        )
-
-        st.divider()
-
-        # ==========================================
+        # ==================================================
         # FRAMEWORKS
-        # ==========================================
-
-        st.markdown("##### FRAMEWORKS")
-
-        with st.expander(
-            "UU DD&B Framework",
-            expanded=True
-        ):
-            st.write("Ferry PS")
-            st.write("Rossall Outfall")
-            st.write("Flass Lane")
+        # ==================================================
 
         st.divider()
 
-        # ==========================================
-        # NAVIGATION
-        # ==========================================
+        frameworks_container = st.container()
 
-        st.markdown(
-            "##### MAIN NAVIGATION"
-        )
-
-        st.button(
-            "Executive Dashboard",
-            use_container_width=True
-        )
-
-        st.button(
-            "Deliverables",
-            use_container_width=True
-        )
-
-        st.button(
-            "Discipline Performance",
-            use_container_width=True
-        )
-
-        st.button(
-            "Programme Drift",
-            use_container_width=True
-        )
-
-        st.button(
-            "Design Readiness",
-            use_container_width=True
-        )
+        # ==================================================
+        # MAIN NAVIGATION
+        # ==================================================
 
         st.divider()
 
-        # ==========================================
-        # SNAPSHOTS
-        # ==========================================
+        navigation_container = st.container()
 
-        st.markdown(
-            "##### SNAPSHOT HISTORY"
-        )
-
-        with st.container(border=True):
-
-            st.write("Current Snapshot")
-            st.write("Previous Snapshot")
-            st.write("Historic Snapshot")
+        # ==================================================
+        # SNAPSHOT HISTORY
+        # ==================================================
 
         st.divider()
 
-        # ==========================================
-        # HEALTH
-        # ==========================================
+        snapshots_container = st.container()
 
-        st.markdown(
-            "##### PROJECT HEALTH"
-        )
-
-        with st.container(border=True):
-
-            st.metric(
-                "Health Score",
-                "0"
-            )
-
-            st.metric(
-                "Readiness",
-                "0%"
-            )
+        # ==================================================
+        # PROJECT HEALTH
+        # ==================================================
 
         st.divider()
 
-        # ==========================================
-        # BASELINE
-        # ==========================================
+        health_container = st.container()
 
-        st.markdown(
-            "##### PROJECT BASELINE"
-        )
+        # ==================================================
+        # PROJECT BASELINE
+        # ==================================================
 
-        with st.container(border=True):
+        st.divider()
 
-            st.write("Baseline Finish")
+        baseline_container = st.container()
 
-            st.write("Current Forecast")
+        # ==================================================
+        # FOOTER
+        # ==================================================
 
-            st.write("Programme Drift")
+        st.divider()
+
+        footer_container = st.container()
