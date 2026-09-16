@@ -18,8 +18,6 @@ with st.sidebar:
 
     render_branding()
 
-    st.divider()
-
     render_frameworks()
 
 st.title("Dashboard")

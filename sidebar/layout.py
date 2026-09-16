@@ -9,22 +9,21 @@ def render_sidebar():
     section[data-testid="stSidebar"]{
         background:linear-gradient(
             180deg,
-            #03112B 0%,
-            #041124 100%
+            #00142D 0%,
+            #001A38 100%
         );
     }
 
-    .sidebar-section{
-        padding:16px 0;
-        border-bottom:1px solid rgba(59,130,246,0.15);
+    section[data-testid="stSidebar"] .block-container{
+        padding-top:0.75rem;
+        padding-left:0.75rem;
+        padding-right:0.75rem;
+        padding-bottom:1rem;
     }
 
-    .section-title{
-        color:#94A3B8;
-        font-size:11px;
-        font-weight:600;
-        letter-spacing:1px;
-        margin-bottom:12px;
+    hr{
+        margin-top:8px !important;
+        margin-bottom:8px !important;
     }
 
     </style>

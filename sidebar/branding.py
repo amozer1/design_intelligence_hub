@@ -3,76 +3,46 @@ import streamlit as st
 
 def render_branding():
 
-    st.markdown("""
-    <style>
-
-    .branding-container{
-        padding-bottom:8px;
-    }
-
-    .branding-row{
-        display:flex;
-        align-items:flex-start;
-        gap:10px;
-    }
-
-    .branding-logo{
-        width:42px;
-        flex-shrink:0;
-    }
-
-    .branding-title{
-        color:#FFFFFF;
-        font-size:17px;
-        font-weight:700;
-        line-height:1.05;
-        margin:0;
-        padding:0;
-    }
-
-    .branding-tagline{
-        color:#B8C7D9;
-        font-size:11px;
-        line-height:1.2;
-        margin-top:3px;
-    }
-
-    .branding-divider{
-        height:1px;
-        background:rgba(80,120,255,.15);
-        margin-top:10px;
-    }
-
-    </style>
-    """, unsafe_allow_html=True)
-
-    logo_col, text_col = st.columns(
-        [1, 4],
+    col_logo, col_text = st.columns(
+        [1, 5],
         gap="small"
     )
 
-    with logo_col:
+    with col_logo:
 
         st.image(
             "assets/logo.png",
-            width=42
+            width=50
         )
 
-    with text_col:
+    with col_text:
 
         st.markdown("""
-        <div class="branding-title">
+        <div style="
+            color:white;
+            font-size:20px;
+            font-weight:700;
+            line-height:1.0;
+            margin:0;
+            padding:0;
+        ">
             DESIGN<br>
             INTELLIGENCE HUB
         </div>
 
-        <div class="branding-tagline">
+        <div style="
+            color:#C7D2FE;
+            font-size:12px;
+            margin-top:4px;
+        ">
             Design Smarter. Deliver Better.
         </div>
-        """,
-        unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-    st.markdown(
-        '<div class="branding-divider"></div>',
-        unsafe_allow_html=True
-    )
+    st.markdown("""
+    <hr style="
+        border:none;
+        border-top:1px solid rgba(80,120,255,.15);
+        margin:8px 0;
+    ">
+    """, unsafe_allow_html=True)
