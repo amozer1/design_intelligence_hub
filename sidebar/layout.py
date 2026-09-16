@@ -7,23 +7,16 @@ def render_sidebar():
     <style>
 
     section[data-testid="stSidebar"]{
-        background:linear-gradient(
-            180deg,
-            #00142D 0%,
-            #001A38 100%
-        );
+        background:#00142D;
     }
+
+    /* Remove Streamlit's default sidebar padding */
 
     section[data-testid="stSidebar"] .block-container{
-        padding-top:0.75rem;
-        padding-left:0.75rem;
-        padding-right:0.75rem;
-        padding-bottom:1rem;
-    }
-
-    hr{
-        margin-top:8px !important;
-        margin-bottom:8px !important;
+        padding-top:0.5rem;
+        padding-left:0.2rem;
+        padding-right:0.2rem;
+        padding-bottom:0.5rem;
     }
 
     </style>
