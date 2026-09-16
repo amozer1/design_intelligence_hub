@@ -11,9 +11,10 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-render_sidebar()
+slots = render_sidebar()
 
-with st.sidebar:
+# FIRST container
+with slots["branding"]:
     render_branding()
 
 st.title("Dashboard")
