@@ -1,42 +1,23 @@
-/* APP */
-
 .stApp {
     background: #071028;
 }
 
-/* SIDEBAR */
-
-section[data-testid="stSidebar"] {
-    background: linear-gradient(
-        180deg,
-        #04111f 0%,
-        #06162d 100%
-    );
+[data-testid="stSidebar"] {
+    background: #04162E !important;
 }
 
-/* TEXT */
-
-section[data-testid="stSidebar"] * {
-    color: white;
+[data-testid="stSidebar"] * {
+    color: white !important;
 }
 
-/* SECTION HEADINGS */
-
-section[data-testid="stSidebar"] h5 {
-    color: #8fa7ff;
-    text-transform: uppercase;
+[data-testid="stSidebar"] hr {
+    border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* DIVIDERS */
-
-section[data-testid="stSidebar"] hr {
-    border-color: rgba(255,255,255,.08);
+[data-testid="stSidebar"] h5 {
+    color: #8FA7FF !important;
 }
 
-/* METRICS */
-
-section[data-testid="stSidebar"] [data-testid="metric-container"] {
-    background: transpar*nt;
-    border: none;
-    box-shad*w: none;
+[data-testid="stSidebar"] p {
+    margin-bottom: 0.35rem;
 }

@@ -3,49 +3,65 @@ import streamlit as st
 
 def build_sidebar(metrics, snapshot):
 
-    with st.sidebar():
+    with st.sidebar:
+
+        # ==================================================
+        # BRANDING
+        # ==================================================
 
         st.title("🎯 Design Intelligence Hub")
         st.caption("Design Smarter. Deliver Better.")
 
         st.divider()
 
-        st.subheader("Frameworks")
+        # ==================================================
+        # FRAMEWORKS
+        # ==================================================
+
+        st.markdown("##### FRAMEWORKS")
 
         st.markdown("**UU Enterprise Framework**")
-        st.write("Pennington Flash")
-        st.write("Davyhulme ASP4")
+        st.markdown("• Pennington Flash")
+        st.markdown("• Davyhulme ASP4")
 
         st.write("")
 
         st.markdown("**UU DD&B Framework**")
-        st.write("Ferry PS")
-        st.write("Rossall Outfall")
-        st.write("Flass Lane")
-        st.write("Tally Ho")
-        st.write("Eccleston Bridge")
+        st.markdown("🟣 Ferry PS")
+        st.markdown("• Rossall Outfall")
+        st.markdown("• Flass Lane")
+        st.markdown("• Tally Ho")
+        st.markdown("• Eccleston Bridge")
 
         st.divider()
 
-        st.subheader("Navigation")
+        # ==================================================
+        # NAVIGATION
+        # ==================================================
 
-        st.write("Executive Dashboard")
-        st.write("Deliverables")
-        st.write("Discipline Performance")
-        st.write("Programme Drift")
-        st.write("Design Readiness")
-        st.write("Upcoming Submissions")
-        st.write("Critical Path & Alerts")
-        st.write("Design Dependencies")
-        st.write("Queries & TQs")
-        st.write("AI Insights & Forecast")
-        st.write("Reports")
-        st.write("Data Explorer")
-        st.write("Settings")
+        st.markdown("##### MAIN NAVIGATION")
+
+        st.markdown("🏠 Executive Dashboard")
+        st.markdown("📋 Deliverables")
+        st.markdown("📊 Discipline Performance")
+        st.markdown("📈 Programme Drift")
+        st.markdown("🎯 Design Readiness")
+        st.markdown("📅 Upcoming Submissions")
+        st.markdown("⚠️ Critical Path & Alerts")
+        st.markdown("🔗 Design Dependencies")
+        st.markdown("❓ Queries & TQs")
+        st.markdown("🤖 AI Insights & Forecast")
+        st.markdown("📄 Reports")
+        st.markdown("🔍 Data Explorer")
+        st.markdown("⚙️ Settings")
 
         st.divider()
 
-        st.subheader("Snapshot History")
+        # ==================================================
+        # SNAPSHOT HISTORY
+        # ==================================================
+
+        st.markdown("##### SNAPSHOT HISTORY")
 
         st.write(
             snapshot.strftime("%d %b %Y")
@@ -53,14 +69,18 @@ def build_sidebar(metrics, snapshot):
 
         st.divider()
 
-        st.subheader("Project Health")
+        # ==================================================
+        # PROJECT HEALTH
+        # ==================================================
+
+        st.markdown("##### PROJECT HEALTH")
 
         st.write(
             f"Health Score: {metrics['health_score']}"
         )
 
         st.write(
-            f"Readiness: {metrics['design_readiness']}%"
+            f"Design Readiness: {metrics['design_readiness']}%"
         )
 
         st.write(
@@ -77,16 +97,23 @@ def build_sidebar(metrics, snapshot):
 
         st.divider()
 
-        st.subheader("Project Baseline")
+        # ==================================================
+        # PROJECT BASELINE
+        # ==================================================
+
+        st.markdown("##### PROJECT BASELINE")
 
         st.write(
-            f"Baseline Finish: {metrics['baseline_finish']:%d %b %Y}"
+            f"Baseline Finish: "
+            f"{metrics['baseline_finish']:%d %b %Y}"
         )
 
         st.write(
-            f"Forecast Finish: {metrics['forecast_finish']:%d %b %Y}"
+            f"Current Forecast: "
+            f"{metrics['forecast_finish']:%d %b %Y}"
         )
 
         st.write(
-            f"Programme Drift: {metrics['programme_drift']} Days"
+            f"Programme Drift: "
+            f"{metrics['programme_drift']} Days"
         )
