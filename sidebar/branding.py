@@ -3,22 +3,19 @@ import streamlit as st
 
 def render_branding():
 
-    col1, col2 = st.columns([1, 3])
+    left, right = st.columns([1.2, 4])
 
-    with col1:
-        st.image(
-            "assets/logo.png",
-            width=55
-        )
+    with left:
+        st.image("assets/logo.png", width=70)
 
-    with col2:
+    with right:
 
         st.markdown("""
         <div style="
             color:white;
-            font-weight:700;
-            font-size:16px;
-            line-height:1.1;
+            font-size:28px;
+            font-weight:800;
+            line-height:1.05;
             margin-top:2px;
         ">
             DESIGN<br>
@@ -27,12 +24,14 @@ def render_branding():
 
         <div style="
             color:#cbd5e1;
-            font-size:11px;
-            margin-top:4px;
+            font-size:15px;
+            margin-top:8px;
         ">
             Design Smarter. Deliver Better.
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("<div style='height:12px'></div>",
-                unsafe_allow_html=True)
+    st.markdown(
+        "<div style='height:20px'></div>",
+        unsafe_allow_html=True
+    )
