@@ -1,12 +1,10 @@
 import streamlit as st
 
 from loaders.ferry_loader import load_ferry
-
 from utils.project_metrics import (
     get_current_snapshot,
     get_project_metrics
 )
-
 from components.sidebar import build_sidebar
 
 
@@ -19,77 +17,6 @@ st.set_page_config(
     page_icon="🎯",
     layout="wide",
     initial_sidebar_state="expanded"
-)
-
-
-# ==================================================
-# GLOBAL STYLING
-# ==================================================
-
-st.markdown(
-    """
-    <style>
-
-    .stApp{
-        background:
-        linear-gradient(
-            180deg,
-            #050b1f 0%,
-            #071028 100%
-        );
-    }
-
-    .block-container{
-        padding-top:1rem;
-        padding-left:2rem;
-        padding-right:2rem;
-        max-width:1800px;
-    }
-
-    .dashboard-card{
-        background:#0D1F49;
-        border:1px solid #294780;
-        border-radius:16px;
-        padding:20px;
-        color:white;
-        min-height:180px;
-    }
-
-    .section-card{
-        background:#0D1F49;
-        border:1px solid #294780;
-        border-radius:16px;
-        padding:18px;
-        margin-bottom:20px;
-        color:white;
-    }
-
-    .header-title{
-        color:white;
-        font-size:36px;
-        font-weight:700;
-        margin-bottom:0;
-    }
-
-    .header-sub{
-        color:#A9B5D9;
-        font-size:14px;
-    }
-
-    .metric-number{
-        color:white;
-        font-size:36px;
-        font-weight:700;
-    }
-
-    .metric-label{
-        color:#A9B5D9;
-        font-size:14px;
-    }
-
-    </style>
-    """,
-    unsafe_allow_html=True,
 )
 
 
@@ -115,6 +42,67 @@ build_sidebar(
 
 
 # ==================================================
+# GLOBAL STYLING
+# ==================================================
+
+st.markdown("""
+<style>
+
+.stApp{
+    background:#071028;
+}
+
+.dashboard-card{
+    background:#0D1F49;
+    border:1px solid #294780;
+    border-radius:18px;
+    padding:20px;
+    min-height:140px;
+}
+
+.section-card{
+    background:#0D1F49;
+    border:1px solid #294780;
+    border-radius:18px;
+    padding:20px;
+    margin-top:10px;
+    margin-bottom:20px;
+}
+
+.header-title{
+    color:white;
+    font-size:34px;
+    font-weight:700;
+}
+
+.header-sub{
+    color:#aeb9dd;
+    font-size:14px;
+}
+
+.metric-number{
+    color:white;
+    font-size:38px;
+    font-weight:700;
+}
+
+.metric-label{
+    color:#aeb9dd;
+    font-size:14px;
+}
+
+.section-title{
+    color:white;
+    font-size:20px;
+    font-weight:600;
+    margin-bottom:15px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+
+# ==================================================
 # HEADER
 # ==================================================
 
@@ -123,13 +111,13 @@ left, right = st.columns([5, 1])
 with left:
 
     st.markdown(
-        f"""
+        """
         <div class="header-title">
-        Ferry PS
+            Ferry PS
         </div>
 
         <div class="header-sub">
-        UU DD&B Framework
+            UU DD&B Framework
         </div>
         """,
         unsafe_allow_html=True
@@ -138,12 +126,11 @@ with left:
 with right:
 
     st.info(
-        f"""
-Current Snapshot
-
-{snapshot.strftime("%B %Y")}
-"""
+        f"Current Snapshot\n\n{snapshot.strftime('%B %Y')}"
     )
+
+
+st.markdown("<br>", unsafe_allow_html=True)
 
 
 # ==================================================
@@ -166,7 +153,7 @@ with k1:
             </div>
         </div>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
     )
 
 with k2:
@@ -183,7 +170,7 @@ with k2:
             </div>
         </div>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
     )
 
 with k3:
@@ -200,7 +187,7 @@ with k3:
             </div>
         </div>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
     )
 
 with k4:
@@ -217,11 +204,8 @@ with k4:
             </div>
         </div>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
     )
-
-
-st.write("")
 
 
 # ==================================================
@@ -232,14 +216,126 @@ st.markdown(
     """
     <div class="section-card">
 
-    <h3>Executive Summary</h3>
+    <div class="section-title">
+        Executive Summary
+    </div>
 
-    Latest CL32 snapshot currently loaded.
+    Latest CL32 snapshot loaded successfully.
 
-    This section will contain:
+    This section will soon contain:
 
     • Programme Health
 
+    • Deliverables Slipped Since Previous CL32
+
     • New Critical Activities
 
-    • Deliverables Slipped Since Previous
+    • Upcoming Submissions
+
+    • AI Recommendations
+
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# ==================================================
+# CHART ROW
+# ==================================================
+
+c1, c2 = st.columns(2)
+
+with c1:
+
+    st.markdown(
+        """
+        <div class="section-card">
+
+        <div class="section-title">
+            Deliverables Status
+        </div>
+
+        Donut chart placeholder
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+with c2:
+
+    st.markdown(
+        """
+        <div class="section-card">
+
+        <div class="section-title">
+            Discipline Performance
+        </div>
+
+        Donut chart placeholder
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+# ==================================================
+# UPCOMING SUBMISSIONS
+# ==================================================
+
+st.markdown(
+    """
+    <div class="section-card">
+
+    <div class="section-title">
+        Upcoming Submissions (Next 7 Days)
+    </div>
+
+    Table placeholder
+
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# ==================================================
+# CHANGES SINCE LAST CL32
+# ==================================================
+
+st.markdown(
+    """
+    <div class="section-card">
+
+    <div class="section-title">
+        What's Changed Since Last CL32
+    </div>
+
+    Comparison engine placeholder
+
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# ==================================================
+# AI INSIGHTS
+# ==================================================
+
+st.markdown(
+    """
+    <div class="section-card">
+
+    <div class="section-title">
+        AI Insights & Forecast
+    </div>
+
+    Forecasting placeholder
+
+    </div>
+    """,
+    unsafe_allow_html=True
+)
