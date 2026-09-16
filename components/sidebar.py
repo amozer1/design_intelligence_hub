@@ -1,334 +1,385 @@
 import streamlit as st
+import json
+from pathlib import Path
 
 
-def build_sidebar():
+def load_frameworks():
+
+    config_file = Path("config/frameworks.json")
+
+    if config_file.exists():
+
+        with open(config_file, "r") as f:
+            return json.load(f)
+
+    return {}
+
+
+def build_sidebar(metrics, snapshot):
+
+    frameworks = load_frameworks()
 
     st.sidebar.markdown(
         """
         <style>
 
-        [data-testid="stSidebar"]{
-            background: linear-gradient(
+        [data-testid="stSidebar"] {
+            background:
+            linear-gradient(
                 180deg,
                 #081428 0%,
-                #091737 50%,
-                #06101f 100%
+                #091735 50%,
+                #07121f 100%
             );
         }
 
-        .logo-title{
-            display:flex;
-            align-items:center;
-            gap:12px;
-            margin-bottom:10px;
-        }
-
-        .logo{
-            font-size:34px;
-        }
-
-        .title{
+        .hub-title{
             color:white;
             font-size:26px;
             font-weight:700;
             line-height:1.1;
         }
 
-        .subtitle{
-            color:#9ea7c8;
+        .hub-sub{
+            color:#9aa6cc;
             font-size:12px;
-            margin-top:2px;
+            margin-bottom:20px;
         }
 
         .section-title{
-            color:#b4bddb;
-            font-size:12px;
-            text-transform:uppercase;
+            color:#A9B5D9;
+            font-size:11px;
             letter-spacing:1px;
-            margin-top:18px;
-            margin-bottom:12px;
+            text-transform:uppercase;
             font-weight:600;
+            margin-top:20px;
+            margin-bottom:10px;
         }
 
-        .framework{
+        .framework-title{
             color:white;
+            font-size:14px;
             font-weight:600;
             margin-top:12px;
             margin-bottom:8px;
-            padding-left:4px;
         }
 
         .project{
-            color:#d7def4;
-            padding:10px 12px;
+            padding:10px;
+            color:#dfe6ff;
+            border-radius:10px;
             margin-bottom:4px;
-            border-radius:8px;
-            font-size:14px;
         }
 
         .project:hover{
-            background:#152850;
+            background:#13264A;
         }
 
         .active-project{
-            background:#7B2CF5;
+            background:#7427F5;
             color:white;
             font-weight:600;
         }
 
-        .menu-item{
+        .nav-item{
+            padding:10px;
+            border-radius:10px;
             color:white;
-            padding:12px;
-            border-radius:8px;
-            margin-bottom:6px;
-            font-size:14px;
+            margin-bottom:4px;
         }
 
-        .active-menu{
-            background:#7B2CF5;
+        .nav-item:hover{
+            background:#13264A;
+        }
+
+        .active-nav{
+            background:#7427F5;
+            color:white;
             font-weight:600;
-        }
-
-        .menu-item:hover{
-            background:#152850;
         }
 
         .snapshot-row{
             display:flex;
             justify-content:space-between;
-            align-items:center;
             color:white;
-            margin-bottom:8px;
             font-size:13px;
+            margin-bottom:8px;
         }
 
-        .snapshot-count{
-            background:#17254b;
-            padding:2px 8px;
+        .badge{
+            background:#162750;
             border-radius:6px;
+            padding:2px 8px;
         }
 
-        .health-card{
-            background:#0f1f42;
-            border:1px solid #1d325f;
-            border-radius:12px;
-            padding:15px;
+        .metric-card{
+
+            background:#0D1F49;
+
+            border:1px solid #294780;
+
+            border-radius:16px;
+
+            padding:18px;
+
             margin-top:10px;
-            color:white;
+
+            margin-bottom:20px;
+
+            box-shadow:
+            0 0 15px rgba(70,100,255,.12);
         }
 
-        .metric{
+        .metric-row{
+
             display:flex;
+
             justify-content:space-between;
-            margin-bottom:8px;
-            font-size:13px;
+
+            margin-bottom:16px;
+
+            color:white;
+
+            font-size:14px;
         }
 
-        .green{color:#00D26A;}
-        .amber{color:#FFB100;}
-        .red{color:#FF3B5C;}
+        .green{
+            color:#00D26A;
+            font-weight:600;
+        }
 
-        .baseline-card{
-            background:#0f1f42;
-            border:1px solid #1d325f;
-            border-radius:12px;
-            padding:15px;
-            margin-top:10px;
-            color:white;
+        .amber{
+            color:#FFB100;
+            font-weight:600;
+        }
+
+        .red{
+            color:#FF4F6F;
+            font-weight:600;
         }
 
         </style>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
     )
+
+    # ------------------------------------------------
+    # TITLE
+    # ------------------------------------------------
 
     st.sidebar.markdown(
         """
-        <div class="logo-title">
-            <div class="logo">🎯</div>
-            <div>
-                <div class="title">DESIGN<br>INTELLIGENCE HUB</div>
-                <div class="subtitle">
-                    Design Smarter. Deliver Better.
-                </div>
+        <div class="hub-title">
+        DESIGN<br>
+        INTELLIGENCE HUB
+        </div>
+
+        <div class="hub-sub">
+        Design Smarter. Deliver Better.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # ------------------------------------------------
+    # FRAMEWORKS
+    # ------------------------------------------------
+
+    st.sidebar.markdown(
+        """
+        <div class="section-title">
+        Frameworks
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    for framework, projects in frameworks.items():
+
+        st.sidebar.markdown(
+            f"""
+            <div class="framework-title">
+            ▼ {framework}
             </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+            """,
+            unsafe_allow_html=True
+        )
 
-    st.sidebar.markdown(
-        '<div class="section-title">Frameworks</div>',
-        unsafe_allow_html=True,
-    )
+        for project in projects.keys():
 
-    st.sidebar.markdown(
-        """
-        <div class="framework">▼ UU Enterprise Framework</div>
+            css_class = (
+                "project active-project"
+                if project == "Ferry PS"
+                else "project"
+            )
 
-        <div class="project">
-        ⚪ Pennington Flash
-        </div>
+            st.sidebar.markdown(
+                f"""
+                <div class="{css_class}">
+                {project}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
-        <div class="project">
-        ⚪ Davyhulme ASP4
-        </div>
-
-        <div class="framework">▼ UU DD&B Framework</div>
-
-        <div class="project active-project">
-        🟣 Ferry PS
-        </div>
-
-        <div class="project">
-        🟠 Rossall Outfall
-        </div>
-
-        <div class="project">
-        🟢 Flass Lane
-        </div>
-
-        <div class="project">
-        🟡 Tally Ho
-        </div>
-
-        <div class="project">
-        🟢 Eccleston Bridge
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.sidebar.markdown(
-        '<div class="section-title">Main Navigation</div>',
-        unsafe_allow_html=True,
-    )
+    # ------------------------------------------------
+    # NAVIGATION
+    # ------------------------------------------------
 
     st.sidebar.markdown(
         """
-        <div class="menu-item active-menu">
-        🏠 Executive Dashboard
+        <div class="section-title">
+        Main Navigation
         </div>
-
-        <div class="menu-item">📋 Deliverables</div>
-
-        <div class="menu-item">📊 Discipline Performance</div>
-
-        <div class="menu-item">📈 Programme Drift</div>
-
-        <div class="menu-item">🎯 Design Readiness</div>
-
-        <div class="menu-item">📅 Upcoming Submissions</div>
-
-        <div class="menu-item">⚠️ Critical Path & Alerts</div>
-
-        <div class="menu-item">🔗 Design Dependencies</div>
-
-        <div class="menu-item">❓ Queries & TQs</div>
-
-        <div class="menu-item">🤖 AI Insights & Forecast</div>
-
-        <div class="menu-item">📄 Reports</div>
-
-        <div class="menu-item">🔍 Data Explorer</div>
-
-        <div class="menu-item">⚙️ Settings</div>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
     )
 
-    st.sidebar.markdown(
-        '<div class="section-title">Snapshot History</div>',
-        unsafe_allow_html=True,
-    )
+    navigation = [
+        "🏠 Executive Dashboard",
+        "📋 Deliverables",
+        "📊 Discipline Performance",
+        "📈 Programme Drift",
+        "🎯 Design Readiness",
+        "📅 Upcoming Submissions",
+        "⚠️ Critical Path & Alerts",
+        "🔗 Design Dependencies",
+        "❓ Queries & TQs",
+        "🤖 AI Insights & Forecast",
+        "📄 Reports",
+        "🔍 Data Explorer",
+        "⚙️ Settings"
+    ]
+
+    for i, nav in enumerate(navigation):
+
+        nav_class = (
+            "nav-item active-nav"
+            if i == 0
+            else "nav-item"
+        )
+
+        st.sidebar.markdown(
+            f"""
+            <div class="{nav_class}">
+            {nav}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    # ------------------------------------------------
+    # SNAPSHOT HISTORY
+    # ------------------------------------------------
 
     st.sidebar.markdown(
         """
-        <div class="snapshot-row">
-            <span>🔵 30 Sep 2026 (Current)</span>
-            <span class="snapshot-count">52</span>
-        </div>
-
-        <div class="snapshot-row">
-            <span>🟢 31 Aug 2026</span>
-            <span class="snapshot-count">52</span>
-        </div>
-
-        <div class="snapshot-row">
-            <span>🟠 31 Jul 2026</span>
-            <span class="snapshot-count">52</span>
-        </div>
-
-        <div class="snapshot-row">
-            <span>🟡 30 Jun 2026</span>
-            <span class="snapshot-count">52</span>
-        </div>
-
-        <div class="snapshot-row">
-            <span>🟣 31 May 2026</span>
-            <span class="snapshot-count">52</span>
+        <div class="section-title">
+        Snapshot History
         </div>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
     )
+
+    st.sidebar.markdown(
+        f"""
+        <div class="snapshot-row">
+            <span>{snapshot.strftime('%B %Y')}</span>
+            <span class="badge">Current</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # ------------------------------------------------
+    # PROJECT HEALTH
+    # ------------------------------------------------
 
     st.sidebar.markdown(
         """
         <div class="section-title">
         Project Health
         </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-        <div class="health-card">
+    st.sidebar.markdown(
+        f"""
+        <div class="metric-card">
 
-        <div class="metric">
-            <span>Design Readiness</span>
-            <span class="green">78%</span>
-        </div>
+            <div class="metric-row">
+                <span>Design Readiness</span>
+                <span class="green">
+                {metrics['design_readiness']}%
+                </span>
+            </div>
 
-        <div class="metric">
-            <span>Critical Deliverables</span>
-            <span class="amber">18</span>
-        </div>
+            <div class="metric-row">
+                <span>Critical Deliverables</span>
+                <span class="amber">
+                {metrics['critical_deliverables']}
+                </span>
+            </div>
 
-        <div class="metric">
-            <span>High Risk Activities</span>
-            <span class="red">5</span>
-        </div>
+            <div class="metric-row">
+                <span>High Risk Activities</span>
+                <span class="red">
+                {metrics['high_risk']}
+                </span>
+            </div>
 
-        <div class="metric">
-            <span>Upcoming Submissions</span>
-            <span class="amber">5</span>
-        </div>
+            <div class="metric-row">
+                <span>Upcoming Submissions</span>
+                <span class="amber">
+                {metrics['upcoming_submissions']}
+                </span>
+            </div>
 
         </div>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
     )
+
+    # ------------------------------------------------
+    # PROJECT BASELINE
+    # ------------------------------------------------
 
     st.sidebar.markdown(
         """
         <div class="section-title">
         Project Baseline (BL1)
         </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-        <div class="baseline-card">
+    st.sidebar.markdown(
+        f"""
+        <div class="metric-card">
 
-        <div class="metric">
-            <span>Baseline Finish</span>
-            <span>24 Sep 2026</span>
-        </div>
+            <div class="metric-row">
+                <span>Baseline Finish</span>
+                <span>
+                {metrics['baseline_finish'].strftime('%d %b %Y')}
+                </span>
+            </div>
 
-        <div class="metric">
-            <span>Current Forecast</span>
-            <span>20 Oct 2026</span>
-        </div>
+            <div class="metric-row">
+                <span>Current Forecast</span>
+                <span>
+                {metrics['forecast_finish'].strftime('%d %b %Y')}
+                </span>
+            </div>
 
-        <div class="metric">
-            <span>Programme Drift</span>
-            <span class="red">+26 Days</span>
-        </div>
+            <div class="metric-row">
+                <span>Programme Drift</span>
+                <span class="red">
+                +{metrics['programme_drift']} Days
+                </span>
+            </div>
 
         </div>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
     )
