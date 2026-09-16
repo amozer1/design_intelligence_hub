@@ -12,333 +12,217 @@ def load_frameworks():
         with open(config_file, "r") as f:
             return json.load(f)
 
-    return {}
+    return {
+        "UU Enterprise Framework": {
+            "Pennington Flash": {},
+            "Davyhulme ASP4": {}
+        },
+        "UU DD&B Framework": {
+            "Ferry PS": {},
+            "Rossall Outfall": {},
+            "Flass Lane": {},
+            "Tally Ho": {},
+            "Eccleston Bridge": {}
+        }
+    }
 
 
 def build_sidebar(metrics, snapshot):
 
     frameworks = load_frameworks()
 
-    st.markdown(
-        """
-        <style>
+    st.markdown("""
+    <style>
 
-        section[data-testid="stSidebar"]{
-            background: linear-gradient(
-                180deg,
-                #081428 0%,
-                #0A1530 100%
-            );
-        }
+    [data-testid="stSidebar"]{
+        background:linear-gradient(
+            180deg,
+            #04112B 0%,
+            #031837 100%
+        );
+    }
 
-        section[data-testid="stSidebar"] *{
-            color:white;
-        }
+    [data-testid="stSidebar"] *{
+        color:white;
+    }
 
-        .sidebar-title{
-            font-size:22px;
-            font-weight:700;
-            margin-bottom:4px;
-        }
+    .sidebar-section-title{
+        color:#93A2D2;
+        font-size:11px;
+        font-weight:700;
+        letter-spacing:1px;
+        text-transform:uppercase;
+        margin-bottom:12px;
+    }
 
-        .sidebar-subtitle{
-            color:#9ca9d7;
-            font-size:12px;
-            margin-bottom:20px;
-        }
+    div[data-testid="stVerticalBlockBorderWrapper"]{
+        border:1px solid #24468A !important;
+        border-radius:14px !important;
+        background:#0A1C48 !important;
+        padding:0.7rem !important;
+        margin-bottom:12px !important;
+    }
 
-        .section-header{
-            margin-top:18px;
-            margin-bottom:10px;
-            font-size:12px;
-            letter-spacing:1px;
-            color:#9ca9d7;
-            text-transform:uppercase;
-            font-weight:600;
-        }
+    div[data-testid="metric-container"]{
+        background:#10224D;
+        border:none;
+        padding:8px;
+    }
 
-        .framework-card{
-            background:#101b3d;
-            border:1px solid #263c7a;
-            border-radius:12px;
-            padding:10px;
-            margin-bottom:10px;
-        }
-
-        .project-active{
-            background:#d8efe4;
-            color:#0c3321 !important;
-            padding:8px;
-            border-radius:8px;
-            font-weight:600;
-            margin:4px 0;
-        }
-
-        .project-normal{
-            color:#dbe5ff;
-            padding:6px 8px;
-        }
-
-        .health-card{
-            background:#101b3d;
-            border:1px solid #263c7a;
-            border-radius:16px;
-            padding:16px;
-            margin-top:10px;
-        }
-
-        .health-score{
-            text-align:center;
-            margin-bottom:15px;
-        }
-
-        .health-number{
-            font-size:34px;
-            font-weight:700;
-            color:white;
-        }
-
-        .metric-line{
-            display:flex;
-            justify-content:space-between;
-            margin-top:10px;
-            margin-bottom:10px;
-        }
-
-        .green{
-            color:#00D26A;
-            font-weight:600;
-        }
-
-        .amber{
-            color:#FFB100;
-            font-weight:600;
-        }
-
-        .red{
-            color:#FF5F73;
-            font-weight:600;
-        }
-
-        .snapshot-pill{
-            background:#d9e9ff;
-            color:#0d2348 !important;
-            padding:10px;
-            border-radius:10px;
-            font-weight:600;
-            text-align:center;
-        }
-
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    </style>
+    """, unsafe_allow_html=True)
 
     with st.sidebar:
 
-        st.markdown(
-            """
-            <div class="sidebar-title">
-            🎯 Design Intelligence Hub
-            </div>
+        # =======================================
+        # HEADER
+        # =======================================
 
-            <div class="sidebar-subtitle">
-            Design Smarter. Deliver Better.
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.markdown("### 🎯 Design Intelligence Hub")
+        st.caption("Design Smarter. Deliver Better.")
 
-        st.divider()
+        st.write("")
 
-        # ==================================================
+        # =======================================
         # FRAMEWORKS
-        # ==================================================
+        # =======================================
 
         st.markdown(
-            '<div class="section-header">Frameworks</div>',
+            '<div class="sidebar-section-title">Frameworks</div>',
             unsafe_allow_html=True
         )
 
         for framework, projects in frameworks.items():
 
-            st.markdown(
-                f"""
-                <div class="framework-card">
-                    <strong>{framework}</strong>
-                """,
-                unsafe_allow_html=True
-            )
+            with st.container(border=True):
 
-            for project in projects.keys():
+                st.markdown(
+                    f"**{framework}**"
+                )
 
-                if project == "Ferry PS":
+                st.write("")
 
-                    st.markdown(
-                        f"""
-                        <div class="project-active">
-                        {project}
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
+                for project in projects.keys():
 
-                else:
+                    if project == "Ferry PS":
 
-                    st.markdown(
-                        f"""
-                        <div class="project-normal">
-                        {project}
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
+                        st.success(project)
 
-            st.markdown(
-                "</div>",
-                unsafe_allow_html=True
-            )
+                    else:
 
-        st.divider()
+                        st.write(project)
 
-        # ==================================================
+        # =======================================
         # NAVIGATION
-        # ==================================================
+        # =======================================
 
         st.markdown(
-            '<div class="section-header">Navigation</div>',
+            '<div class="sidebar-section-title">Navigation</div>',
             unsafe_allow_html=True
         )
 
-        st.radio(
-            "",
-            [
-                "Executive Dashboard",
-                "Deliverables",
-                "Discipline Performance",
-                "Programme Drift",
-                "Design Readiness",
-                "Upcoming Submissions",
-                "Critical Path & Alerts",
-                "Dependencies",
-                "Queries & TQs",
-                "AI Insights",
-                "Reports",
-            ],
-            label_visibility="collapsed",
-        )
+        with st.container(border=True):
 
-        st.divider()
+            pages = [
+                "🏠 Executive Dashboard",
+                "📋 Deliverables",
+                "📊 Discipline Performance",
+                "📈 Programme Drift",
+                "🎯 Design Readiness",
+                "📅 Upcoming Submissions",
+                "⚠️ Critical Path & Alerts",
+                "🔗 Dependencies",
+                "❓ Queries & TQs",
+                "🤖 AI Insights",
+                "📄 Reports"
+            ]
 
-        # ==================================================
-        # SNAPSHOT HISTORY
-        # ==================================================
+            for page in pages:
+                st.write(page)
+
+        # =======================================
+        # SNAPSHOTS
+        # =======================================
 
         st.markdown(
-            '<div class="section-header">Snapshot History</div>',
+            '<div class="sidebar-section-title">Snapshot History</div>',
             unsafe_allow_html=True
         )
 
-        st.markdown(
-            f"""
-            <div class="snapshot-pill">
-            {snapshot.strftime("%B %Y")}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        with st.container(border=True):
 
-        st.divider()
+            st.info(
+                snapshot.strftime("%B %Y")
+            )
 
-        # ==================================================
+        # =======================================
         # PROJECT HEALTH
-        # ==================================================
+        # =======================================
 
         st.markdown(
-            '<div class="section-header">Project Health</div>',
+            '<div class="sidebar-section-title">Project Health</div>',
             unsafe_allow_html=True
         )
 
-        st.markdown(
-            f"""
-            <div class="health-card">
+        with st.container(border=True):
 
-                <div class="health-score">
-                    <div class="health-number">
-                        {metrics['health_score']}/100
-                    </div>
-                </div>
+            st.metric(
+                "Health Score",
+                f"{metrics['health_score']}/100"
+            )
 
-                <div class="metric-line">
-                    <span>Design Readiness</span>
-                    <span class="green">
-                        {metrics['design_readiness']}%
-                    </span>
-                </div>
+            col1, col2 = st.columns(2)
 
-                <div class="metric-line">
-                    <span>Critical Activities</span>
-                    <span class="amber">
-                        {metrics['critical_deliverables']}
-                    </span>
-                </div>
+            with col1:
 
-                <div class="metric-line">
-                    <span>High Risk Activities</span>
-                    <span class="red">
-                        {metrics['high_risk']}
-                    </span>
-                </div>
+                st.metric(
+                    "Readiness",
+                    f"{metrics['design_readiness']}%"
+                )
 
-                <div class="metric-line">
-                    <span>Upcoming Submissions</span>
-                    <span class="amber">
-                        {metrics['upcoming_submissions']}
-                    </span>
-                </div>
+            with col2:
 
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+                st.metric(
+                    "Critical",
+                    metrics["critical_deliverables"]
+                )
 
-        st.markdown("<br>", unsafe_allow_html=True)
+            st.metric(
+                "High Risk Activities",
+                metrics["high_risk"]
+            )
 
-        # ==================================================
+            st.metric(
+                "Upcoming Submissions",
+                metrics["upcoming_submissions"]
+            )
+
+        # =======================================
         # PROJECT BASELINE
-        # ==================================================
+        # =======================================
 
         st.markdown(
-            '<div class="section-header">Project Baseline</div>',
+            '<div class="sidebar-section-title">Project Baseline</div>',
             unsafe_allow_html=True
         )
 
-        st.markdown(
-            f"""
-            <div class="health-card">
+        with st.container(border=True):
 
-                <div class="metric-line">
-                    <span>Baseline Finish</span>
-                    <span>
-                        {metrics['baseline_finish'].strftime('%d %b %Y')}
-                    </span>
-                </div>
+            st.metric(
+                "Baseline Finish",
+                metrics["baseline_finish"].strftime(
+                    "%d %b %Y"
+                )
+            )
 
-                <div class="metric-line">
-                    <span>Current Forecast</span>
-                    <span>
-                        {metrics['forecast_finish'].strftime('%d %b %Y')}
-                    </span>
-                </div>
+            st.metric(
+                "Current Forecast",
+                metrics["forecast_finish"].strftime(
+                    "%d %b %Y"
+                )
+            )
 
-                <div class="metric-line">
-                    <span>Programme Drift</span>
-                    <span class="red">
-                        +{metrics['programme_drift']} Days
-                    </span>
-                </div>
-
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+            st.metric(
+                "Programme Drift",
+                f"{metrics['programme_drift']} Days"
+            )
