@@ -1,4 +1,42 @@
+# sidebar/frameworks.py
+
 import streamlit as st
+
+
+def project_card(project, active=False):
+
+    if active:
+        return f"""
+        <div style="
+            background:linear-gradient(
+                90deg,
+                #6624D6,
+                #7C3AED
+            );
+            padding:12px;
+            border-radius:8px;
+            color:white;
+            font-size:14px;
+            font-weight:600;
+            margin-bottom:6px;
+        ">
+            {project}
+        </div>
+        """
+    else:
+        return f"""
+        <div style="
+            background:rgba(255,255,255,.04);
+            border:1px solid rgba(255,255,255,.06);
+            padding:10px 12px;
+            border-radius:8px;
+            color:#E2E8F0;
+            font-size:14px;
+            margin-bottom:6px;
+        ">
+            {project}
+        </div>
+        """
 
 
 def render_frameworks():
@@ -10,21 +48,18 @@ def render_frameworks():
 
     st.markdown("**▾ UU Enterprise Framework**")
 
-    enterprise_projects = [
+    for project in [
         "Pennington Flash",
         "Davyhulme ASP4"
-    ]
+    ]:
 
-    for project in enterprise_projects:
+        clicked = st.button(
+            project,
+            key=f"project_{project}",
+            use_container_width=True
+        )
 
-        active = st.session_state.project == project
-
-        if st.button(
-            f"⚪ {project}",
-            key=f"framework_{project}",
-            use_container_width=True,
-            type="primary" if active else "tertiary",
-        ):
+        if clicked:
             st.session_state.project = project
             st.rerun()
 
@@ -32,23 +67,24 @@ def render_frameworks():
 
     st.markdown("**▾ UU DD&B Framework**")
 
-    ddb_projects = [
-        ("🔴", "Ferry PS"),
-        ("🟠", "Rossall Outfall"),
-        ("🟢", "Flass Lane"),
-        ("🟡", "Tally Ho"),
-        ("🟢", "Eccleston Bridge"),
-    ]
-
-    for icon, project in ddb_projects:
+    for project in [
+        "Ferry PS",
+        "Rossall Outfall",
+        "Flass Lane",
+        "Tally Ho",
+        "Eccleston Bridge"
+    ]:
 
         active = st.session_state.project == project
 
+        st.markdown(
+            project_card(project, active),
+            unsafe_allow_html=True
+        )
+
         if st.button(
-            f"{icon} {project}",
-            key=f"framework_{project}",
-            use_container_width=True,
-            type="primary" if active else "tertiary",
+            f"Select {project}",
+            key=f"select_{project}"
         ):
             st.session_state.project = project
             st.rerun()
