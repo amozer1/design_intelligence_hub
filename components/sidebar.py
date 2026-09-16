@@ -1,153 +1,108 @@
 import streamlit as st
 
-from config.frameworks import FRAMEWORKS
 
+def build_sidebar():
 
-# ==========================================================
-# FRAMEWORK ORDER
-# ==========================================================
+    st.sidebar.markdown(
+        """
+        # 🎯 Design Intelligence Hub
 
-FRAMEWORK_ORDER = [
-    "UU Enterprise Framework",
-    "UU DD&B Framework",
-]
+        *Design Smarter. Deliver Better.*
+        """
+    )
 
+    st.sidebar.divider()
 
-# ==========================================================
-# NAVIGATION
-# ==========================================================
+    # Framework Selector
+    st.sidebar.subheader("Frameworks")
 
-NAVIGATION_ITEMS = [
-    "Overview",
-    "Programme",
-    "Delivery & Programme",
-    "Communications",
-    "Documents",
-    "Intelligence",
-    "Reports",
-    "Settings",
-]
+    framework = st.sidebar.selectbox(
+        "Framework",
+        [
+            "UU DD&B Framework",
+            "UU Enterprise Framework"
+        ]
+    )
 
-
-# ==========================================================
-# SESSION STATE
-# ==========================================================
-
-if "selected_framework" not in st.session_state:
-    st.session_state.selected_framework = "UU Enterprise Framework"
-
-if "selected_asset" not in st.session_state:
-    st.session_state.selected_asset = "Pennington Flash"
-
-if "selected_navigation" not in st.session_state:
-    st.session_state.selected_navigation = "Overview"
-
-
-# ==========================================================
-# CALLBACKS
-# ==========================================================
-
-def select_asset(framework, asset):
-    st.session_state.selected_framework = framework
-    st.session_state.selected_asset = asset
-    st.session_state.selected_navigation = "Overview"
-
-
-def select_navigation(item):
-    st.session_state.selected_navigation = item
-
-
-def select_home():
-    st.session_state.selected_navigation = "Overview"
-
-
-# ==========================================================
-# SIDEBAR
-# ==========================================================
-
-def render_sidebar():
-
-    with st.sidebar:
-
-        # --------------------------------------------------
-        # BRAND
-        # --------------------------------------------------
-
-        st.image("assets/logo.png", width=42)
-
-        st.button(
-            "PROJECT CONTROLS HUB",
-            key="project_controls_home",
-            use_container_width=True,
-            type="secondary",
-            on_click=select_home,
+    if framework == "UU DD&B Framework":
+        project = st.sidebar.selectbox(
+            "Project",
+            [
+                "Ferry PS",
+                "Rossall Outfall",
+                "Flass Lane",
+                "Tally Ho",
+                "Eccleston Bridge"
+            ]
+        )
+    else:
+        project = st.sidebar.selectbox(
+            "Project",
+            [
+                "Pennington Flash",
+                "Davyhulme ASP4"
+            ]
         )
 
-        st.caption("Design Management Intelligence")
+    st.sidebar.divider()
 
+    st.sidebar.subheader("Navigation")
 
-        # --------------------------------------------------
-        # FRAMEWORKS
-        # --------------------------------------------------
+    page = st.sidebar.radio(
+        "Go To",
+        [
+            "Executive Dashboard",
+            "Deliverables",
+            "Upcoming Submissions",
+            "Programme Drift",
+            "Design Readiness",
+            "Critical Activities",
+            "AI Insights",
+            "Reports"
+        ]
+    )
 
-        st.caption("FRAMEWORKS")
+    st.sidebar.divider()
 
-        for framework_index, framework in enumerate(FRAMEWORK_ORDER):
+    st.sidebar.subheader("Project Health")
 
-            framework_data = FRAMEWORKS.get(framework, {})
+    st.sidebar.metric(
+        "Health Score",
+        "58/100",
+        "-4"
+    )
 
-            if isinstance(framework_data, dict):
-                assets = framework_data.get("assets", [])
-            else:
-                assets = framework_data
+    st.sidebar.metric(
+        "Programme Drift",
+        "+26 Days"
+    )
 
-            if not assets:
-                continue
+    st.sidebar.metric(
+        "Critical Activities",
+        "18"
+    )
 
-            with st.expander(
-                framework,
-                expanded=True,
-            ):
+    st.sidebar.metric(
+        "Submissions (7 Days)",
+        "5"
+    )
 
-                for asset in assets:
+    st.sidebar.divider()
 
-                    selected = (
-                        st.session_state.selected_framework == framework
-                        and st.session_state.selected_asset == asset
-                    )
+    st.sidebar.subheader("Snapshot History")
 
-                    st.button(
-                        asset,
-                        key=f"asset_{framework}_{asset}",
-                        use_container_width=True,
-                        type="primary" if selected else "secondary",
-                        on_click=select_asset,
-                        args=(framework, asset),
-                    )
+    st.sidebar.markdown(
+        """
+        🔵 Sep-26 (Current)
 
-            if framework_index < len(FRAMEWORK_ORDER) - 1:
-                st.divider()
+        🟢 Aug-26
 
+        🟠 Jul-26
 
-        # --------------------------------------------------
-        # NAVIGATION
-        # --------------------------------------------------
+        🟡 Jun-26
 
-        st.divider()
+        🟣 May-26
+        """
+    )
 
-        st.caption("NAVIGATION")
-
-        for item in NAVIGATION_ITEMS:
-
-            selected = (
-                st.session_state.selected_navigation == item
-            )
-
-            st.button(
-                item,
-                key=f"navigation_{item}",
-                use_container_width=True,
-                type="primary" if selected else "secondary",
-                on_click=select_navigation,
-                args=(item,)
-            )
+    return framework, project, page
