@@ -21,22 +21,6 @@ st.set_page_config(
 
 
 # ==================================================
-# LOAD CSS
-# ==================================================
-
-with open("assets/styles.css") as f:
-
-    st.markdown(
-        f"""
-        <style>
-        {f.read()}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-
-# ==================================================
 # LOAD DATA
 # ==================================================
 
@@ -45,7 +29,6 @@ cl31, cl32 = load_ferry()
 if cl32.empty:
 
     st.error("No CL32 files found.")
-
     st.stop()
 
 current_df, snapshot = get_current_snapshot(cl32)
@@ -120,9 +103,6 @@ with k4:
     )
 
 
-st.write("")
-
-
 # ==================================================
 # EXECUTIVE SUMMARY
 # ==================================================
@@ -134,9 +114,6 @@ with st.container(border=True):
     st.write(
         "Latest Ferry PS CL32 snapshot loaded successfully."
     )
-
-
-st.write("")
 
 
 # ==================================================
@@ -162,9 +139,6 @@ with c2:
         st.write("Chart placeholder")
 
 
-st.write("")
-
-
 # ==================================================
 # UPCOMING SUBMISSIONS
 # ==================================================
@@ -176,9 +150,6 @@ with st.container(border=True):
     st.write("Table placeholder")
 
 
-st.write("")
-
-
 # ==================================================
 # CHANGES SINCE LAST SNAPSHOT
 # ==================================================
@@ -188,9 +159,6 @@ with st.container(border=True):
     st.subheader("What's Changed Since Last Snapshot")
 
     st.write("Comparison placeholder")
-
-
-st.write("")
 
 
 # ==================================================
