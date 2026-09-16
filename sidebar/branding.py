@@ -17,19 +17,19 @@ def render_branding():
     ">
 
         <div style="
-            color:white;
             font-size:24px;
             font-weight:700;
+            color:white;
             line-height:1.1;
         ">
-            🎯 DESIGN<br>
+            DESIGN<br>
             INTELLIGENCE HUB
         </div>
 
         <div style="
-            color:#94a3b8;
-            font-size:12px;
             margin-top:8px;
+            font-size:12px;
+            color:#94a3b8;
         ">
             Design Smarter. Deliver Better.
         </div>
