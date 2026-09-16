@@ -356,4 +356,79 @@ st.markdown(
 
     <h3>Executive Summary</h3>
 
-    Latest Ferry PS 
+    Latest Ferry PS CL32 snapshot loaded successfully.
+
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# ==================================================
+# ROW 2
+# ==================================================
+
+c1, c2 = st.columns(2)
+
+with c1:
+
+    st.markdown(
+        """
+        <div class="page-card">
+
+        <h3>Deliverables Status</h3>
+
+        Chart placeholder
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+with c2:
+
+    st.markdown(
+        """
+        <div class="page-card">
+
+        <h3>Discipline Performance</h3>
+
+        Chart placeholder
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+# ==================================================
+# UPCOMING SUBMISSIONS
+# ==================================================
+
+st.markdown(
+    """
+    <div class="page-card">
+
+    <h3>Upcoming Submissions</h3>
+
+    Table placeholder
+
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# ==================================================
+# AI INSIGHTS
+# ==================================================
+
+st.markdown(
+    """
+    <div class="page-card">
+
+    <h3>AI Insights & Forecast</h3>
+
+    Forecasting placeholder
+
+    </div>
+    """,
+    unsafe_allow_html=True
+)
