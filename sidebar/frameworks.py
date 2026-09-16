@@ -4,114 +4,70 @@ import streamlit as st
 def render_frameworks():
 
     st.markdown("""
-    <style>
+    <hr style="
+        border:none;
+        border-top:1px solid rgba(80,120,255,.15);
+        margin:8px 0 12px 0;
+    ">
+    """, unsafe_allow_html=True)
 
-    .framework-title{
+    st.markdown("""
+    <div style="
         color:#B7C7DA;
-        font-size:14px;
-        font-weight:600;
-        letter-spacing:.5px;
-        margin-bottom:6px;
-    }
-
-    .framework-divider{
-        height:1px;
-        background:rgba(80,120,255,.15);
+        font-size:16px;
+        font-weight:700;
         margin-bottom:10px;
-    }
+    ">
+        FRAMEWORKS
+    </div>
+    """, unsafe_allow_html=True)
 
-    .framework-group{
+    st.markdown("""
+    <div style="
         color:white;
         font-size:15px;
         font-weight:600;
-        margin:0;
-        padding:0 0 4px 0;
-    }
+        margin-bottom:4px;
+    ">
+        ▾ UU Enterprise Framework
+    </div>
+    """, unsafe_allow_html=True)
 
-    .framework-item{
-        color:#E2E8F0;
-        font-size:14px;
-        line-height:1.2;
-        padding:3px 0 3px 18px;
-        margin:0;
-    }
+    st.markdown("⚪ Pennington Flash")
+    st.markdown("⚪ Davyhulme ASP4")
 
-    .framework-active{
+    st.markdown("<div style='height:8px'></div>",
+                unsafe_allow_html=True)
+
+    st.markdown("""
+    <div style="
+        color:white;
+        font-size:15px;
+        font-weight:600;
+        margin-bottom:4px;
+    ">
+        ▾ UU DD&B Framework
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div style="
         background:linear-gradient(
             90deg,
             #6624D6,
             #7C3AED
         );
-
-        border-radius:6px;
-
+        border-radius:8px;
+        padding:10px 12px;
         color:white;
-        font-size:14px;
         font-weight:600;
-
-        padding:8px 12px;
-
-        margin:2px 0 4px 0;
-    }
-
-    </style>
+        margin-bottom:6px;
+    ">
+        🔴 Ferry PS
+    </div>
     """, unsafe_allow_html=True)
 
-    st.markdown(
-        '<div class="framework-title">FRAMEWORKS</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="framework-divider"></div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="framework-group">⌄ UU Enterprise Framework</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="framework-item">⚪ Pennington Flash</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="framework-item">⚪ Davyhulme ASP4</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown("<div style='height:4px'></div>",
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="framework-group">⌄ UU DD&amp;B Framework</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="framework-active">🔴 Ferry PS</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="framework-item">🟠 Rossall Outfall</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="framework-item">🟢 Flass Lane</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="framework-item">🟡 Tally Ho</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="framework-item">🟢 Eccleston Bridge</div>',
-        unsafe_allow_html=True
-    )
+    st.markdown("🟠 Rossall Outfall")
+    st.markdown("🟢 Flass Lane")
+    st.markdown("🟡 Tally Ho")
+    st.markdown("🟢 Eccleston Bridge")
