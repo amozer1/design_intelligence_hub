@@ -3,27 +3,36 @@ import streamlit as st
 
 def render_branding():
 
-    st.markdown("""
-    <div style="
-        background: linear-gradient(135deg,#0f172a,#1e1b4b);
-        padding: 20px;
-        border-radius: 12px;
-        border-left: 4px solid #8b5cf6;
-    ">
+    col1, col2 = st.columns([1, 3])
+
+    with col1:
+        st.image(
+            "assets/logo.png",
+            width=55
+        )
+
+    with col2:
+
+        st.markdown("""
         <div style="
             color:white;
-            font-size:22px;
             font-weight:700;
+            font-size:16px;
+            line-height:1.1;
+            margin-top:2px;
         ">
-            🎯 DESIGN INTELLIGENCE HUB
+            DESIGN<br>
+            INTELLIGENCE HUB
         </div>
 
         <div style="
-            color:#94a3b8;
-            font-size:12px;
-            margin-top:8px;
+            color:#cbd5e1;
+            font-size:11px;
+            margin-top:4px;
         ">
             Design Smarter. Deliver Better.
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+
+    st.markdown("<div style='height:12px'></div>",
+                unsafe_allow_html=True)
