@@ -5,35 +5,34 @@ def render_branding():
 
     st.image(
         "assets/logo.png",
-        width=85
+        width=90
     )
 
     st.markdown(
         """
-        <p style="
+        <div style="
             color:white;
-            font-size:22px;
+            font-size:24px;
             font-weight:700;
-            line-height:1.05;
-            margin:0;
-            padding:0;
+            line-height:1.1;
+            margin-top:-4px;
         ">
             DESIGN INTELLIGENCE HUB
-        </p>
+        </div>
         """,
         unsafe_allow_html=True
     )
 
     st.markdown(
         """
-        <p style="
+        <div style="
             color:#CBD5E1;
             font-size:13px;
-            margin:0;
-            padding:0;
+            margin-top:2px;
+            margin-bottom:6px;
         ">
             Design Smarter. Deliver Better.
-        </p>
+        </div>
         """,
         unsafe_allow_html=True
     )
