@@ -1,0 +1,82 @@
+/* ==========================================================
+   PROJECT CONTROLS HUB - SIDEBAR
+   ========================================================== */
+
+/* Sidebar overall spacing */
+section[data-testid="stSidebar"] {
+    padding-top: 0.5rem;
+}
+
+
+/* ----------------------------------------------------------
+   Sidebar buttons
+   ---------------------------------------------------------- */
+
+section[data-testid="stSidebar"] div[data-testid="stButton"] {
+    margin-top: 0;
+    margin-bottom: 0.15rem;
+}
+
+
+/* Left-align all button content */
+section[data-testid="stSidebar"] div[data-testid="stButton"] button {
+    justify-content: flex-start !important;
+    text-align: left !important;
+}
+
+
+/* Left-align the actual button text */
+section[data-testid="stSidebar"] div[data-testid="stButton"] button > div {
+    justify-content: flex-start !important;
+    width: 100%;
+}
+
+
+/* Keep button text compact */
+section[data-testid="stSidebar"] div[data-testid="stButton"] button p {
+    text-align: left !important;
+    margin: 0;
+}
+
+
+/* ----------------------------------------------------------
+   Framework expanders
+   ---------------------------------------------------------- */
+
+section[data-testid="stSidebar"] div[data-testid="stExpander"] {
+    margin-bottom: 0.25rem;
+}
+
+
+/* Compact expander header */
+section[data-testid="stSidebar"] div[data-testid="stExpander"] summary {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+
+/* Compact expander contents */
+section[data-testid="stSidebar"] div[data-testid="stExpanderDetails"] {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+
+/* ----------------------------------------------------------
+   Sidebar captions / section headings
+   ---------------------------------------------------------- */
+
+section[data-testid="stSidebar"] .stCaption {
+    margin-top: 0.15rem;
+    margin-bottom: 0.25rem;
+}
+
+
+/* ----------------------------------------------------------
+   Dividers
+   ---------------------------------------------------------- */
+
+section[data-testid="stSidebar"] hr {
+    margin-top: 0.45rem;
+    margin-bottom: 0.45rem;
+}

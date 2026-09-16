@@ -1,34 +1,7 @@
 import streamlit as st
-import json
-from pathlib import Path
-
-
-def load_frameworks():
-
-    config_file = Path("config/frameworks.json")
-
-    if config_file.exists():
-        with open(config_file, "r") as f:
-            return json.load(f)
-
-    return {
-        "UU Enterprise Framework": {
-            "Pennington Flash": {},
-            "Davyhulme ASP4": {}
-        },
-        "UU DD&B Framework": {
-            "Ferry PS": {},
-            "Rossall Outfall": {},
-            "Flass Lane": {},
-            "Tally Ho": {},
-            "Eccleston Bridge": {}
-        }
-    }
 
 
 def build_sidebar(metrics, snapshot):
-
-    frameworks = load_frameworks()
 
     with st.sidebar:
 
@@ -47,31 +20,29 @@ def build_sidebar(metrics, snapshot):
 
         st.caption("FRAMEWORKS")
 
-        # Enterprise Card
         with st.container(border=True):
 
             st.markdown("**UU Enterprise Framework**")
 
-            st.write("Pennington Flash")
-            st.write("Davyhulme ASP4")
+            st.write("◯ Pennington Flash")
+            st.write("◯ Davyhulme ASP4")
 
-        # DD&B Card
         with st.container(border=True):
 
             st.markdown("**UU DD&B Framework**")
 
-            st.success("Ferry PS")
+            st.success("🔴 Ferry PS")
 
-            st.write("Rossall Outfall")
-            st.write("Flass Lane")
-            st.write("Tally Ho")
-            st.write("Eccleston Bridge")
+            st.write("🟠 Rossall Outfall")
+            st.write("🟢 Flass Lane")
+            st.write("🟡 Tally Ho")
+            st.write("🟢 Eccleston Bridge")
 
         # ==================================================
         # NAVIGATION
         # ==================================================
 
-        st.caption("NAVIGATION")
+        st.caption("MAIN NAVIGATION")
 
         with st.container(border=True):
 
@@ -82,10 +53,12 @@ def build_sidebar(metrics, snapshot):
             st.write("🎯 Design Readiness")
             st.write("📅 Upcoming Submissions")
             st.write("⚠️ Critical Path & Alerts")
-            st.write("🔗 Dependencies")
+            st.write("🔗 Design Dependencies")
             st.write("❓ Queries & TQs")
-            st.write("🤖 AI Insights")
+            st.write("🤖 AI Insights & Forecast")
             st.write("📄 Reports")
+            st.write("🔍 Data Explorer")
+            st.write("⚙️ Settings")
 
         # ==================================================
         # SNAPSHOT HISTORY
@@ -112,17 +85,15 @@ def build_sidebar(metrics, snapshot):
                 f"{metrics['health_score']}/100"
             )
 
-            col1, col2 = st.columns(2)
+            c1, c2 = st.columns(2)
 
-            with col1:
-
+            with c1:
                 st.metric(
                     "Readiness",
                     f"{metrics['design_readiness']}%"
                 )
 
-            with col2:
-
+            with c2:
                 st.metric(
                     "Critical",
                     metrics["critical_deliverables"]
