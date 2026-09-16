@@ -5,36 +5,50 @@ def render_frameworks():
 
     st.markdown("##### FRAMEWORKS")
 
-    projects = {
-        "UU Enterprise Framework": [
-            "Pennington Flash",
-            "Davyhulme ASP4"
-        ],
-        "UU DD&B Framework": [
-            "Ferry PS",
-            "Rossall Outfall",
-            "Flass Lane",
-            "Tally Ho",
-            "Eccleston Bridge"
-        ]
-    }
-
     if "project" not in st.session_state:
         st.session_state.project = "Ferry PS"
 
-    for framework, items in projects.items():
+    st.markdown("**▾ UU Enterprise Framework**")
 
-        st.markdown(f"**▾ {framework}**")
+    enterprise_projects = [
+        "Pennington Flash",
+        "Davyhulme ASP4"
+    ]
 
-        for project in items:
+    for project in enterprise_projects:
 
-            active = st.session_state.project == project
+        active = st.session_state.project == project
 
-            if st.button(
-                project,
-                use_container_width=True,
-                key=f"project_{project}",
-                type="primary" if active else "secondary"
-            ):
-                st.session_state.project = project
-                st.rerun()
+        if st.button(
+            f"⚪ {project}",
+            key=f"framework_{project}",
+            use_container_width=True,
+            type="primary" if active else "tertiary",
+        ):
+            st.session_state.project = project
+            st.rerun()
+
+    st.markdown("")
+
+    st.markdown("**▾ UU DD&B Framework**")
+
+    ddb_projects = [
+        ("🔴", "Ferry PS"),
+        ("🟠", "Rossall Outfall"),
+        ("🟢", "Flass Lane"),
+        ("🟡", "Tally Ho"),
+        ("🟢", "Eccleston Bridge"),
+    ]
+
+    for icon, project in ddb_projects:
+
+        active = st.session_state.project == project
+
+        if st.button(
+            f"{icon} {project}",
+            key=f"framework_{project}",
+            use_container_width=True,
+            type="primary" if active else "tertiary",
+        ):
+            st.session_state.project = project
+            st.rerun()
