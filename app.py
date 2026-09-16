@@ -11,4 +11,3 @@ st.set_page_config(
 render_sidebar()
 
 st.title("Dashboard")
-`
