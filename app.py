@@ -1,6 +1,8 @@
 import streamlit as st
 
 from sidebar.layout import render_sidebar
+from sidebar.branding import render_branding
+
 
 st.set_page_config(
     page_title="Design Intelligence Hub",
@@ -9,6 +11,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-render_sidebar()
+slots = render_sidebar()
+
+with slots["branding"]:
+    render_branding()
 
 st.title("Dashboard")
