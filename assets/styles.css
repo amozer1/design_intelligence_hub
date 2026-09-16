@@ -1,103 +1,42 @@
-/* ==================================================
-   SIDEBAR BACKGROUND
-================================================== */
+/* APP */
+
+.stApp {
+    background: #071028;
+}
+
+/* SIDEBAR */
 
 section[data-testid="stSidebar"] {
     background: linear-gradient(
         180deg,
-        #04162e 0%,
-        #031125 100%
-    ) !important;
+        #04111f 0%,
+        #06162d 100%
+    );
 }
 
-/* ==================================================
-   SIDEBAR TEXT
-================================================== */
+/* TEXT */
 
 section[data-testid="stSidebar"] * {
-    color: white !important;
+    color: white;
 }
 
-/* ==================================================
-   STACKED CARD EFFECT
-================================================== */
+/* SECTION HEADINGS */
 
-section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] > div {
-    background: #081b2e;
-    border: 1px solid rgba(59,130,246,.15);
-    border-radius: 14px;
-    padding: 14px;
-    margin-bottom: 12px;
+section[data-testid="stSidebar"] h5 {
+    color: #8fa7ff;
+    text-transform: uppercase;
 }
 
-/* ==================================================
-   SECTION TITLES
-================================================== */
+/* DIVIDERS */
 
-section[data-testid="stSidebar"] .stCaption {
-    color: #8fa7ff !important;
-    font-size: 11px !important;
-    font-weight: 700 !important;
-    letter-spacing: 1px !important;
-    text-transform: uppercase !important;
+section[data-testid="stSidebar"] hr {
+    border-color: rgba(255,255,255,.08);
 }
 
-/* ==================================================
-   ACTIVE PROJECT
-================================================== */
+/* METRICS */
 
-.active-project{
-    background: linear-gradient(
-        90deg,
-        #5b21b6,
-        #7c3aed
-    );
-    padding:10px;
-    border-radius:8px;
-    font-weight:600;
-    margin:8px 0;
-}
-
-/* ==================================================
-   ACTIVE NAV
-================================================== */
-
-.active-nav{
-    background: linear-gradient(
-        90deg,
-        #1d4ed8,
-        #2563eb
-    );
-    padding:10px;
-    border-radius:8px;
-    font-weight:600;
-    margin-bottom:8px;
-}
-
-/* ==================================================
-   METRICS
-================================================== */
-
-section[data-testid="stSidebar"] [data-testid="metric-container"]{
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-/* ==================================================
-   INFO BOX
-================================================== */
-
-section[data-testid="stSidebar"] [data-testid="stInfo"]{
-    background:#13284f !important;
-    border:1px solid #1f4d9a !important;
-    border-radius:10px !important;
-}
-
-/* ==================================================
-   HEALTHY SPACING
-================================================== */
-
-section[data-testid="stSidebar"] .block-container{
-    padding-top*1rem;
+section[data-testid="stSidebar"] [data-testid="metric-container"] {
+    background: transpar*nt;
+    border: none;
+    box-shad*w: none;
 }
