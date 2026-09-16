@@ -3,22 +3,19 @@ import streamlit as st
 
 def render_sidebar():
 
-    with st.sidebar:
+    st.markdown("""
+    <style>
 
-        branding = st.container()
-        frameworks = st.container()
-        navigation = st.container()
-        snapshots = st.container()
-        health = st.container()
-        baseline = st.container()
-        footer = st.container()
-
-    return {
-        "branding": branding,
-        "frameworks": frameworks,
-        "navigation": navigation,
-        "snapshots": snapshots,
-        "health": health,
-        "baseline": baseline,
-        "footer": footer,
+    section[data-testid="stSidebar"] {
+        background: #041124 !important;
     }
+
+    section[data-testid="stSidebar"] > div {
+        background: #041124 !important;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    with st.sidebar:
+        pass
