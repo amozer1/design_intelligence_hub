@@ -30,81 +30,94 @@ def get_project_metrics(current_df):
             "health_score": 0,
         }
 
-    # Clean columns
+    # --------------------------------------------
+    # CLEAN DATA
+    # --------------------------------------------
 
-    current_df.columns = (
-        current_df.columns
+    df = current_df.copy()
+
+    df.columns = (
+        df.columns
         .astype(str)
         .str.strip()
     )
 
-    # ----------------------------
-    # Find project completion line
-    # ----------------------------
+    # --------------------------------------------
+    # KEEP REAL ACTIVITIES ONLY
+    # --------------------------------------------
 
-    milestone = current_df[
-        current_df["Activity ID"]
+    activities = df[
+        df["Activity ID"]
         .astype(str)
-        .str.strip()
-        == "FER-PD-1030"
-    ]
+        .str.startswith("FER-", na=False)
+    ].copy()
 
-    if not milestone.empty:
+    if activities.empty:
+        activities = df.copy()
 
-        baseline_finish = pd.to_datetime(
-            milestone["BL1 Finish"].iloc[0],
-            errors="coerce"
-        )
+    # --------------------------------------------
+    # DATES
+    # --------------------------------------------
 
-        forecast_finish = pd.to_datetime(
-            milestone["Finish"].iloc[0],
-            errors="coerce"
-        )
+    activities["Finish"] = pd.to_datetime(
+        activities["Finish"],
+        errors="coerce"
+    )
 
-    else:
+    activities["BL1 Finish"] = pd.to_datetime(
+        activities["BL1 Finish"],
+        errors="coerce"
+    )
 
-        baseline_finish = pd.Timestamp.today()
+    # --------------------------------------------
+    # FORECAST FINISH
+    # --------------------------------------------
 
+    forecast_finish = activities[
+        "Finish"
+    ].max()
+
+    # --------------------------------------------
+    # BASELINE FINISH
+    # --------------------------------------------
+
+    baseline_finish = activities[
+        "BL1 Finish"
+    ].max()
+
+    if pd.isna(forecast_finish):
         forecast_finish = pd.Timestamp.today()
 
-    # ----------------------------
-    # Drift
-    # ----------------------------
+    if pd.isna(baseline_finish):
+        baseline_finish = pd.Timestamp.today()
 
-    if (
-        pd.notna(baseline_finish)
-        and
-        pd.notna(forecast_finish)
-    ):
+    programme_drift = (
+        forecast_finish - baseline_finish
+    ).days
 
-        programme_drift = (
-            forecast_finish -
-            baseline_finish
-        ).days
+    # --------------------------------------------
+    # FLOAT
+    # --------------------------------------------
 
-    else:
-
-        programme_drift = 0
-
-    # ----------------------------
-    # Critical Deliverables
-    # ----------------------------
-
-    total_float = pd.to_numeric(
-        current_df["Total Float"],
+    activities["Total Float"] = pd.to_numeric(
+        activities["Total Float"],
         errors="coerce"
     )
 
     critical_deliverables = int(
-        (total_float <= 10).sum()
+        (
+            activities["Total Float"] <= 5
+        ).sum()
     )
 
-    # ----------------------------
-    # High Risk
-    # ----------------------------
+    # --------------------------------------------
+    # VARIANCE
+    # --------------------------------------------
 
-    variance = pd.to_numeric(
-        current_df[
+    activities[
+        "Variance - BL1 Finish Date"
+    ] = pd.to_numeric(
+        activities[
             "Variance - BL1 Finish Date"
         ],
         errors="coerce"
@@ -112,104 +125,125 @@ def get_project_metrics(current_df):
 
     high_risk = int(
         (
-            (total_float <= 5)
+            (
+                activities["Total Float"] <= 0
+            )
             &
-            (variance < 0)
+            (
+                activities[
+                    "Variance - BL1 Finish Date"
+                ] < 0
+            )
         ).sum()
     )
 
-    # ----------------------------
-    # Design Readiness
-    # ----------------------------
+    # --------------------------------------------
+    # DESIGN READINESS
+    # --------------------------------------------
 
-    remaining = pd.to_numeric(
-        current_df["Remaining Duration"],
+    activities[
+        "Remaining Duration"
+    ] = pd.to_numeric(
+        activities["Remaining Duration"],
         errors="coerce"
     )
 
     total_activities = len(
-        remaining.dropna()
+        activities[
+            "Remaining Duration"
+        ].dropna()
     )
 
-    completed = int(
-        (remaining == 0).sum()
+    completed_activities = int(
+        (
+            activities[
+                "Remaining Duration"
+            ] == 0
+        ).sum()
     )
 
     if total_activities > 0:
 
         design_readiness = round(
-            completed /
-            total_activities *
-            100
+            (
+                completed_activities
+                /
+                total_activities
+            ) * 100
         )
 
     else:
 
         design_readiness = 0
 
-    # ----------------------------
-    # Upcoming Submissions
-    # ----------------------------
+    # --------------------------------------------
+    # UPCOMING SUBMISSIONS
+    # --------------------------------------------
 
     today = pd.Timestamp.today()
 
-    next_week = today + pd.Timedelta(days=7)
-
-    finish = pd.to_datetime(
-        current_df["Finish"],
-        errors="coerce"
+    next_7_days = (
+        today + pd.Timedelta(days=7)
     )
 
-    activities = (
-        current_df["Activity Name"]
+    submission_mask = (
+        activities["Activity Name"]
         .astype(str)
-        .fillna("")
+        .str.contains(
+            "Submission|Review",
+            case=False,
+            na=False
+        )
     )
 
     upcoming_submissions = int(
         (
-            activities.str.contains(
-                "Submission|Review",
-                case=False,
-                na=False
-            )
+            submission_mask
             &
-            finish.between(
+            activities["Finish"].between(
                 today,
-                next_week
+                next_7_days
             )
         ).sum()
     )
 
-    # ----------------------------
-    # Health Score
-    # ----------------------------
+    # --------------------------------------------
+    # HEALTH SCORE
+    # --------------------------------------------
 
     health_score = round(
+
         (
-            design_readiness * 0.4
+            design_readiness * 0.40
         )
+
         +
+
         (
             max(
                 0,
                 100 - critical_deliverables
-            ) * 0.2
+            ) * 0.20
         )
+
         +
+
         (
             max(
                 0,
                 100 - high_risk
-            ) * 0.2
+            ) * 0.20
         )
+
         +
+
         (
             max(
                 0,
                 100 - abs(programme_drift)
-            ) * 0.2
+            ) * 0.20
         )
+
     )
 
     health_score = max(
@@ -221,6 +255,7 @@ def get_project_metrics(current_df):
     )
 
     return {
+
         "baseline_finish":
             baseline_finish,
 
@@ -244,4 +279,8 @@ def get_project_metrics(current_df):
 
         "health_score":
             health_score,
+
+        "activity_count":
+            len(activities)
+
     }
