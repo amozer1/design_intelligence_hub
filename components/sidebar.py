@@ -27,127 +27,107 @@ def load_frameworks():
     }
 
 
+def sidebar_heading(text):
+
+    st.markdown(
+        f"""
+        <div style="
+            color:#93A2D2;
+            font-size:11px;
+            font-weight:700;
+            letter-spacing:1px;
+            text-transform:uppercase;
+            margin-top:8px;
+            margin-bottom:8px;
+        ">
+        {text}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
 def build_sidebar(metrics, snapshot):
 
     frameworks = load_frameworks()
 
-    st.markdown("""
-    <style>
-
-    [data-testid="stSidebar"]{
-        background:linear-gradient(
-            180deg,
-            #04112B 0%,
-            #031837 100%
-        );
-    }
-
-    [data-testid="stSidebar"] *{
-        color:white;
-    }
-
-    .sidebar-section-title{
-        color:#93A2D2;
-        font-size:11px;
-        font-weight:700;
-        letter-spacing:1px;
-        text-transform:uppercase;
-        margin-bottom:12px;
-    }
-
-    div[data-testid="stVerticalBlockBorderWrapper"]{
-        border:1px solid #24468A !important;
-        border-radius:14px !important;
-        background:#0A1C48 !important;
-        padding:0.7rem !important;
-        margin-bottom:12px !important;
-    }
-
-    div[data-testid="metric-container"]{
-        background:#10224D;
-        border:none;
-        padding:8px;
-    }
-
-    </style>
-    """, unsafe_allow_html=True)
-
     with st.sidebar:
 
-        # =======================================
-        # HEADER
-        # =======================================
+        st.markdown(
+            """
+            <div style="
+                color:white;
+                font-size:20px;
+                font-weight:700;
+                margin-bottom:2px;
+            ">
+            🎯 Design Intelligence Hub
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-        st.markdown("### 🎯 Design Intelligence Hub")
         st.caption("Design Smarter. Deliver Better.")
 
-        st.write("")
+        st.divider()
 
-        # =======================================
+        # ==================================================
         # FRAMEWORKS
-        # =======================================
+        # ==================================================
 
-        st.markdown(
-            '<div class="sidebar-section-title">Frameworks</div>',
-            unsafe_allow_html=True
-        )
+        sidebar_heading("Frameworks")
 
-        for framework, projects in frameworks.items():
-
-            with st.container(border=True):
-
-                st.markdown(
-                    f"**{framework}**"
-                )
-
-                st.write("")
-
-                for project in projects.keys():
-
-                    if project == "Ferry PS":
-
-                        st.success(project)
-
-                    else:
-
-                        st.write(project)
-
-        # =======================================
-        # NAVIGATION
-        # =======================================
-
-        st.markdown(
-            '<div class="sidebar-section-title">Navigation</div>',
-            unsafe_allow_html=True
-        )
+        # ---------- Enterprise Card ----------
 
         with st.container(border=True):
 
-            pages = [
-                "🏠 Executive Dashboard",
-                "📋 Deliverables",
-                "📊 Discipline Performance",
-                "📈 Programme Drift",
-                "🎯 Design Readiness",
-                "📅 Upcoming Submissions",
-                "⚠️ Critical Path & Alerts",
-                "🔗 Dependencies",
-                "❓ Queries & TQs",
-                "🤖 AI Insights",
-                "📄 Reports"
-            ]
+            st.markdown(
+                "**UU Enterprise Framework**"
+            )
 
-            for page in pages:
-                st.write(page)
+            st.write("Pennington Flash")
+            st.write("Davyhulme ASP4")
 
-        # =======================================
-        # SNAPSHOTS
-        # =======================================
+        # ---------- DD&B Card ----------
 
-        st.markdown(
-            '<div class="sidebar-section-title">Snapshot History</div>',
-            unsafe_allow_html=True
-        )
+        with st.container(border=True):
+
+            st.markdown(
+                "**UU DD&B Framework**"
+            )
+
+            st.success("Ferry PS")
+
+            st.write("Rossall Outfall")
+            st.write("Flass Lane")
+            st.write("Tally Ho")
+            st.write("Eccleston Bridge")
+
+        # ==================================================
+        # NAVIGATION
+        # ==================================================
+
+        sidebar_heading("Navigation")
+
+        with st.container(border=True):
+
+            st.write("🏠 Executive Dashboard")
+            st.write("📋 Deliverables")
+            st.write("📊 Discipline Performance")
+            st.write("📈 Programme Drift")
+            st.write("🎯 Design Readiness")
+            st.write("📅 Upcoming Submissions")
+            st.write("⚠️ Critical Path & Alerts")
+            st.write("🔗 Dependencies")
+            st.write("❓ Queries & TQs")
+            st.write("🤖 AI Insights")
+            st.write("📄 Reports")
+
+        # ==================================================
+        # SNAPSHOT HISTORY
+        # ==================================================
+
+        sidebar_heading("Snapshot History")
 
         with st.container(border=True):
 
@@ -155,14 +135,11 @@ def build_sidebar(metrics, snapshot):
                 snapshot.strftime("%B %Y")
             )
 
-        # =======================================
+        # ==================================================
         # PROJECT HEALTH
-        # =======================================
+        # ==================================================
 
-        st.markdown(
-            '<div class="sidebar-section-title">Project Health</div>',
-            unsafe_allow_html=True
-        )
+        sidebar_heading("Project Health")
 
         with st.container(border=True):
 
@@ -197,14 +174,11 @@ def build_sidebar(metrics, snapshot):
                 metrics["upcoming_submissions"]
             )
 
-        # =======================================
+        # ==================================================
         # PROJECT BASELINE
-        # =======================================
+        # ==================================================
 
-        st.markdown(
-            '<div class="sidebar-section-title">Project Baseline</div>',
-            unsafe_allow_html=True
-        )
+        sidebar_heading("Project Baseline")
 
         with st.container(border=True):
 
