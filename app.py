@@ -2,6 +2,8 @@ import streamlit as st
 
 from sidebar.layout import render_sidebar
 from sidebar.branding import render_branding
+from sidebar.frameworks import render_frameworks
+
 
 st.set_page_config(
     page_title="Design Intelligence Hub",
@@ -13,6 +15,11 @@ st.set_page_config(
 render_sidebar()
 
 with st.sidebar:
+
     render_branding()
+
+    st.divider()
+
+    render_frameworks()
 
 st.title("Dashboard")
