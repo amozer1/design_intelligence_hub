@@ -4,14 +4,12 @@ import streamlit as st
 def render_frameworks():
 
     st.markdown("""
-    <div style="
-        color:#94A3B8;
-        font-size:11px;
-        font-weight:600;
-        letter-spacing:1px;
-        margin-bottom:12px;
-    ">
-        FRAMEWORKS
+    <div class="sidebar-section">
+
+        <div class="section-title">
+            FRAMEWORKS
+        </div>
+
     </div>
     """, unsafe_allow_html=True)
 
@@ -19,23 +17,25 @@ def render_frameworks():
         "UU Enterprise Framework",
         expanded=False
     ):
-        st.write("Pennington Flash")
-        st.write("Davyhulme ASP4")
+
+        st.markdown("⚪ Pennington Flash")
+        st.markdown("⚪ Davyhulme ASP4")
 
     with st.expander(
         "UU DD&B Framework",
         expanded=True
     ):
+
         st.markdown("""
         <div style="
             background:#6D28D9;
-            border-radius:8px;
-            padding:10px 12px;
+            border-radius:6px;
+            padding:8px 12px;
             color:white;
-            font-weight:600;
             margin-bottom:8px;
+            font-weight:600;
         ">
-            ● Ferry PS
+        🔴 Ferry PS
         </div>
         """, unsafe_allow_html=True)
 
@@ -43,3 +43,12 @@ def render_frameworks():
         st.markdown("🟢 Flass Lane")
         st.markdown("🟡 Tally Ho")
         st.markdown("🟢 Eccleston Bridge")
+
+    st.markdown("""
+    <hr style="
+        border:none;
+        border-top:1px solid rgba(59,130,246,0.15);
+        margin-top:16px;
+        margin-bottom:0px;
+    ">
+    """, unsafe_allow_html=True)
