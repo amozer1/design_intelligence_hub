@@ -7,47 +7,29 @@ def render_sidebar():
 
     with st.sidebar:
 
-        # ==========================================
-        # BRANDING
-        # ==========================================
-
         render_branding()
 
-        # ==========================================
-        # FRAMEWORKS
-        # ==========================================
+        # Frameworks Placeholder
 
-        st.markdown("""
-        <div class="sidebar-block frameworks">
-            FRAMEWORKS
-        </div>
-        """, unsafe_allow_html=True)
+        st.divider()
+        st.info("FRAMEWORKS")
 
-        # ==========================================
-        # NAVIGATION
-        # ==========================================
+        # Navigation Placeholder
 
-        st.markdown("""
-        <div class="sidebar-block navigation">
-            MAIN NAVIGATION
-        </div>
-        """, unsafe_allow_html=True)
+        st.divider()
+        st.info("NAVIGATION")
 
-        # ==========================================
-        # SNAPSHOTS
-        # ==========================================
+        # Snapshot Placeholder
 
-        st.markdown("""
-        <div class="sidebar-block snapshots">
-            SNAPSHOT HISTORY
-        </div>
-        """, unsafe_allow_html=True)
+        st.divider()
+        st.info("SNAPSHOTS")
 
-        # ==========================================
-        # HEALTH
-        # ==========================================
+        # Health Placeholder
 
-        st.markdown("""
-        <div class="sidebar-block health">
-            PROJECT HEALTH
-        </div
+        st.divider()
+        st.info("HEALTH")
+
+        # Baseline Placeholder
+
+        st.divider()
+        st.info("BASELINE")

@@ -25,3 +25,5 @@ render_sidebar()
 # ==================================================
 
 st.title("Dashboard")
+
+st.write("Main page content goes here...")
