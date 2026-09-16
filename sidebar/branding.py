@@ -10,38 +10,29 @@ def render_branding():
 
     st.markdown(
         """
-        <span style="
-        color:white;
-        font-size:26px;
-        font-weight:700;
+        <div style="
+            color:white;
+            font-size:24px;
+            font-weight:700;
+            line-height:1.1;
+            margin-top:-6px;
+            margin-bottom:2px;
         ">
-        DESIGN
-        </span>
+            DESIGN INTELLIGENCE HUB
+        </div>
         """,
         unsafe_allow_html=True
     )
 
     st.markdown(
         """
-        <span style="
-        color:white;
-        font-size:26px;
-        font-weight:700;
+        <div style="
+            color:#B8C7D9;
+            font-size:13px;
+            margin-bottom:8px;
         ">
-        INTELLIGENCE HUB
-        </span>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        """
-        <span style="
-        color:#CBD5E1;
-        font-size:14px;
-        ">
-        Design Smarter. Deliver Better.
-        </span>
+            Design Smarter. Deliver Better.
+        </div>
         """,
         unsafe_allow_html=True
     )
