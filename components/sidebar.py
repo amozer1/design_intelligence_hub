@@ -8,7 +8,6 @@ def load_frameworks():
     config_file = Path("config/frameworks.json")
 
     if config_file.exists():
-
         with open(config_file, "r") as f:
             return json.load(f)
 
@@ -27,304 +26,141 @@ def load_frameworks():
     }
 
 
-def section_title(text):
-
-    st.markdown(
-        f"""
-        <div style="
-            color:#91A5E5;
-            font-size:11px;
-            font-weight:700;
-            letter-spacing:1px;
-            text-transform:uppercase;
-            margin-top:14px;
-            margin-bottom:8px;
-        ">
-        {text}
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-
-def card_begin():
-    return """
-    <div style="
-        background:#0A1C48;
-        border:1px solid #284A8A;
-        border-radius:14px;
-        padding:14px;
-        margin-bottom:12px;
-    ">
-    """
-
-
-def card_end():
-    return "</div>"
-
-
 def build_sidebar(metrics, snapshot):
 
     frameworks = load_frameworks()
 
     with st.sidebar:
 
-        # =================================================
+        # ==================================================
         # HEADER
-        # =================================================
+        # ==================================================
 
-        st.markdown(
-            """
-            <div style="
-                color:white;
-                font-size:22px;
-                font-weight:700;
-            ">
-            🎯 Design Intelligence Hub
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            """
-            <div style="
-                color:#9BAAD8;
-                font-size:11px;
-                margin-bottom:10px;
-            ">
-            Design Smarter. Deliver Better.
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        st.title("🎯 Design Intelligence Hub")
+        st.caption("Design Smarter. Deliver Better.")
 
         st.divider()
 
-        # =================================================
+        # ==================================================
         # FRAMEWORKS
-        # =================================================
+        # ==================================================
 
-        section_title("Frameworks")
+        st.caption("FRAMEWORKS")
 
-        for framework, projects in frameworks.items():
+        # Enterprise Card
+        with st.container(border=True):
 
-            html = card_begin()
+            st.markdown("**UU Enterprise Framework**")
 
-            html += f"""
-            <div style="
-                color:white;
-                font-weight:700;
-                margin-bottom:12px;
-            ">
-                {framework}
-            </div>
-            """
+            st.write("Pennington Flash")
+            st.write("Davyhulme ASP4")
 
-            for project in projects.keys():
+        # DD&B Card
+        with st.container(border=True):
 
-                if project == "Ferry PS":
+            st.markdown("**UU DD&B Framework**")
 
-                    html += f"""
-                    <div style="
-                        background:#D9E8E0;
-                        color:#113425;
-                        padding:10px;
-                        border-radius:8px;
-                        margin-bottom:6px;
-                        font-weight:600;
-                    ">
-                    {project}
-                    </div>
-                    """
+            st.success("Ferry PS")
 
-                else:
+            st.write("Rossall Outfall")
+            st.write("Flass Lane")
+            st.write("Tally Ho")
+            st.write("Eccleston Bridge")
 
-                    html += f"""
-                    <div style="
-                        color:white;
-                        padding:8px 4px;
-                    ">
-                    {project}
-                    </div>
-                    """
+        # ==================================================
+        # NAVIGATION
+        # ==================================================
 
-            html += card_end()
+        st.caption("NAVIGATION")
 
-            st.markdown(
-                html,
-                unsafe_allow_html=True
+        with st.container(border=True):
+
+            st.write("🏠 Executive Dashboard")
+            st.write("📋 Deliverables")
+            st.write("📊 Discipline Performance")
+            st.write("📈 Programme Drift")
+            st.write("🎯 Design Readiness")
+            st.write("📅 Upcoming Submissions")
+            st.write("⚠️ Critical Path & Alerts")
+            st.write("🔗 Dependencies")
+            st.write("❓ Queries & TQs")
+            st.write("🤖 AI Insights")
+            st.write("📄 Reports")
+
+        # ==================================================
+        # SNAPSHOT HISTORY
+        # ==================================================
+
+        st.caption("SNAPSHOT HISTORY")
+
+        with st.container(border=True):
+
+            st.info(
+                snapshot.strftime("%B %Y")
             )
 
-        # =================================================
-        # NAVIGATION
-        # =================================================
-
-        section_title("Navigation")
-
-        nav_html = card_begin()
-
-        pages = [
-            "🏠 Executive Dashboard",
-            "📋 Deliverables",
-            "📊 Discipline Performance",
-            "📈 Programme Drift",
-            "🎯 Design Readiness",
-            "📅 Upcoming Submissions",
-            "⚠️ Critical Path & Alerts",
-            "🔗 Dependencies",
-            "❓ Queries & TQs",
-            "🤖 AI Insights",
-            "📄 Reports",
-        ]
-
-        for page in pages:
-
-            nav_html += f"""
-            <div style="
-                color:white;
-                padding:8px 4px;
-            ">
-            {page}
-            </div>
-            """
-
-        nav_html += card_end()
-
-        st.markdown(
-            nav_html,
-            unsafe_allow_html=True
-        )
-
-        # =================================================
-        # SNAPSHOTS
-        # =================================================
-
-        section_title("Snapshot History")
-
-        st.markdown(
-            f"""
-            <div style="
-                background:#0A1C48;
-                border:1px solid #284A8A;
-                border-radius:14px;
-                padding:14px;
-                margin-bottom:12px;
-            ">
-
-                <div style="
-                    background:#DCE8F7;
-                    color:#082549;
-                    padding:10px;
-                    border-radius:8px;
-                    text-align:center;
-                    font-weight:600;
-                ">
-                {snapshot.strftime("%B %Y")}
-                </div>
-
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        # =================================================
+        # ==================================================
         # PROJECT HEALTH
-        # =================================================
+        # ==================================================
 
-        section_title("Project Health")
+        st.caption("PROJECT HEALTH")
 
-        st.markdown(
-            f"""
-            <div style="
-                background:#0A1C48;
-                border:1px solid #284A8A;
-                border-radius:14px;
-                padding:14px;
-                margin-bottom:12px;
-                color:white;
-            ">
+        with st.container(border=True):
 
-                <div style="
-                    text-align:center;
-                    font-size:32px;
-                    font-weight:700;
-                    margin-bottom:16px;
-                ">
-                {metrics['health_score']}/100
-                </div>
+            st.metric(
+                "Health Score",
+                f"{metrics['health_score']}/100"
+            )
 
-                <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-                    <span>Design Readiness</span>
-                    <span style="color:#00D26A;">
-                    {metrics['design_readiness']}%
-                    </span>
-                </div>
+            col1, col2 = st.columns(2)
 
-                <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-                    <span>Critical Activities</span>
-                    <span style="color:#FFB100;">
-                    {metrics['critical_deliverables']}
-                    </span>
-                </div>
+            with col1:
 
-                <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-                    <span>High Risk Activities</span>
-                    <span style="color:#FF5E6C;">
-                    {metrics['high_risk']}
-                    </span>
-                </div>
+                st.metric(
+                    "Readiness",
+                    f"{metrics['design_readiness']}%"
+                )
 
-                <div style="display:flex;justify-content:space-between;">
-                    <span>Upcoming Submissions</span>
-                    <span style="color:#FFB100;">
-                    {metrics['upcoming_submissions']}
-                    </span>
-                </div>
+            with col2:
 
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+                st.metric(
+                    "Critical",
+                    metrics["critical_deliverables"]
+                )
 
-        # =================================================
+            st.metric(
+                "High Risk Activities",
+                metrics["high_risk"]
+            )
+
+            st.metric(
+                "Upcoming Submissions",
+                metrics["upcoming_submissions"]
+            )
+
+        # ==================================================
         # PROJECT BASELINE
-        # =================================================
+        # ==================================================
 
-        section_title("Project Baseline")
+        st.caption("PROJECT BASELINE")
 
-        st.markdown(
-            f"""
-            <div style="
-                background:#0A1C48;
-                border:1px solid #284A8A;
-                border-radius:14px;
-                padding:14px;
-                color:white;
-            ">
+        with st.container(border=True):
 
-                <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-                    <span>Baseline Finish</span>
-                    <span>
-                    {metrics['baseline_finish'].strftime('%d %b %Y')}
-                    </span>
-                </div>
+            st.metric(
+                "Baseline Finish",
+                metrics["baseline_finish"].strftime(
+                    "%d %b %Y"
+                )
+            )
 
-                <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-                    <span>Current Forecast</span>
-                    <span>
-                    {metrics['forecast_finish'].strftime('%d %b %Y')}
-                    </span>
-                </div>
+            st.metric(
+                "Current Forecast",
+                metrics["forecast_finish"].strftime(
+                    "%d %b %Y"
+                )
+            )
 
-                <div style="display:flex;justify-content:space-between;">
-                    <span>Programme Drift</span>
-                    <span style="color:#FF5E6C;">
-                    +{metrics['programme_drift']} Days
-                    </span>
-                </div>
-
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+            st.metric(
+                "Programme Drift",
+                f"{metrics['programme_drift']} Days"
+            )
