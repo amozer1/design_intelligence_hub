@@ -1,42 +1,4 @@
-# sidebar/frameworks.py
-
 import streamlit as st
-
-
-def project_card(project, active=False):
-
-    if active:
-        return f"""
-        <div style="
-            background:linear-gradient(
-                90deg,
-                #6624D6,
-                #7C3AED
-            );
-            padding:12px;
-            border-radius:8px;
-            color:white;
-            font-size:14px;
-            font-weight:600;
-            margin-bottom:6px;
-        ">
-            {project}
-        </div>
-        """
-    else:
-        return f"""
-        <div style="
-            background:rgba(255,255,255,.04);
-            border:1px solid rgba(255,255,255,.06);
-            padding:10px 12px;
-            border-radius:8px;
-            color:#E2E8F0;
-            font-size:14px;
-            margin-bottom:6px;
-        ">
-            {project}
-        </div>
-        """
 
 
 def render_frameworks():
@@ -53,13 +15,11 @@ def render_frameworks():
         "Davyhulme ASP4"
     ]:
 
-        clicked = st.button(
+        if st.button(
             project,
-            key=f"project_{project}",
+            key=project,
             use_container_width=True
-        )
-
-        if clicked:
+        ):
             st.session_state.project = project
             st.rerun()
 
@@ -75,16 +35,10 @@ def render_frameworks():
         "Eccleston Bridge"
     ]:
 
-        active = st.session_state.project == project
-
-        st.markdown(
-            project_card(project, active),
-            unsafe_allow_html=True
-        )
-
         if st.button(
-            f"Select {project}",
-            key=f"select_{project}"
+            project,
+            key=project,
+            use_container_width=True
         ):
             st.session_state.project = project
             st.rerun()
