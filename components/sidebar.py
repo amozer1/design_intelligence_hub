@@ -1,52 +1,62 @@
-curret: import streamlit as st
+import streamlit as st
 
 
 def build_sidebar(metrics, snapshot):
 
     with st.sidebar:
 
-        # =====================================
+        # ==================================================
         # BRANDING
-        # =====================================
+        # ==================================================
 
         st.markdown("## 🎯 Design Intelligence Hub")
         st.caption("Design Smarter. Deliver Better.")
 
         st.divider()
 
-        # =====================================
+        # ==================================================
         # FRAMEWORKS
-        # =====================================
+        # ==================================================
 
         st.markdown("##### FRAMEWORKS")
 
-        with st.expander(
-            "UU Enterprise Framework",
-            expanded=True
-        ):
-            st.write("○ Pennington Flash")
-            st.write("○ Davyhulme ASP4")
+        st.markdown("**▼ UU Enterprise Framework**")
+        st.markdown("○ Pennington Flash")
+        st.markdown("○ Davyhulme ASP4")
 
-        with st.expander(
-            "UU DD&B Framework",
-            expanded=True
-        ):
-            st.success("Ferry PS")
+        st.write("")
 
-            st.write("● Rossall Outfall")
-            st.write("● Flass Lane")
-            st.write("● Tally Ho")
-            st.write("● Eccleston Bridge")
+        st.markdown("**▼ UU DD&B Framework**")
+
+        st.markdown(
+            """
+            <div style="
+                background:#5B21B6;
+                color:white;
+                padding:8px 12px;
+                border-radius:6px;
+                margin:6px 0;
+                font-weight:600;">
+                ● Ferry PS
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        st.markdown("● Rossall Outfall")
+        st.markdown("● Flass Lane")
+        st.markdown("● Tally Ho")
+        st.markdown("● Eccleston Bridge")
 
         st.divider()
 
-        # =====================================
+        # ==================================================
         # NAVIGATION
-        # =====================================
+        # ==================================================
 
         st.markdown("##### MAIN NAVIGATION")
 
-        pages = [
+        nav_items = [
             "🏠 Executive Dashboard",
             "📋 Deliverables",
             "📊 Discipline Performance",
@@ -62,18 +72,29 @@ def build_sidebar(metrics, snapshot):
             "⚙️ Settings",
         ]
 
-        selected_page = st.radio(
-            "Navigation",
-            pages,
-            index=0,
-            label_visibility="collapsed"
+        st.markdown(
+            """
+            <div style="
+                background:#1D4ED8;
+                color:white;
+                padding:8px 12px;
+                border-radius:6px;
+                margin-bottom:6px;
+                font-weight:600;">
+                🏠 Executive Dashboard
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
+
+        for item in nav_items[1:]:
+            st.markdown(item)
 
         st.divider()
 
-        # =====================================
-        # SNAPSHOT HISTORY
-        # =====================================
+        # ==================================================
+        # SNAPSHOT
+        # ==================================================
 
         st.markdown("##### SNAPSHOT HISTORY")
 
@@ -81,62 +102,8 @@ def build_sidebar(metrics, snapshot):
 
         st.divider()
 
-        # =====================================
-        # PROJECT HEALTH
-        # =====================================
+        # ==================================================
+        # HEALTH
+        # ==================================================
 
-        st.markdown("##### PROJECT HEALTH")
-
-        st.metric(
-            "Health Score",
-            metrics["health_score"]
-        )
-
-        col1, col2 = st.columns(2)
-
-        with col1:
-            st.metric(
-                "Readiness",
-                f"{metrics['design_readiness']}%"
-            )
-
-        with col2:
-            st.metric(
-                "Critical",
-                metrics["critical_deliverables"]
-            )
-
-        st.metric(
-            "High Risk Activities",
-            metrics["high_risk"]
-        )
-
-        st.metric(
-            "Upcoming Submissions",
-            metrics["upcoming_submissions"]
-        )
-
-        st.divider()
-
-        # =====================================
-        # PROJECT BASELINE
-        # =====================================
-
-        st.markdown("##### PROJECT BASELINE")
-
-        st.write(
-            f"Baseline Finish: "
-            f"{metrics['baseline_finish']:%d %b %Y}"
-        )
-
-        st.write(
-            f"Current Forecast: "
-            f"{metrics['forecast_finish']:%d %b %Y}"
-        )
-
-        st.write(
-            f"Programme Drift: "
-            f"{metrics['programme_drift']} Days"
-        )
-
-        return selected_page
+        st.markdown("##### PROJECT
