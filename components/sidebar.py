@@ -5,14 +5,10 @@ def build_sidebar(metrics, snapshot):
 
     with st.sidebar:
 
-        # ==================================================
-        # HEADER
-        # ==================================================
-
         st.title("🎯 Design Intelligence Hub")
         st.caption("Design Smarter. Deliver Better.")
 
-        st.markdown("<br>", unsafe_allow_html=True)
+        st.divider()
 
         # ==================================================
         # FRAMEWORKS
@@ -27,9 +23,6 @@ def build_sidebar(metrics, snapshot):
             st.write("◯ Pennington Flash")
             st.write("◯ Davyhulme ASP4")
 
-        st.markdown("<div style='height:30px'></div>",
-                    unsafe_allow_html=True)
-
         with st.container(border=True):
 
             st.markdown("**UU DD&B Framework**")
@@ -40,9 +33,6 @@ def build_sidebar(metrics, snapshot):
             st.write("Flass Lane")
             st.write("Tally Ho")
             st.write("Eccleston Bridge")
-
-        st.markdown("<div style='height:50px'></div>",
-                    unsafe_allow_html=True)
 
         # ==================================================
         # NAVIGATION
@@ -66,11 +56,8 @@ def build_sidebar(metrics, snapshot):
             st.write("🔍 Data Explorer")
             st.write("⚙️ Settings")
 
-        st.markdown("<div style='height:50px'></div>",
-                    unsafe_allow_html=True)
-
         # ==================================================
-        # SNAPSHOT HISTORY
+        # SNAPSHOT
         # ==================================================
 
         st.caption("SNAPSHOT HISTORY")
@@ -81,11 +68,8 @@ def build_sidebar(metrics, snapshot):
                 snapshot.strftime("%B %Y")
             )
 
-        st.markdown("<div style='height:50px'></div>",
-                    unsafe_allow_html=True)
-
         # ==================================================
-        # PROJECT HEALTH
+        # HEALTH
         # ==================================================
 
         st.caption("PROJECT HEALTH")
@@ -100,12 +84,14 @@ def build_sidebar(metrics, snapshot):
             c1, c2 = st.columns(2)
 
             with c1:
+
                 st.metric(
                     "Readiness",
                     f"{metrics['design_readiness']}%"
                 )
 
             with c2:
+
                 st.metric(
                     "Critical",
                     metrics["critical_deliverables"]
@@ -121,11 +107,8 @@ def build_sidebar(metrics, snapshot):
                 metrics["upcoming_submissions"]
             )
 
-        st.markdown("<div style='height:50px'></div>",
-                    unsafe_allow_html=True)
-
         # ==================================================
-        # PROJECT BASELINE
+        # BASELINE
         # ==================================================
 
         st.caption("PROJECT BASELINE")
@@ -150,6 +133,3 @@ def build_sidebar(metrics, snapshot):
                 "Programme Drift",
                 f"{metrics['programme_drift']} Days"
             )
-
-        st.markdown("<div style='height:30px'></div>",
-                    unsafe_allow_html=True)

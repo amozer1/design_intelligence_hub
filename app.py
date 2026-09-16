@@ -71,18 +71,9 @@ left, right = st.columns([5, 1])
 
 with left:
 
-    st.markdown(
-        """
-        <div class="header-title">
-            Ferry PS
-        </div>
+    st.title("Ferry PS")
 
-        <div class="header-subtitle">
-            UU DD&B Framework
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    st.caption("UU DD&B Framework")
 
 with right:
 
@@ -91,7 +82,7 @@ with right:
     )
 
 
-st.write("")
+st.divider()
 
 
 # ==================================================
@@ -102,89 +93,50 @@ k1, k2, k3, k4 = st.columns(4)
 
 with k1:
 
-    st.markdown(
-        f"""
-        <div class="kpi">
-            <div class="kpi-value">
-                {metrics["health_score"]}
-            </div>
-
-            <div class="kpi-label">
-                Health Score
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
+    st.metric(
+        "Health Score",
+        metrics["health_score"]
     )
 
 with k2:
 
-    st.markdown(
-        f"""
-        <div class="kpi">
-            <div class="kpi-value">
-                {metrics["critical_deliverables"]}
-            </div>
-
-            <div class="kpi-label">
-                Critical Activities
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
+    st.metric(
+        "Critical Activities",
+        metrics["critical_deliverables"]
     )
 
 with k3:
 
-    st.markdown(
-        f"""
-        <div class="kpi">
-            <div class="kpi-value">
-                {metrics["high_risk"]}
-            </div>
-
-            <div class="kpi-label">
-                High Risk Activities
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
+    st.metric(
+        "High Risk Activities",
+        metrics["high_risk"]
     )
 
 with k4:
 
-    st.markdown(
-        f"""
-        <div class="kpi">
-            <div class="kpi-value">
-                {metrics["programme_drift"]}
-            </div>
-
-            <div class="kpi-label">
-                Programme Drift (Days)
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
+    st.metric(
+        "Programme Drift",
+        f"{metrics['programme_drift']} Days"
     )
+
+
+st.write("")
 
 
 # ==================================================
 # EXECUTIVE SUMMARY
 # ==================================================
 
-st.markdown(
-    """
-    <div class="page-card">
+with st.container(border=True):
 
-        <h3>Executive Summary</h3>
+    st.subheader("Executive Summary")
 
-        Latest Ferry PS CL32 snapshot loaded successfully.
+    st.write(
+        "Latest Ferry PS CL32 snapshot loaded successfully."
+    )
 
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+
+st.write("")
 
 
 # ==================================================
@@ -195,84 +147,58 @@ c1, c2 = st.columns(2)
 
 with c1:
 
-    st.markdown(
-        """
-        <div class="page-card">
+    with st.container(border=True):
 
-            <h3>Deliverables Status</h3>
+        st.subheader("Deliverables Status")
 
-            Chart placeholder
-
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+        st.write("Chart placeholder")
 
 with c2:
 
-    st.markdown(
-        """
-        <div class="page-card">
+    with st.container(border=True):
 
-            <h3>Discipline Performance</h3>
+        st.subheader("Discipline Performance")
 
-            Chart placeholder
+        st.write("Chart placeholder")
 
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+
+st.write("")
 
 
 # ==================================================
 # UPCOMING SUBMISSIONS
 # ==================================================
 
-st.markdown(
-    """
-    <div class="page-card">
+with st.container(border=True):
 
-        <h3>Upcoming Submissions</h3>
+    st.subheader("Upcoming Submissions")
 
-        Table placeholder
+    st.write("Table placeholder")
 
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+
+st.write("")
 
 
 # ==================================================
 # CHANGES SINCE LAST SNAPSHOT
 # ==================================================
 
-st.markdown(
-    """
-    <div class="page-card">
+with st.container(border=True):
 
-        <h3>What's Changed Since Last Snapshot</h3>
+    st.subheader("What's Changed Since Last Snapshot")
 
-        Comparison placeholder
+    st.write("Comparison placeholder")
 
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+
+st.write("")
 
 
 # ==================================================
 # AI INSIGHTS
 # ==================================================
 
-st.markdown(
-    """
-    <div class="page-card">
+with st.container(border=True):
 
-        <h3>AI Insights & Forecast</h3>
+    st.subheader("AI Insights & Forecast")
 
-        Forecasting placeholder
-
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+    st.write("Forecasting placeholder")

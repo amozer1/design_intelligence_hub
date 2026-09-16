@@ -1,16 +1,275 @@
-/* ==========================================
+/* ==================================================
    APP
-========================================== */
+================================================== */
 
 .stApp {
     background: #071028;
 }
 
-/* Leave room for Streamlit toolbar */
+
+/* ==================================================
+   MAIN PAGE
+================================================== */
 
 .block-container {
-    padding-top: 5rem !important;
-    padding-left: 2rem;
-    padding-right: 2rem;
+
     max-width: 1800px;
+
+    padding-left: 2rem;
+
+    padding-right: 2rem;
+}
+
+
+/* ==================================================
+   SIDEBAR
+================================================== */
+
+section[data-testid="stSidebar"] {
+
+    background:
+    linear-gradient(
+        180deg,
+        #050D22 0%,
+        #06122D 50%,
+        #081938 100%
+    ) !important;
+}
+
+
+/* ==================================================
+   SIDEBAR TEXT
+================================================== */
+
+section[data-testid="stSidebar"] * {
+
+    color: white !important;
+}
+
+
+/* ==================================================
+   SIDEBAR HEADINGS
+================================================== */
+
+section[data-testid="stSidebar"] .stCaption {
+
+    color: #8FA7FF !important;
+
+    font-size: 11px !important;
+
+    font-weight: 700 !important;
+
+    letter-spacing: 1px !important;
+
+    text-transform: uppercase !important;
+
+    margin-top: 14px !important;
+
+    margin-bottom: 12px !important;
+}
+
+
+/* ==================================================
+   SIDEBAR CARDS ONLY
+================================================== */
+
+section[data-testid="stSidebar"]
+div[data-testid="stVerticalBlockBorderWrapper"] {
+
+    background: #091C47 !important;
+
+    border: 1px solid #1D4691 !important;
+
+    border-radius: 18px !important;
+
+    margin-bottom: 20px !important;
+
+    box-shadow:
+        0 0 14px rgba(42,88,255,.15);
+}
+
+
+/* ==================================================
+   INNER CARD PADDING
+================================================== */
+
+section[data-testid="stSidebar"]
+div[data-testid="stVerticalBlockBorderWrapper"] > div {
+
+    padding: 20px !important;
+}
+
+
+/* ==================================================
+   FRAMEWORK ITEMS
+================================================== */
+
+section[data-testid="stSidebar"] p {
+
+    line-height: 1.9 !important;
+
+    margin-bottom: 6px !important;
+}
+
+
+/* ==================================================
+   ACTIVE PROJECT
+================================================== */
+
+section[data-testid="stSidebar"]
+div[data-testid="stAlert"] {
+
+    background:
+    linear-gradient(
+        90deg,
+        #19b85e,
+        #28d173
+    ) !important;
+
+    border: none !important;
+
+    border-radius: 12px !important;
+}
+
+section[data-testid="stSidebar"]
+div[data-testid="stAlert"] * {
+
+    color: white !important;
+
+    font-weight: 600 !important;
+}
+
+
+/* ==================================================
+   SNAPSHOT BOX
+================================================== */
+
+section[data-testid="stSidebar"]
+div[data-testid="stInfo"] {
+
+    background: #152B5C !important;
+
+    border: 1px solid #244A8F !important;
+
+    border-radius: 12px !important;
+}
+
+section[data-testid="stSidebar"]
+div[data-testid="stInfo"] * {
+
+    color: white !important;
+}
+
+
+/* ==================================================
+   METRICS
+================================================== */
+
+section[data-testid="stSidebar"]
+div[data-testid="metric-container"] {
+
+    background: tran*parent !important;
+
+    border: no*e !important;
+
+    box-shadow: non* !important;
+
+    margin-bottom: 1*px !important;
+}
+
+section[data-testid="stSidebar"]
+div[data-testid="metric-container"] label {
+
+    color: #B5C4F3 !important;
+}
+
+section[data-testid="stSidebar"]
+div[data-testid="stMetricValue"] {
+
+    color: white !important;
+
+    font-weight: 700 !important;
+}
+
+
+/* ==================================================
+   SIDEBAR DIVIDERS
+================================================== */
+
+section[data-testid="stSidebar"] hr {
+
+    border-color:
+    rgba(255,255,255,.08) !important;
+}
+
+
+/* ==================================================
+   KPI CARDS
+================================================== */
+
+.kpi {
+
+    background: #091C47*
+
+    border: 1px solid #1D4691;
+
+*   border*radius: 16px;
+
+*   padding: 24px;
+}
+
+.kpi-value {
+*    color: white;
+
+    font-size: 34px;
+
+    font-weight: 700;
+}
+
+.kpi-label {
+
+    color: #B5C4F3;
+
+    font-size: 12px;
+}
+
+
+/* ==================================================
+   PAGE CARDS
+================================================== */
+
+.page-card {
+
+    background: #*91C47;
+
+    border: 1px solid #1D4*91;
+
+    border-radius: 18px;
+
+    padding: 28px;
+
+    color: white;
+
+    margin-bottom: 24px;
+}
+
+
+/* ==================================================
+   HEADER
+================================================== */
+
+.header-title {
+
+    co*or: white;
+
+    font-size: 36px;
+
+*   font-weight: 700;
+}
+
+.header-su*title {
+
+    color: #B5C4F3;
+
+    *ont-size: 14px;
 }
