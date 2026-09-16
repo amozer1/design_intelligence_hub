@@ -3,27 +3,47 @@ import streamlit as st
 
 def render_branding():
 
-    logo_col, text_col = st.columns(
-        [1, 3],
-        gap="small"
+    st.image(
+        "assets/logo.png",
+        width=90
     )
 
-    with logo_col:
-        st.image(
-            "assets/logo.png",
-            width=60
-        )
+    st.markdown(
+        """
+        <span style="
+        color:white;
+        font-size:26px;
+        font-weight:700;
+        ">
+        DESIGN
+        </span>
+        """,
+        unsafe_allow_html=True
+    )
 
-    with text_col:
-        st.markdown(
-            """
-            **DESIGN**  
-            **INTELLIGENCE HUB**
-            """
-        )
+    st.markdown(
+        """
+        <span style="
+        color:white;
+        font-size:26px;
+        font-weight:700;
+        ">
+        INTELLIGENCE HUB
+        </span>
+        """,
+        unsafe_allow_html=True
+    )
 
-        st.caption(
-            "Design Smarter. Deliver Better."
-        )
+    st.markdown(
+        """
+        <span style="
+        color:#CBD5E1;
+        font-size:14px;
+        ">
+        Design Smarter. Deliver Better.
+        </span>
+        """,
+        unsafe_allow_html=True
+    )
 
     st.divider()
