@@ -5,48 +5,47 @@ def build_sidebar(metrics, snapshot):
 
     with st.sidebar:
 
-        # =====================================
+        # ==================================================
         # BRANDING
-        # =====================================
+        # ==================================================
 
-        st.markdown("## 🎯 Design Intelligence Hub")
+        st.title("🎯 Design Intelligence Hub")
         st.caption("Design Smarter. Deliver Better.")
 
         st.divider()
 
-        # =====================================
+        # ==================================================
         # FRAMEWORKS
-        # =====================================
+        # ==================================================
 
-        st.markdown("##### FRAMEWORKS")
+        st.subheader("Frameworks")
 
         with st.expander(
             "UU Enterprise Framework",
-            expanded=True
+            expanded=False
         ):
-            st.write("○ Pennington Flash")
-            st.write("○ Davyhulme ASP4")
+            st.markdown("• Pennington Flash")
+            st.markdown("• Davyhulme ASP4")
 
         with st.expander(
             "UU DD&B Framework",
             expanded=True
         ):
-            st.success("Ferry PS")
-
-            st.write("● Rossall Outfall")
-            st.write("● Flass Lane")
-            st.write("● Tally Ho")
-            st.write("● Eccleston Bridge")
+            st.markdown("🟣 Ferry PS")
+            st.markdown("• Rossall Outfall")
+            st.markdown("• Flass Lane")
+            st.markdown("• Tally Ho")
+            st.markdown("• Eccleston Bridge")
 
         st.divider()
 
-        # =====================================
+        # ==================================================
         # NAVIGATION
-        # =====================================
+        # ==================================================
 
-        st.markdown("##### MAIN NAVIGATION")
+        st.subheader("Navigation")
 
-        pages = [
+        navigation_items = [
             "🏠 Executive Dashboard",
             "📋 Deliverables",
             "📊 Discipline Performance",
@@ -62,49 +61,46 @@ def build_sidebar(metrics, snapshot):
             "⚙️ Settings",
         ]
 
-        selected_page = st.radio(
-            "Navigation",
-            pages,
-            index=0,
-            label_visibility="collapsed"
+        for item in navigation_items:
+            st.button(
+                item,
+                use_container_width=True
+            )
+
+        st.divider()
+
+        # ==================================================
+        # SNAPSHOT
+        # ==================================================
+
+        st.subheader("Snapshot")
+
+        st.write(
+            snapshot.strftime("%d %b %Y")
         )
 
         st.divider()
 
-        # =====================================
-        # SNAPSHOT HISTORY
-        # =====================================
-
-        st.markdown("##### SNAPSHOT HISTORY")
-
-        st.write(snapshot.strftime("%d %b %Y"))
-
-        st.divider()
-
-        # =====================================
+        # ==================================================
         # PROJECT HEALTH
-        # =====================================
+        # ==================================================
 
-        st.markdown("##### PROJECT HEALTH")
+        st.subheader("Project Health")
 
         st.metric(
             "Health Score",
             metrics["health_score"]
         )
 
-        col1, col2 = st.columns(2)
+        st.metric(
+            "Design Readiness",
+            f"{metrics['design_readiness']}%"
+        )
 
-        with col1:
-            st.metric(
-                "Readiness",
-                f"{metrics['design_readiness']}%"
-            )
-
-        with col2:
-            st.metric(
-                "Critical",
-                metrics["critical_deliverables"]
-            )
+        st.metric(
+            "Critical Deliverables",
+            metrics["critical_deliverables"]
+        )
 
         st.metric(
             "High Risk Activities",
@@ -118,11 +114,11 @@ def build_sidebar(metrics, snapshot):
 
         st.divider()
 
-        # =====================================
+        # ==================================================
         # PROJECT BASELINE
-        # =====================================
+        # ==================================================
 
-        st.markdown("##### PROJECT BASELINE")
+        st.subheader("Project Baseline")
 
         st.write(
             f"Baseline Finish: "
@@ -130,7 +126,7 @@ def build_sidebar(metrics, snapshot):
         )
 
         st.write(
-            f"Current Forecast: "
+            f"Forecast Finish: "
             f"{metrics['forecast_finish']:%d %b %Y}"
         )
 
@@ -138,5 +134,3 @@ def build_sidebar(metrics, snapshot):
             f"Programme Drift: "
             f"{metrics['programme_drift']} Days"
         )
-
-        return selected_page
