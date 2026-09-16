@@ -3,107 +3,90 @@ import streamlit as st
 
 def build_sidebar(metrics, snapshot):
 
-    with st.sidebar:
+    with st.sidebar():
 
-        # ==================================================
-        # BRANDING
-        # ==================================================
-
-        st.markdown("## 🎯 Design Intelligence Hub")
+        st.title("🎯 Design Intelligence Hub")
         st.caption("Design Smarter. Deliver Better.")
 
         st.divider()
 
-        # ==================================================
-        # FRAMEWORKS
-        # ==================================================
+        st.subheader("Frameworks")
 
-        st.markdown("##### FRAMEWORKS")
-
-        st.markdown("**▼ UU Enterprise Framework**")
-        st.markdown("○ Pennington Flash")
-        st.markdown("○ Davyhulme ASP4")
+        st.markdown("**UU Enterprise Framework**")
+        st.write("Pennington Flash")
+        st.write("Davyhulme ASP4")
 
         st.write("")
 
-        st.markdown("**▼ UU DD&B Framework**")
+        st.markdown("**UU DD&B Framework**")
+        st.write("Ferry PS")
+        st.write("Rossall Outfall")
+        st.write("Flass Lane")
+        st.write("Tally Ho")
+        st.write("Eccleston Bridge")
 
-        st.markdown(
-            """
-            <div style="
-                background:#5B21B6;
-                color:white;
-                padding:8px 12px;
-                border-radius:6px;
-                margin:6px 0;
-                font-weight:600;">
-                ● Ferry PS
-            </div>
-            """,
-            unsafe_allow_html=True,
+        st.divider()
+
+        st.subheader("Navigation")
+
+        st.write("Executive Dashboard")
+        st.write("Deliverables")
+        st.write("Discipline Performance")
+        st.write("Programme Drift")
+        st.write("Design Readiness")
+        st.write("Upcoming Submissions")
+        st.write("Critical Path & Alerts")
+        st.write("Design Dependencies")
+        st.write("Queries & TQs")
+        st.write("AI Insights & Forecast")
+        st.write("Reports")
+        st.write("Data Explorer")
+        st.write("Settings")
+
+        st.divider()
+
+        st.subheader("Snapshot History")
+
+        st.write(
+            snapshot.strftime("%d %b %Y")
         )
 
-        st.markdown("● Rossall Outfall")
-        st.markdown("● Flass Lane")
-        st.markdown("● Tally Ho")
-        st.markdown("● Eccleston Bridge")
-
         st.divider()
 
-        # ==================================================
-        # NAVIGATION
-        # ==================================================
+        st.subheader("Project Health")
 
-        st.markdown("##### MAIN NAVIGATION")
-
-        nav_items = [
-            "🏠 Executive Dashboard",
-            "📋 Deliverables",
-            "📊 Discipline Performance",
-            "📈 Programme Drift",
-            "🎯 Design Readiness",
-            "📅 Upcoming Submissions",
-            "⚠️ Critical Path & Alerts",
-            "🔗 Design Dependencies",
-            "❓ Queries & TQs",
-            "🤖 AI Insights & Forecast",
-            "📄 Reports",
-            "🔍 Data Explorer",
-            "⚙️ Settings",
-        ]
-
-        st.markdown(
-            """
-            <div style="
-                background:#1D4ED8;
-                color:white;
-                padding:8px 12px;
-                border-radius:6px;
-                margin-bottom:6px;
-                font-weight:600;">
-                🏠 Executive Dashboard
-            </div>
-            """,
-            unsafe_allow_html=True,
+        st.write(
+            f"Health Score: {metrics['health_score']}"
         )
 
-        for item in nav_items[1:]:
-            st.markdown(item)
+        st.write(
+            f"Readiness: {metrics['design_readiness']}%"
+        )
+
+        st.write(
+            f"Critical Deliverables: {metrics['critical_deliverables']}"
+        )
+
+        st.write(
+            f"High Risk Activities: {metrics['high_risk']}"
+        )
+
+        st.write(
+            f"Upcoming Submissions: {metrics['upcoming_submissions']}"
+        )
 
         st.divider()
 
-        # ==================================================
-        # SNAPSHOT
-        # ==================================================
+        st.subheader("Project Baseline")
 
-        st.markdown("##### SNAPSHOT HISTORY")
+        st.write(
+            f"Baseline Finish: {metrics['baseline_finish']:%d %b %Y}"
+        )
 
-        st.write(snapshot.strftime("%d %b %Y"))
+        st.write(
+            f"Forecast Finish: {metrics['forecast_finish']:%d %b %Y}"
+        )
 
-        st.divider()
-
-        # ==================================================
-        # HEALTH
-        # ==================================================
-
-        st.markdown("##### PROJECT
+        st.write(
+            f"Programme Drift: {metrics['programme_drift']} Days"
+        )
