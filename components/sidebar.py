@@ -19,148 +19,287 @@ def build_sidebar(metrics, snapshot):
 
     frameworks = load_frameworks()
 
-    # ===================================================
-    # TITLE
-    # ===================================================
+    st.markdown(
+        """
+        <style>
 
-    st.sidebar.title("🎯 Design Intelligence Hub")
+        section[data-testid="stSidebar"]{
+            background: linear-gradient(
+                180deg,
+                #081428 0%,
+                #0A1530 100%
+            );
+        }
 
-    st.sidebar.caption(
-        "Design Smarter. Deliver Better."
+        section[data-testid="stSidebar"] *{
+            color:white;
+        }
+
+        .sidebar-title{
+            font-size:22px;
+            font-weight:700;
+            margin-bottom:4px;
+        }
+
+        .sidebar-subtitle{
+            color:#9ca9d7;
+            font-size:12px;
+            margin-bottom:20px;
+        }
+
+        .section-header{
+            margin-top:18px;
+            margin-bottom:10px;
+            font-size:12px;
+            letter-spacing:1px;
+            color:#9ca9d7;
+            text-transform:uppercase;
+            font-weight:600;
+        }
+
+        .framework-card{
+            background:#101b3d;
+            border:1px solid #263c7a;
+            border-radius:12px;
+            padding:10px;
+            margin-bottom:10px;
+        }
+
+        .project-active{
+            background:#d8efe4;
+            color:#0c3321 !important;
+            padding:8px;
+            border-radius:8px;
+            font-weight:600;
+            margin:4px 0;
+        }
+
+        .project-normal{
+            color:#dbe5ff;
+            padding:6px 8px;
+        }
+
+        .health-card{
+            background:#101b3d;
+            border:1px solid #263c7a;
+            border-radius:16px;
+            padding:16px;
+            margin-top:10px;
+        }
+
+        .health-score{
+            text-align:center;
+            margin-bottom:15px;
+        }
+
+        .health-number{
+            font-size:34px;
+            font-weight:700;
+            color:white;
+        }
+
+        .metric-line{
+            display:flex;
+            justify-content:space-between;
+            margin-top:10px;
+            margin-bottom:10px;
+        }
+
+        .green{
+            color:#00D26A;
+            font-weight:600;
+        }
+
+        .amber{
+            color:#FFB100;
+            font-weight:600;
+        }
+
+        .red{
+            color:#FF5F73;
+            font-weight:600;
+        }
+
+        .snapshot-pill{
+            background:#d9e9ff;
+            color:#0d2348 !important;
+            padding:10px;
+            border-radius:10px;
+            font-weight:600;
+            text-align:center;
+        }
+
+        </style>
+        """,
+        unsafe_allow_html=True,
     )
 
-    st.sidebar.divider()
+    with st.sidebar:
 
-    # ===================================================
-    # FRAMEWORKS
-    # ===================================================
+        st.markdown(
+            """
+            <div class="sidebar-title">
+            🎯 Design Intelligence Hub
+            </div>
 
-    st.sidebar.subheader("Frameworks")
+            <div class="sidebar-subtitle">
+            Design Smarter. Deliver Better.
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    for framework, projects in frameworks.items():
+        st.divider()
 
-        with st.sidebar.expander(
-            framework,
-            expanded=True
-        ):
+        # ==================================================
+        # FRAMEWORKS
+        # ==================================================
+
+        st.markdown(
+            '<div class="section-header">Frameworks</div>',
+            unsafe_allow_html=True
+        )
+
+        for framework, projects in frameworks.items():
+
+            st.markdown(
+                f"""
+                <div class="framework-card">
+                    <strong>{framework}</strong>
+                """,
+                unsafe_allow_html=True
+            )
 
             for project in projects.keys():
 
                 if project == "Ferry PS":
-                    st.success(project)
+
+                    st.markdown(
+                        f"""
+                        <div class="project-active">
+                        {project}
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+
                 else:
-                    st.write(project)
 
-    st.sidebar.divider()
+                    st.markdown(
+                        f"""
+                        <div class="project-normal">
+                        {project}
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
-    # ===================================================
-    # NAVIGATION
-    # ===================================================
+            st.markdown(
+                "</div>",
+                unsafe_allow_html=True
+            )
 
-    st.sidebar.subheader("Navigation")
+        st.divider()
 
-    pages = [
-        "🏠 Executive Dashboard",
-        "📋 Deliverables",
-        "📊 Discipline Performance",
-        "📈 Programme Drift",
-        "🎯 Design Readiness",
-        "📅 Upcoming Submissions",
-        "⚠️ Critical Path & Alerts",
-        "🔗 Design Dependencies",
-        "❓ Queries & TQs",
-        "🤖 AI Insights & Forecast",
-        "📄 Reports"
-    ]
+        # ==================================================
+        # NAVIGATION
+        # ==================================================
 
-    st.sidebar.radio(
-        "Select Page",
-        pages,
-        label_visibility="collapsed"
-    )
-
-    st.sidebar.divider()
-
-    # ===================================================
-    # SNAPSHOTS
-    # ===================================================
-
-    st.sidebar.subheader(
-        "Snapshot History"
-    )
-
-    st.sidebar.info(
-        snapshot.strftime("%B %Y")
-    )
-
-    st.sidebar.divider()
-
-    # ===================================================
-    # HEALTH
-    # ===================================================
-
-    st.sidebar.subheader(
-        "Project Health"
-    )
-
-    st.sidebar.metric(
-        "Health Score",
-        f"{metrics['health_score']}/100"
-    )
-
-    st.sidebar.metric(
-        "Design Readiness",
-        f"{metrics['design_readiness']}%"
-    )
-
-    st.sidebar.metric(
-        "Critical Activities",
-        metrics["critical_deliverables"]
-    )
-
-    st.sidebar.metric(
-        "High Risk Activities",
-        metrics["high_risk"]
-    )
-
-    if metrics["upcoming_submissions"] == 0:
-
-        st.sidebar.info(
-            "No submissions due in next 7 days"
+        st.markdown(
+            '<div class="section-header">Navigation</div>',
+            unsafe_allow_html=True
         )
 
-    else:
-
-        st.sidebar.metric(
-            "Upcoming Submissions",
-            metrics["upcoming_submissions"]
+        st.radio(
+            "",
+            [
+                "Executive Dashboard",
+                "Deliverables",
+                "Discipline Performance",
+                "Programme Drift",
+                "Design Readiness",
+                "Upcoming Submissions",
+                "Critical Path & Alerts",
+                "Dependencies",
+                "Queries & TQs",
+                "AI Insights",
+                "Reports",
+            ],
+            label_visibility="collapsed",
         )
 
-    st.sidebar.divider()
+        st.divider()
 
-    # ===================================================
-    # BASELINE
-    # ===================================================
+        # ==================================================
+        # SNAPSHOT HISTORY
+        # ==================================================
 
-    st.sidebar.subheader(
-        "Project Baseline"
-    )
-
-    st.sidebar.metric(
-        "Baseline Finish",
-        metrics["baseline_finish"].strftime(
-            "%d %b %Y"
+        st.markdown(
+            '<div class="section-header">Snapshot History</div>',
+            unsafe_allow_html=True
         )
-    )
 
-    st.sidebar.metric(
-        "Current Forecast",
-        metrics["forecast_finish"].strftime(
-            "%d %b %Y"
+        st.markdown(
+            f"""
+            <div class="snapshot-pill">
+            {snapshot.strftime("%B %Y")}
+            </div>
+            """,
+            unsafe_allow_html=True
         )
-    )
 
-    st.sidebar.metric(
-        "Programme Drift",
-        f"{metrics['programme_drift']} Days"
-    )
+        st.divider()
+
+        # ==================================================
+        # PROJECT HEALTH
+        # ==================================================
+
+        st.markdown(
+            '<div class="section-header">Project Health</div>',
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            f"""
+            <div class="health-card">
+
+                <div class="health-score">
+                    <div class="health-number">
+                        {metrics['health_score']}/100
+                    </div>
+                </div>
+
+                <div class="metric-line">
+                    <span>Design Readiness</span>
+                    <span class="green">
+                        {metrics['design_readiness']}%
+                    </span>
+                </div>
+
+                <div class="metric-line">
+                    <span>Critical Activities</span>
+                    <span class="amber">
+                        {metrics['critical_deliverables']}
+                    </span>
+                </div>
+
+                <div class="metric-line">
+                    <span>High Risk Activities</span>
+                    <span class="red">
+                        {metrics['high_risk']}
+                    </span>
+                </div>
+
+                <div class="metric-line">
+                    <span>Upcoming Submissions</span>
+                    <span class="amber">
+                        {metrics['upcoming_submissions']}
+                    </span>
+                </div>
+
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        
