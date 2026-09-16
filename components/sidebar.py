@@ -6,37 +6,34 @@ def build_sidebar(metrics, snapshot):
     with st.sidebar:
 
         # ==================================================
-        # LOGO / BRANDING CARD
+        # BRANDING
         # ==================================================
-        with st.container(border=True):
+
+        with st.container():
 
             st.markdown("### 🎯 Design Intelligence Hub")
             st.caption("Design Smarter. Deliver Better.")
 
         # ==================================================
-        # FRAMEWORKS CARD
+        # FRAMEWORKS
         # ==================================================
-        with st.container(border=True):
 
-            st.markdown("##### FRAMEWORKS")
+        with st.container():
+
+            st.caption("FRAMEWORKS")
 
             st.markdown("**▼ UU Enterprise Framework**")
-            st.markdown("◯ Pennington Flash")
-            st.markdown("◯ Davyhulme ASP4")
 
-            st.markdown("---")
+            st.markdown("○ Pennington Flash")
+            st.markdown("○ Davyhulme ASP4")
+
+            st.divider()
 
             st.markdown("**▼ UU DD&B Framework**")
 
             st.markdown(
                 """
-                <div style="
-                    background:#4338ca;
-                    padding:8px 12px;
-                    border-radius:8px;
-                    margin-bottom:6px;
-                    color:white;
-                    font-weight:600;">
+                <div class="active-project">
                     ● Ferry PS
                 </div>
                 """,
@@ -49,81 +46,69 @@ def build_sidebar(metrics, snapshot):
             st.markdown("● Eccleston Bridge")
 
         # ==================================================
-        # MAIN NAVIGATION CARD
+        # MAIN NAVIGATION
         # ==================================================
-        with st.container(border=True):
 
-            st.markdown("##### MAIN NAVIGATION")
+        with st.container():
 
-            nav_items = [
-                "🏠 Executive Dashboard",
-                "📋 Deliverables",
-                "📊 Discipline Performance",
-                "📈 Programme Drift",
-                "🎯 Design Readiness",
-                "📅 Upcoming Submissions",
-                "⚠️ Critical Path & Alerts",
-                "🔗 Design Dependencies",
-                "❓ Queries & TQs",
-                "🤖 AI Insights & Forecast",
-                "📄 Reports",
-                "🔍 Data Explorer",
-                "⚙️ Settings",
-            ]
+            st.caption("MAIN NAVIGATION")
 
-            for item in nav_items:
+            st.markdown(
+                """
+                <div class="active-nav">
+                    🏠 Executive Dashboard
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
-                if item == "🏠 Executive Dashboard":
-                    st.markdown(
-                        f"""
-                        <div style="
-                            background:#2563eb;
-                            padding:8px 12px;
-                            border-radius:8px;
-                            margin-bottom:4px;
-                            color:white;
-                            font-weight:600;">
-                            {item}
-                        </div>
-                        """,
-                        unsafe_allow_html=True,
-                    )
-                else:
-                    st.markdown(item)
+            st.markdown("📋 Deliverables")
+            st.markdown("📊 Discipline Performance")
+            st.markdown("📈 Programme Drift")
+            st.markdown("🎯 Design Readiness")
+            st.markdown("📅 Upcoming Submissions")
+            st.markdown("⚠️ Critical Path & Alerts")
+            st.markdown("🔗 Design Dependencies")
+            st.markdown("❓ Queries & TQs")
+            st.markdown("🤖 AI Insights & Forecast")
+            st.markdown("📄 Reports")
+            st.markdown("🔍 Data Explorer")
+            st.markdown("⚙️ Settings")
 
         # ==================================================
-        # SNAPSHOT HISTORY CARD
+        # SNAPSHOT HISTORY
         # ==================================================
-        with st.container(border=True):
 
-            st.markdown("##### SNAPSHOT HISTORY")
+        with st.container():
 
-            st.metric(
-                "Current Snapshot",
-                snapshot.strftime("%d %b %Y")
+            st.caption("SNAPSHOT HISTORY")
+
+            st.info(
+                snapshot.strftime("%B %Y")
             )
 
         # ==================================================
-        # PROJECT HEALTH CARD
+        # PROJECT HEALTH
         # ==================================================
-        with st.container(border=True):
 
-            st.markdown("##### PROJECT HEALTH")
+        with st.container():
+
+            st.caption("PROJECT HEALTH")
 
             st.metric(
                 "Health Score",
                 f"{metrics['health_score']}/100"
             )
 
-            c1, c2 = st.columns(2)
+            col1, col2 = st.columns(2)
 
-            with c1:
+            with col1:
                 st.metric(
                     "Readiness",
                     f"{metrics['design_readiness']}%"
                 )
 
-            with c2:
+            with col2:
                 st.metric(
                     "Critical",
                     metrics["critical_deliverables"]
@@ -140,11 +125,12 @@ def build_sidebar(metrics, snapshot):
             )
 
         # ==================================================
-        # PROJECT BASELINE CARD
+        # PROJECT BASELINE
         # ==================================================
-        with st.container(border=True):
 
-            st.markdown("##### PROJECT BASELINE")
+        with st.container():
+
+            st.caption("PROJECT BASELINE")
 
             st.metric(
                 "Baseline Finish",
