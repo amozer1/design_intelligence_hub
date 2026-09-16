@@ -12,7 +12,7 @@ def build_sidebar(metrics, snapshot):
         st.title("🎯 Design Intelligence Hub")
         st.caption("Design Smarter. Deliver Better.")
 
-        st.divider()
+        st.markdown("<br>", unsafe_allow_html=True)
 
         # ==================================================
         # FRAMEWORKS
@@ -27,16 +27,22 @@ def build_sidebar(metrics, snapshot):
             st.write("◯ Pennington Flash")
             st.write("◯ Davyhulme ASP4")
 
+        st.markdown("<div style='height:30px'></div>",
+                    unsafe_allow_html=True)
+
         with st.container(border=True):
 
             st.markdown("**UU DD&B Framework**")
 
-            st.success("🔴 Ferry PS")
+            st.success("Ferry PS")
 
-            st.write("🟠 Rossall Outfall")
-            st.write("🟢 Flass Lane")
-            st.write("🟡 Tally Ho")
-            st.write("🟢 Eccleston Bridge")
+            st.write("Rossall Outfall")
+            st.write("Flass Lane")
+            st.write("Tally Ho")
+            st.write("Eccleston Bridge")
+
+        st.markdown("<div style='height:50px'></div>",
+                    unsafe_allow_html=True)
 
         # ==================================================
         # NAVIGATION
@@ -60,6 +66,9 @@ def build_sidebar(metrics, snapshot):
             st.write("🔍 Data Explorer")
             st.write("⚙️ Settings")
 
+        st.markdown("<div style='height:50px'></div>",
+                    unsafe_allow_html=True)
+
         # ==================================================
         # SNAPSHOT HISTORY
         # ==================================================
@@ -71,6 +80,9 @@ def build_sidebar(metrics, snapshot):
             st.info(
                 snapshot.strftime("%B %Y")
             )
+
+        st.markdown("<div style='height:50px'></div>",
+                    unsafe_allow_html=True)
 
         # ==================================================
         # PROJECT HEALTH
@@ -109,6 +121,9 @@ def build_sidebar(metrics, snapshot):
                 metrics["upcoming_submissions"]
             )
 
+        st.markdown("<div style='height:50px'></div>",
+                    unsafe_allow_html=True)
+
         # ==================================================
         # PROJECT BASELINE
         # ==================================================
@@ -135,3 +150,6 @@ def build_sidebar(metrics, snapshot):
                 "Programme Drift",
                 f"{metrics['programme_drift']} Days"
             )
+
+        st.markdown("<div style='height:30px'></div>",
+                    unsafe_allow_html=True)
