@@ -26,6 +26,10 @@ st.set_page_config(
 
 cl31, cl32 = load_ferry()
 
+if cl32.empty:
+    st.error("No CL32 files found in data/Ferry")
+    st.stop()
+
 current_df, snapshot = get_current_snapshot(cl32)
 
 metrics = get_project_metrics(current_df)
@@ -42,64 +46,69 @@ build_sidebar(
 
 
 # ==================================================
-# GLOBAL STYLING
+# PAGE CSS
 # ==================================================
 
-st.markdown("""
-<style>
+st.markdown(
+    """
+    <style>
 
-.stApp{
-    background:#071028;
-}
+    .stApp{
+        background:#071028;
+    }
 
-.dashboard-card{
-    background:#0D1F49;
-    border:1px solid #294780;
-    border-radius:18px;
-    padding:20px;
-    min-height:140px;
-}
+    .dashboard-card{
+        background:#0D1F49;
+        border:1px solid #294780;
+        border-radius:18px;
+        padding:20px;
+        min-height:140px;
+        color:white;
+    }
 
-.section-card{
-    background:#0D1F49;
-    border:1px solid #294780;
-    border-radius:18px;
-    padding:20px;
-    margin-top:10px;
-    margin-bottom:20px;
-}
+    .section-card{
+        background:#0D1F49;
+        border:1px solid #294780;
+        border-radius:18px;
+        padding:20px;
+        margin-top:10px;
+        margin-bottom:20px;
+        color:white;
+    }
 
-.header-title{
-    color:white;
-    font-size:34px;
-    font-weight:700;
-}
+    .header-title{
+        color:white;
+        font-size:34px;
+        font-weight:700;
+    }
 
-.header-sub{
-    color:#aeb9dd;
-    font-size:14px;
-}
+    .header-sub{
+        color:#A9B5D9;
+        font-size:14px;
+    }
 
-.metric-number{
-    color:white;
-    font-size:38px;
-    font-weight:700;
-}
+    .metric-number{
+        color:white;
+        font-size:36px;
+        font-weight:700;
+    }
 
-.metric-label{
-    color:#aeb9dd;
-    font-size:14px;
-}
+    .metric-label{
+        color:#A9B5D9;
+        font-size:14px;
+    }
 
-.section-title{
-    color:white;
-    font-size:20px;
-    font-weight:600;
-    margin-bottom:15px;
-}
+    .section-title{
+        color:white;
+        font-size:20px;
+        font-weight:600;
+        margin-bottom:15px;
+    }
 
-</style>
-""", unsafe_allow_html=True)
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 
 # ==================================================
@@ -130,11 +139,11 @@ with right:
     )
 
 
-st.markdown("<br>", unsafe_allow_html=True)
+st.write("")
 
 
 # ==================================================
-# KPI ROW
+# KPI CARDS
 # ==================================================
 
 k1, k2, k3, k4 = st.columns(4)
@@ -216,23 +225,14 @@ st.markdown(
     """
     <div class="section-card">
 
-    <div class="section-title">
-        Executive Summary
-    </div>
+        <div class="section-title">
+            Executive Summary
+        </div>
 
-    Latest CL32 snapshot loaded successfully.
+        Latest CL32 snapshot loaded.
 
-    This section will soon contain:
-
-    • Programme Health
-
-    • Deliverables Slipped Since Previous CL32
-
-    • New Critical Activities
-
-    • Upcoming Submissions
-
-    • AI Recommendations
+        Dashboard sections below will be populated
+        dynamically from Ferry PS programme data.
 
     </div>
     """,
@@ -241,39 +241,39 @@ st.markdown(
 
 
 # ==================================================
-# CHART ROW
+# DELIVERABLES + DISCIPLINES
 # ==================================================
 
-c1, c2 = st.columns(2)
+left, right = st.columns(2)
 
-with c1:
+with left:
 
     st.markdown(
         """
         <div class="section-card">
 
-        <div class="section-title">
-            Deliverables Status
-        </div>
+            <div class="section-title">
+                Deliverables Status
+            </div>
 
-        Donut chart placeholder
+            Chart placeholder
 
         </div>
         """,
         unsafe_allow_html=True
     )
 
-with c2:
+with right:
 
     st.markdown(
         """
         <div class="section-card">
 
-        <div class="section-title">
-            Discipline Performance
-        </div>
+            <div class="section-title">
+                Discipline Performance
+            </div>
 
-        Donut chart placeholder
+            Chart placeholder
 
         </div>
         """,
@@ -289,11 +289,11 @@ st.markdown(
     """
     <div class="section-card">
 
-    <div class="section-title">
-        Upcoming Submissions (Next 7 Days)
-    </div>
+        <div class="section-title">
+            Upcoming Submissions (Next 7 Days)
+        </div>
 
-    Table placeholder
+        Upcoming submissions table placeholder
 
     </div>
     """,
@@ -309,11 +309,11 @@ st.markdown(
     """
     <div class="section-card">
 
-    <div class="section-title">
-        What's Changed Since Last CL32
-    </div>
+        <div class="section-title">
+            What's Changed Since Last CL32
+        </div>
 
-    Comparison engine placeholder
+        Snapshot comparison placeholder
 
     </div>
     """,
@@ -329,13 +329,37 @@ st.markdown(
     """
     <div class="section-card">
 
-    <div class="section-title">
-        AI Insights & Forecast
-    </div>
+        <div class="section-title">
+            AI Insights & Forecast
+        </div>
 
-    Forecasting placeholder
+        Forecasting placeholder
 
     </div>
     """,
     unsafe_allow_html=True
 )
+
+
+# ==================================================
+# DEBUG
+# ==================================================
+
+with st.expander("Debug"):
+
+    st.write("Snapshot:", snapshot)
+
+    st.write("Rows:", len(current_df))
+
+    st.write(current_df.columns.tolist())
+
+    if (
+        "Activity ID" in current_df.columns
+        and
+        "Activity Name" in current_df.columns
+    ):
+        st.dataframe(
+            current_df[
+                ["Activity ID", "Activity Name"]
+            ].head(20)
+        )
