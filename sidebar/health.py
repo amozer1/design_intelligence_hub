@@ -30,14 +30,12 @@ def calculate_health_metrics(cl32):
     for col in numeric_cols:
 
         if col in df.columns:
-
             df[col] = pd.to_numeric(
                 df[col],
                 errors="coerce"
             )
 
     if "Finish" in df.columns:
-
         df["Finish"] = pd.to_datetime(
             df["Finish"],
             dayfirst=True,
@@ -96,25 +94,18 @@ def calculate_health_metrics(cl32):
         (design_readiness * 0.60)
         +
         (
-            max(
-                0,
-                100 - critical_deliverables
-            ) * 0.20
+            max(0, 100 - critical_deliverables)
+            * 0.20
         )
         +
         (
-            max(
-                0,
-                100 - high_risk
-            ) * 0.20
+            max(0, 100 - high_risk)
+            * 0.20
         )
     )
 
     health_score = round(
-        max(
-            0,
-            min(100, health_score)
-        )
+        max(0, min(100, health_score))
     )
 
     return {
@@ -131,39 +122,43 @@ def render_health(metrics):
     score = metrics["health_score"]
 
     if score >= 80:
-        colour = "#22C55E"
-        status = "ON TRACK"
-
+        ring_colour = "#3BD671"
     elif score >= 60:
-        colour = "#F59E0B"
-        status = "WATCH"
-
+        ring_colour = "#F5A623"
     else:
-        colour = "#FF1F5A"
-        status = "AT RISK"
+        ring_colour = "#FF1F5A"
 
     st.markdown("""
     <style>
 
-    .health-title {
-        color: white;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        margin-bottom: 6px;
+    .health-title{
+        color:white;
+        font-size:12px;
+        font-weight:700;
+        letter-spacing:.5px;
+        margin-bottom:4px;
     }
 
-    .health-row {
-        color: white;
-        font-size: 13px;
-        font-weight: 500;
+    .health-row{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        color:white;
+        font-size:13px;
+        margin-bottom:8px;
     }
 
-    .health-value {
-        color: white;
-        font-size: 13px;
-        font-weight: 700;
-        text-align: right;
+    .health-label{
+        color:white;
+        font-size:13px;
+        font-weight:500;
+        white-space:nowrap;
+    }
+
+    .health-value{
+        color:white;
+        font-size:13px;
+        font-weight:700;
     }
 
     </style>
@@ -174,115 +169,100 @@ def render_health(metrics):
         unsafe_allow_html=True
     )
 
-    fig = go.Figure()
+    left, right = st.columns([1, 2])
 
-    fig.add_trace(
-        go.Pie(
-            values=[
-                score,
-                max(0, 100 - score)
-            ],
-            hole=0.82,
-            sort=False,
-            textinfo="none",
-            marker=dict(
-                colors=[
-                    colour,
-                    "#31456A"
-                ]
-            )
-        )
-    )
+    with left:
 
-    fig.update_layout(
-        height=170,
-        margin=dict(
-            l=0,
-            r=0,
-            t=0,
-            b=0
-        ),
-        showlegend=False,
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-        annotations=[
-            dict(
-                text=f"<b>{score}</b><br>/100",
-                x=0.5,
-                y=0.5,
-                showarrow=False,
-                font=dict(
-                    size=18,
-                    color="white"
+        fig = go.Figure()
+
+        fig.add_trace(
+            go.Pie(
+                values=[
+                    score,
+                    max(0, 100 - score)
+                ],
+                hole=0.86,
+                sort=False,
+                textinfo="none",
+                marker=dict(
+                    colors=[
+                        ring_colour,
+                        "#415B8A"
+                    ]
                 )
             )
+        )
+
+        fig.update_layout(
+            height=125,
+            margin=dict(
+                l=0,
+                r=0,
+                t=0,
+                b=0
+            ),
+            showlegend=False,
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            annotations=[
+                dict(
+                    text=f"<b>{score}</b><br>100",
+                    x=0.5,
+                    y=0.5,
+                    showarrow=False,
+                    font=dict(
+                        size=12,
+                        color="white"
+                    )
+                )
+            ]
+        )
+
+        st.plotly_chart(
+            fig,
+            use_container_width=True,
+            config={
+                "displayModeBar": False
+            }
+        )
+
+    with right:
+
+        rows = [
+            (
+                "#41D97A",
+                "Design Readiness",
+                f"{metrics['design_readiness']}%"
+            ),
+            (
+                "#B8A33A",
+                "Critical Deliverables",
+                metrics["critical_deliverables"]
+            ),
+            (
+                "#FF8A00",
+                "High Risk Activities",
+                metrics["high_risk"]
+            ),
+            (
+                "#F2C94C",
+                "Upcoming Submissions",
+                metrics["upcoming_submissions"]
+            ),
         ]
-    )
 
-    st.plotly_chart(
-        fig,
-        use_container_width=True,
-        config={
-            "displayModeBar": False
-        }
-    )
-
-    st.markdown(
-        f"""
-        <div style="
-            text-align:center;
-            color:{colour};
-            font-size:12px;
-            font-weight:700;
-            margin-top:-10px;
-            margin-bottom:12px;
-        ">
-            {status}
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    rows = [
-        (
-            "🟢 Readiness",
-            f"{metrics['design_readiness']}%"
-        ),
-        (
-            "🔴 Critical",
-            metrics["critical_deliverables"]
-        ),
-        (
-            "🟠 High Risk",
-            metrics["high_risk"]
-        ),
-        (
-            "🟡 Upcoming",
-            metrics["upcoming_submissions"]
-        ),
-    ]
-
-    for label, value in rows:
-
-        col1, col2 = st.columns([4, 1])
-
-        with col1:
+        for colour, label, value in rows:
 
             st.markdown(
                 f"""
                 <div class="health-row">
-                    {label}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-        with col2:
-
-            st.markdown(
-                f"""
-                <div class="health-value">
-                    {value}
+                    <div class="health-label">
+                        <span style="color:{colour};font-size:16px;">●</span>
+                        {label}
+                    </div>
+                    <div class="health-value">
+                        {value}
+                    </div>
                 </div>
                 """,
                 unsafe_allow_html=True
