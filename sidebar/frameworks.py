@@ -3,9 +3,59 @@ import streamlit as st
 
 def render_frameworks():
 
-    # ==================================================
-    # DATA
-    # ==================================================
+    st.markdown("""
+    <style>
+
+    .framework-title{
+        color:#DCE6F2;
+        font-size:12px;
+        font-weight:700;
+        letter-spacing:.8px;
+        margin-bottom:10px;
+    }
+
+    .framework-group{
+        color:white;
+        font-size:14px;
+        font-weight:700;
+        margin-top:8px;
+        margin-bottom:6px;
+    }
+
+    hr.framework-divider{
+        border:none;
+        border-top:1px solid rgba(255,255,255,.12);
+        margin:12px 0;
+    }
+
+    div[data-testid="stButton"] button{
+        background:transparent !important;
+        color:#EAF2FF !important;
+        border:none !important;
+        box-shadow:none !important;
+        text-align:left !important;
+        justify-content:flex-start !important;
+        padding:3px 0 3px 8px !important;
+        min-height:28px !important;
+        font-size:13px !important;
+        width:100%;
+    }
+
+    div[data-testid="stButton"] button:hover{
+        background:rgba(255,255,255,.05) !important;
+        border-radius:6px !important;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    if "project" not in st.session_state:
+        st.session_state.project = "Ferry PS"
+
+    st.markdown(
+        '<div class="framework-title">FRAMEWORKS</div>',
+        unsafe_allow_html=True
+    )
 
     enterprise_projects = [
         "Pennington Flash",
@@ -20,137 +70,41 @@ def render_frameworks():
         "Eccleston Bridge"
     ]
 
-    all_projects = enterprise_projects + ddb_projects
-
-    # ==================================================
-    # SESSION STATE
-    # ==================================================
-
-    if "project" not in st.session_state:
-        st.session_state.project = "Ferry PS"
-
-    # ==================================================
-    # STYLING
-    # ==================================================
-
-    st.markdown("""
-    <style>
-
-    .framework-title{
-        color:#B7C7DA;
-        font-size:14px;
-        font-weight:700;
-        margin-bottom:12px;
-    }
-
-    .framework-group{
-        color:#DCE6F2;
-        font-size:14px;
-        font-weight:600;
-        margin-bottom:4px;
-    }
-
-    hr.framework-divider{
-        border:none;
-        border-top:1px solid rgba(255,255,255,0.12);
-        margin:12px 0;
-    }
-
-    div[role="radiogroup"]{
-        gap:2px;
-    }
-
-    div[role="radiogroup"] > label{
-        padding:6px 8px;
-        border-radius:6px;
-        transition:all .2s ease;
-    }
-
-    div[role="radiogroup"] > label:hover{
-        background:rgba(255,255,255,.05);
-    }
-
-    div[role="radiogroup"] label[data-baseweb="radio"]{
-        margin-bottom:2px;
-    }
-
-    </style>
-    """, unsafe_allow_html=True)
-
-    st.markdown(
-        '<div class="framework-title">FRAMEWORKS</div>',
-        unsafe_allow_html=True
-    )
-
-    # ==================================================
-    # ENTERPRISE
-    # ==================================================
-
     st.markdown(
         '<div class="framework-group">▾ UU Enterprise Framework</div>',
         unsafe_allow_html=True
     )
 
-    enterprise_index = 0
-    if st.session_state.project in enterprise_projects:
-        enterprise_index = enterprise_projects.index(
-            st.session_state.project
-        )
+    for project in enterprise_projects:
 
-    enterprise_selected = st.radio(
-        "Enterprise Framework",
-        enterprise_projects,
-        index=enterprise_index,
-        label_visibility="collapsed",
-        key="enterprise_framework"
-    )
+        icon = "●" if st.session_state.project == project else "○"
+
+        if st.button(
+            f"{icon}  {project}",
+            key=f"enterprise_{project}",
+            use_container_width=True
+        ):
+            st.session_state.project = project
+            st.rerun()
 
     st.markdown(
         '<hr class="framework-divider">',
         unsafe_allow_html=True
     )
 
-    # ==================================================
-    # DD&B
-    # ==================================================
-
     st.markdown(
         '<div class="framework-group">▾ UU DD&B Framework</div>',
         unsafe_allow_html=True
     )
 
-    ddb_index = 0
-    if st.session_state.project in ddb_projects:
-        ddb_index = ddb_projects.index(
-            st.session_state.project
-        )
+    for project in ddb_projects:
 
-    ddb_selected = st.radio(
-        "DD&B Framework",
-        ddb_projects,
-        index=ddb_index,
-        label_visibility="collapsed",
-        key="ddb_framework"
-    )
+        icon = "●" if st.session_state.project == project else "○"
 
-    # ==================================================
-    # DETERMINE SELECTION
-    # ==================================================
-
-    current_selection = st.session_state.project
-
-    if current_selection in enterprise_projects:
-        selected_project = enterprise_selected
-    else:
-        selected_project = ddb_selected
-
-    # handle switching frameworks
-    if enterprise_selected != current_selection:
-        selected_project = enterprise_selected
-
-    if ddb_selected != current_selection:
-        selected_project = ddb_selected
-
-    if selected_project != st.session_state.project:
-        st.session_state.project = selected_project
-        st.rerun()
+        if st.button(
+            f"{icon}  {project}",
+            key=f"ddb_{project}",
+            use_container_width=True
+        ):
+            st.session_state.project = project
+            st.rerun()
