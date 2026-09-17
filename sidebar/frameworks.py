@@ -3,80 +3,14 @@ import streamlit as st
 
 def render_frameworks():
 
-    st.markdown("""
-    <style>
-
-    .framework-title {
-        color: #B7C7DA;
-        font-size: 14px;
-        font-weight: 700;
-        margin-bottom: 12px;
-    }
-
-    .framework-group {
-        color: white;
-        font-size: 14px;
-        font-weight: 600;
-        margin-top: 12px;
-        margin-bottom: 6px;
-    }
-
-    div[role="radiogroup"] label {
-        padding: 4px 0;
-    }
-
-    </style>
-    """, unsafe_allow_html=True)
-
-    if "project" not in st.session_state:
-        st.session_state.project = "Ferry PS"
-
-    st.markdown(
-        '<div class="framework-title">FRAMEWORKS</div>',
-        unsafe_allow_html=True
-    )
-
     # ==================================================
-    # UU ENTERPRISE FRAMEWORK
+    # DATA
     # ==================================================
-
-    st.markdown(
-        '<div class="framework-group">▾ UU Enterprise Framework</div>',
-        unsafe_allow_html=True
-    )
 
     enterprise_projects = [
         "Pennington Flash",
         "Davyhulme ASP4"
     ]
-
-    selected_enterprise = (
-        st.session_state.project
-        if st.session_state.project in enterprise_projects
-        else None
-    )
-
-    if selected_enterprise:
-        idx = enterprise_projects.index(selected_enterprise)
-    else:
-        idx = None
-
-    enterprise_choice = st.radio(
-        "Enterprise",
-        enterprise_projects,
-        index=idx if idx is not None else 0,
-        label_visibility="collapsed",
-        key="enterprise_radio"
-    )
-
-    # ==================================================
-    # UU DD&B FRAMEWORK
-    # ==================================================
-
-    st.markdown(
-        '<div class="framework-group">▾ UU DD&B Framework</div>',
-        unsafe_allow_html=True
-    )
 
     ddb_projects = [
         "Ferry PS",
@@ -86,32 +20,137 @@ def render_frameworks():
         "Eccleston Bridge"
     ]
 
-    selected_ddb = (
-        st.session_state.project
-        if st.session_state.project in ddb_projects
-        else None
+    all_projects = enterprise_projects + ddb_projects
+
+    # ==================================================
+    # SESSION STATE
+    # ==================================================
+
+    if "project" not in st.session_state:
+        st.session_state.project = "Ferry PS"
+
+    # ==================================================
+    # STYLING
+    # ==================================================
+
+    st.markdown("""
+    <style>
+
+    .framework-title{
+        color:#B7C7DA;
+        font-size:14px;
+        font-weight:700;
+        margin-bottom:12px;
+    }
+
+    .framework-group{
+        color:#DCE6F2;
+        font-size:14px;
+        font-weight:600;
+        margin-bottom:4px;
+    }
+
+    hr.framework-divider{
+        border:none;
+        border-top:1px solid rgba(255,255,255,0.12);
+        margin:12px 0;
+    }
+
+    div[role="radiogroup"]{
+        gap:2px;
+    }
+
+    div[role="radiogroup"] > label{
+        padding:6px 8px;
+        border-radius:6px;
+        transition:all .2s ease;
+    }
+
+    div[role="radiogroup"] > label:hover{
+        background:rgba(255,255,255,.05);
+    }
+
+    div[role="radiogroup"] label[data-baseweb="radio"]{
+        margin-bottom:2px;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown(
+        '<div class="framework-title">FRAMEWORKS</div>',
+        unsafe_allow_html=True
     )
 
-    if selected_ddb:
-        idx = ddb_projects.index(selected_ddb)
-    else:
-        idx = 0
+    # ==================================================
+    # ENTERPRISE
+    # ==================================================
 
-    ddb_choice = st.radio(
-        "DD&B",
-        ddb_projects,
-        index=idx,
+    st.markdown(
+        '<div class="framework-group">▾ UU Enterprise Framework</div>',
+        unsafe_allow_html=True
+    )
+
+    enterprise_index = 0
+    if st.session_state.project in enterprise_projects:
+        enterprise_index = enterprise_projects.index(
+            st.session_state.project
+        )
+
+    enterprise_selected = st.radio(
+        "Enterprise Framework",
+        enterprise_projects,
+        index=enterprise_index,
         label_visibility="collapsed",
-        key="ddb_radio"
+        key="enterprise_framework"
     )
 
-    selected = (
-        enterprise_choice
-        if enterprise_choice in enterprise_projects
-        and enterprise_choice != selected_enterprise
-        else ddb_choice
+    st.markdown(
+        '<hr class="framework-divider">',
+        unsafe_allow_html=True
     )
 
-    if selected != st.session_state.project:
-        st.session_state.project = selected
+    # ==================================================
+    # DD&B
+    # ==================================================
+
+    st.markdown(
+        '<div class="framework-group">▾ UU DD&B Framework</div>',
+        unsafe_allow_html=True
+    )
+
+    ddb_index = 0
+    if st.session_state.project in ddb_projects:
+        ddb_index = ddb_projects.index(
+            st.session_state.project
+        )
+
+    ddb_selected = st.radio(
+        "DD&B Framework",
+        ddb_projects,
+        index=ddb_index,
+        label_visibility="collapsed",
+        key="ddb_framework"
+    )
+
+    # ==================================================
+    # DETERMINE SELECTION
+    # ==================================================
+
+    current_selection = st.session_state.project
+
+    if current_selection in enterprise_projects:
+        selected_project = enterprise_selected
+    else:
+        selected_project = ddb_selected
+
+    # handle switching frameworks
+    if enterprise_selected != current_selection:
+        selected_project = enterprise_selected
+
+    if ddb_selected != current_selection:
+        selected_project = ddb_selected
+
+    if selected_project != st.session_state.project:
+        st.session_state.project = selected_project
         st.rerun()
