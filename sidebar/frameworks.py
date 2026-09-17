@@ -58,41 +58,14 @@ def render_frameworks():
     </style>
     """, unsafe_allow_html=True)
 
+    # Default Project
     if "project" not in st.session_state:
         st.session_state.project = "Ferry PS"
-
-    st.markdown(
-        '<div class="framework-title">FRAMEWORKS</div>',
-        unsafe_allow_html=True
-    )
-
-    # Enterprise Framework
-
-    st.markdown(
-        '<div class="framework-group">▾ UU Enterprise Framework</div>',
-        unsafe_allow_html=True
-    )
 
     enterprise_projects = [
         "Pennington Flash",
         "Davyhulme ASP4"
     ]
-
-    enterprise_choice = st.radio(
-        "Enterprise",
-        enterprise_projects,
-        label_visibility="collapsed",
-        key="enterprise_radio"
-    )
-
-    st.divider()
-
-    # DD&B Framework
-
-    st.markdown(
-        '<div class="framework-group">▾ UU DD&B Framework</div>',
-        unsafe_allow_html=True
-    )
 
     ddb_projects = [
         "Ferry PS",
@@ -102,23 +75,84 @@ def render_frameworks():
         "Eccleston Bridge"
     ]
 
+    st.markdown(
+        '<div class="framework-title">FRAMEWORKS</div>',
+        unsafe_allow_html=True
+    )
+
+    # -------------------------------
+    # Enterprise Framework
+    # -------------------------------
+
+    st.markdown(
+        '<div class="framework-group">▾ UU Enterprise Framework</div>',
+        unsafe_allow_html=True
+    )
+
+    enterprise_index = (
+        enterprise_projects.index(st.session_state.project)
+        if st.session_state.project in enterprise_projects
+        else None
+    )
+
+    enterprise_choice = st.radio(
+        "Enterprise",
+        enterprise_projects,
+        index=enterprise_index,
+        label_visibility="collapsed",
+        key="enterprise_radio"
+    )
+
+    st.divider()
+
+    # -------------------------------
+    # DD&B Framework
+    # -------------------------------
+
+    st.markdown(
+        '<div class="framework-group">▾ UU DD&B Framework</div>',
+        unsafe_allow_html=True
+    )
+
+    ddb_index = (
+        ddb_projects.index(st.session_state.project)
+        if st.session_state.project in ddb_projects
+        else None
+    )
+
     ddb_choice = st.radio(
         "DD&B",
         ddb_projects,
+        index=ddb_index,
         label_visibility="collapsed",
         key="ddb_radio"
     )
 
-    # Selection Logic
+    # -------------------------------
+    # Single Selection Logic
+    # -------------------------------
 
-    selected = st.session_state.project
+    current_project = st.session_state.project
 
-    if enterprise_choice != selected:
-        selected = enterprise_choice
+    if (
+        current_project not in enterprise_projects
+        and enterprise_choice in enterprise_projects
+    ):
+        st.session_state.project = enterprise_choice
+        st.rerun()
 
-    if ddb_choice != selected:
-        selected = ddb_choice
+    if (
+        current_project not in ddb_projects
+        and ddb_choice in ddb_projects
+    ):
+        st.session_state.project = ddb_choice
+        st.rerun()
 
-    if selected != st.session_state.project:
-        st.session_state.project = selected
+    # Detect actual changes
+    if enterprise_choice != current_project and enterprise_choice in enterprise_projects:
+        st.session_state.project = enterprise_choice
+        st.rerun()
+
+    if ddb_choice != current_project and ddb_choice in ddb_projects:
+        st.session_state.project = ddb_choice
         st.rerun()
