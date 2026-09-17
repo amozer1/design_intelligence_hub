@@ -28,7 +28,6 @@ def calculate_health_metrics(cl32):
     ]
 
     for col in numeric_cols:
-
         if col in df.columns:
             df[col] = pd.to_numeric(
                 df[col],
@@ -123,14 +122,18 @@ def render_health(metrics):
     else:
         ring_colour = "#FF1F5A"
 
-    st.markdown("##### PROJECT HEALTH")
-
-    donut_col, metrics_col = st.columns(
-        [1.25, 1.75],
-        gap="small"
+    st.markdown(
+        """
+        <div style='color:white;font-weight:700;font-size:12px'>
+        PROJECT HEALTH
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
-    with donut_col:
+    col1, col2 = st.columns([1.1, 1.9])
+
+    with col1:
 
         fig = go.Figure(
             go.Pie(
@@ -149,7 +152,7 @@ def render_health(metrics):
         )
 
         fig.update_layout(
-            height=120,
+            height=125,
             margin=dict(
                 l=0,
                 r=0,
@@ -180,20 +183,47 @@ def render_health(metrics):
             }
         )
 
-    with metrics_col:
+    with col2:
 
-        row1a, row1b = st.columns([4, 1])
-        row1a.write("🟢 Design Readiness")
-        row1b.write(f"**{metrics['design_readiness']}%**")
+        rows = [
+            (
+                "🟢 Design Readiness",
+                f"{metrics['design_readiness']}%"
+            ),
+            (
+                "🟡 Critical Deliverables",
+                str(metrics["critical_deliverables"])
+            ),
+            (
+                "🟠 High Risk Activities",
+                str(metrics["high_risk"])
+            ),
+            (
+                "🟨 Upcoming Submissions",
+                str(metrics["upcoming_submissions"])
+            ),
+        ]
 
-        row2a, row2b = st.columns([4, 1])
-        row2a.write("🟡 Critical Deliverables")
-        row2b.write(f"**{metrics['critical_deliverables']}**")
+        for label, value in rows:
 
-        row3a, row3b = st.columns([4, 1])
-        row3a.write("🟠 High Risk Activities")
-        row3b.write(f"**{metrics['high_risk']}**")
+            c1, c2 = st.columns([3, 1])
 
-        row4a, row4b = st.columns([4, 1])
-        row4a.write("🟨 Upcoming Submissions")
-        row4b.write(f"**{metrics['upcoming_submissions']}**")
+            with c1:
+                st.markdown(
+                    f"""
+                    <span style="color:white;">
+                    {label}
+                    </span>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+            with c2:
+                st.markdown(
+                    f"""
+                    <span style="color:white;font-weight:700;">
+                    {value}
+                    </span>
+                    """,
+                    unsafe_allow_html=True
+                )
