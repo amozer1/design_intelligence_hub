@@ -99,4 +99,38 @@ def calculate_health_metrics(cl32):
 
     return {
         "health_score": int(health_score),
-        "design
+        "design_readiness": int(design_readiness),
+        "critical_deliverables": int(critical_deliverables),
+        "high_risk": int(high_risk),
+        "upcoming_submissions": int(upcoming_submissions),
+    }
+
+
+def render_health(metrics):
+
+    st.markdown("### PROJECT HEALTH")
+
+    st.metric(
+        "Health Score",
+        metrics["health_score"]
+    )
+
+    st.metric(
+        "Design Readiness",
+        f"{metrics['design_readiness']}%"
+    )
+
+    st.metric(
+        "Critical Deliverables",
+        metrics["critical_deliverables"]
+    )
+
+    st.metric(
+        "High Risk Activities",
+        metrics["high_risk"]
+    )
+
+    st.metric(
+        "Upcoming Submissions",
+        metrics["upcoming_submissions"]
+    )
