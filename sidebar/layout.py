@@ -8,7 +8,7 @@ def render_sidebar():
 
     /* Sidebar background */
     section[data-testid="stSidebar"] {
-        background: #0B3A66;
+        background: #072F5F;
     }
 
     /* Main sidebar padding */
