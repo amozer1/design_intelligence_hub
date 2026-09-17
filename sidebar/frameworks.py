@@ -6,44 +6,23 @@ def render_frameworks():
     st.markdown("""
     <style>
 
-    .framework-title{
-        color:#DCE6F2;
-        font-size:12px;
-        font-weight:700;
-        letter-spacing:.8px;
-        margin-bottom:10px;
+    .framework-title {
+        color: #B7C7DA;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 12px;
     }
 
-    .framework-group{
-        color:white;
-        font-size:14px;
-        font-weight:700;
-        margin-top:8px;
-        margin-bottom:6px;
+    .framework-group {
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 12px;
+        margin-bottom: 6px;
     }
 
-    hr.framework-divider{
-        border:none;
-        border-top:1px solid rgba(255,255,255,.12);
-        margin:12px 0;
-    }
-
-    div[data-testid="stButton"] button{
-        background:transparent !important;
-        color:#EAF2FF !important;
-        border:none !important;
-        box-shadow:none !important;
-        text-align:left !important;
-        justify-content:flex-start !important;
-        padding:3px 0 3px 8px !important;
-        min-height:28px !important;
-        font-size:13px !important;
-        width:100%;
-    }
-
-    div[data-testid="stButton"] button:hover{
-        background:rgba(255,255,255,.05) !important;
-        border-radius:6px !important;
+    div[role="radiogroup"] label {
+        padding: 4px 0;
     }
 
     </style>
@@ -57,10 +36,47 @@ def render_frameworks():
         unsafe_allow_html=True
     )
 
+    # ==================================================
+    # UU ENTERPRISE FRAMEWORK
+    # ==================================================
+
+    st.markdown(
+        '<div class="framework-group">▾ UU Enterprise Framework</div>',
+        unsafe_allow_html=True
+    )
+
     enterprise_projects = [
         "Pennington Flash",
         "Davyhulme ASP4"
     ]
+
+    selected_enterprise = (
+        st.session_state.project
+        if st.session_state.project in enterprise_projects
+        else None
+    )
+
+    if selected_enterprise:
+        idx = enterprise_projects.index(selected_enterprise)
+    else:
+        idx = None
+
+    enterprise_choice = st.radio(
+        "Enterprise",
+        enterprise_projects,
+        index=idx if idx is not None else 0,
+        label_visibility="collapsed",
+        key="enterprise_radio"
+    )
+
+    # ==================================================
+    # UU DD&B FRAMEWORK
+    # ==================================================
+
+    st.markdown(
+        '<div class="framework-group">▾ UU DD&B Framework</div>',
+        unsafe_allow_html=True
+    )
 
     ddb_projects = [
         "Ferry PS",
@@ -70,41 +86,32 @@ def render_frameworks():
         "Eccleston Bridge"
     ]
 
-    st.markdown(
-        '<div class="framework-group">▾ UU Enterprise Framework</div>',
-        unsafe_allow_html=True
+    selected_ddb = (
+        st.session_state.project
+        if st.session_state.project in ddb_projects
+        else None
     )
 
-    for project in enterprise_projects:
+    if selected_ddb:
+        idx = ddb_projects.index(selected_ddb)
+    else:
+        idx = 0
 
-        icon = "●" if st.session_state.project == project else "○"
-
-        if st.button(
-            f"{icon}  {project}",
-            key=f"enterprise_{project}",
-            use_container_width=True
-        ):
-            st.session_state.project = project
-            st.rerun()
-
-    st.markdown(
-        '<hr class="framework-divider">',
-        unsafe_allow_html=True
+    ddb_choice = st.radio(
+        "DD&B",
+        ddb_projects,
+        index=idx,
+        label_visibility="collapsed",
+        key="ddb_radio"
     )
 
-    st.markdown(
-        '<div class="framework-group">▾ UU DD&B Framework</div>',
-        unsafe_allow_html=True
+    selected = (
+        enterprise_choice
+        if enterprise_choice in enterprise_projects
+        and enterprise_choice != selected_enterprise
+        else ddb_choice
     )
 
-    for project in ddb_projects:
-
-        icon = "●" if st.session_state.project == project else "○"
-
-        if st.button(
-            f"{icon}  {project}",
-            key=f"ddb_{project}",
-            use_container_width=True
-        ):
-            st.session_state.project = project
-            st.rerun()
+    if selected != st.session_state.project:
+        st.session_state.project = selected
+        st.rerun()
