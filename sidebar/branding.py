@@ -6,31 +6,18 @@ def render_branding():
     st.markdown("""
     <style>
 
-    .hub-container{
-        margin-bottom:20px;
+    .hub-title {
+        color: #FFFFFF;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 4px;
     }
 
-    .hub-title{
-        color:#FFFFFF;
-        font-size:26px;
-        font-weight:800;
-        line-height:1.1;
-        letter-spacing:-0.5px;
-        margin-top:8px;
-        margin-bottom:6px;
-    }
-
-    .hub-subtitle{
-        color:#B7C7DA;
-        font-size:13px;
-        line-height:1.4;
-        margin-bottom:18px;
-    }
-
-    .hub-divider{
-        border:none;
-        border-top:1px solid rgba(255,255,255,0.10);
-        margin:18px 0;
+    .hub-subtitle {
+        color: #B7C7DA;
+        font-size: 13px;
+        margin-bottom: 16px;
     }
 
     </style>
@@ -38,27 +25,21 @@ def render_branding():
 
     # Logo
     st.image(
-        "assets/logo.png",  # update path if needed
+        "assets/logo.png",  # update path if required
         width=90
     )
 
-    # Brand text
     st.markdown(
         """
-        <div class="hub-container">
-
-            <div class="hub-title">
-                DESIGN INTELLIGENCE HUB
-            </div>
-
-            <div class="hub-subtitle">
-                Design Smarter.<br>
-                Deliver Better.
-            </div>
-
+        <div class="hub-title">
+            Design Management Hub
         </div>
 
-        <hr class="hub-divider">
+        <div class="hub-subtitle">
+            Delivering Better Design Decisions
+        </div>
         """,
         unsafe_allow_html=True
     )
+
+    st.divider()
