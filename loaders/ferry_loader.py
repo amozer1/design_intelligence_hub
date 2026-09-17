@@ -1,80 +1,97 @@
 import pandas as pd
-import os
 
 
-# =========================
-# GET LATEST FILE (for CL31 only)
-# =========================
-def get_latest(folder, prefix):
-    files = [
-        f for f in os.listdir(folder)
-        if f.startswith(prefix) and f.endswith(".xlsx")
-    ]
-    files.sort()
-    return os.path.join(folder, files[-1]) if files else None
+def calculate_health_metrics(cl32):
 
+    if cl32.empty:
+        return {
+            "health_score": 0,
+            "design_readiness": 0,
+            "critical_deliverables": 0,
+            "high_risk": 0,
+            "upcoming_submissions": 0
+        }
 
-# =========================
-# GET ALL FILES (for CL32)
-# =========================
-def get_all(folder, prefix):
-    files = [
-        f for f in os.listdir(folder)
-        if f.startswith(prefix) and f.endswith(".xlsx")
-    ]
-    files.sort()
-    return [os.path.join(folder, f) for f in files]
+    df = cl32.copy()
 
+    # Numeric conversions
+    for col in [
+        "Activity % Complete",
+        "Total Float",
+        "Variance - BL1 Finish Date"
+    ]:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
 
-# =========================
-# MAIN LOADER
-# =========================
-def load_ferry():
-
-    base = "data/Ferry/"
-
-    # ✅ CL31 (latest only – unchanged)
-    cl31_path = get_latest(base, "CL31")
-    cl31 = (
-        pd.read_excel(cl31_path, engine="openpyxl")
-        if cl31_path else pd.DataFrame()
-    )
-
-    # ✅ CL32 (ALL files for baseline vs forecast)
-    cl32_files = get_all(base, "CL32")
-
-    cl32_list = []
-
-    for file_path in cl32_files:
-
-        df = pd.read_excel(file_path, engine="openpyxl")
-
-        file_name = os.path.basename(file_path).replace(".xlsx", "")
-
-        # ✅ Store snapshot name
-        df["Snapshot"] = file_name
-
-        # ✅ Convert "CL32-June-2026" → "01-June-2026"
-        # ✅ IMPORTANT: %B (full month name)
-        df["SnapshotDate"] = pd.to_datetime(
-            file_name.replace("CL32-", "01-"),
-            format="%d-%B-%Y",
+    # Dates
+    if "Finish" in df.columns:
+        df["Finish"] = pd.to_datetime(
+            df["Finish"],
+            dayfirst=True,
             errors="coerce"
         )
 
-        cl32_list.append(df)
+    # Activities only
+    activities = df[
+        df["Activity ID"].astype(str).str.contains("-", na=False)
+    ].copy()
 
-    # ✅ Combine all CL32 files
-    if cl32_list:
-        cl32 = pd.concat(cl32_list, ignore_index=True)
+    # Design Readiness
+    design_readiness = round(
+        activities["Activity % Complete"].fillna(0).mean(),
+        0
+    )
 
-        # ✅ Remove invalid dates
-        cl32 = cl32.dropna(subset=["SnapshotDate"])
+    # Critical Deliverables
+    critical_deliverables = len(
+        activities[
+            (activities["Total Float"] <= 0)
+            & (activities["Activity % Complete"] < 100)
+        ]
+    )
 
-        # ✅ Ensure correct ordering
-        cl32 = cl32.sort_values("SnapshotDate")
+    # High Risk
+    high_risk = len(
+        activities[
+            activities["Variance - BL1 Finish Date"] <= -14
+        ]
+    )
 
-    else:
-        cl32 = pd.DataFrame()
+    # Upcoming Submissions
+    today = pd.Timestamp.today()
 
-    return cl31, cl32
+    upcoming_submissions = len(
+        activities[
+            activities["Activity Name"]
+            .astype(str)
+            .str.contains(
+                "submission|review|freeze",
+                case=False,
+                na=False
+            )
+            &
+            (activities["Finish"] >= today)
+            &
+            (activities["Finish"] <= today + pd.Timedelta(days=30))
+        ]
+    )
+
+    # Health Score
+    score = (
+        design_readiness
+        - (critical_deliverables * 1.5)
+        - (high_risk * 2)
+    )
+
+    health_score = max(
+        0,
+        min(100, round(score))
+    )
+
+    return {
+        "health_score": health_score,
+        "design_readiness": design_readiness,
+        "critical_deliverables": critical_deliverables,
+        "high_risk": high_risk,
+        "upcoming_submissions": upcoming_submissions
+    }
