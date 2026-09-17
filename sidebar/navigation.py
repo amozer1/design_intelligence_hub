@@ -76,3 +76,16 @@ def render_navigation():
     if page_name != st.session_state.page:
         st.session_state.page = page_name
         st.rerun()
+
+    st.markdown(
+        """
+        <hr style="
+            border:none;
+            border-top:1px solid rgba(220,232,245,0.20);
+            margin:14px 0;
+        ">
+        """,
+        unsafe_allow_html=True
+    )
+
+
