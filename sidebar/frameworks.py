@@ -82,3 +82,14 @@ def render_frameworks():
     if project != current_project:
         st.session_state.project = project
         st.rerun()
+
+    st.markdown(
+        """
+        <hr style="
+            border:none;
+            border-top:1px solid rgba(220,232,245,0.20);
+            margin:14px 0;
+        ">
+        """,
+        unsafe_allow_html=True
+    )
