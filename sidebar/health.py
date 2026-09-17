@@ -125,12 +125,12 @@ def render_health(metrics):
 
     st.markdown("##### PROJECT HEALTH")
 
-    donut_col, metrics_col = st.columns(
-        [1.25, 1.75],
+    col1, col2 = st.columns(
+        [1.1, 1.9],
         gap="small"
     )
 
-    with donut_col:
+    with col1:
 
         fig = go.Figure(
             go.Pie(
@@ -149,7 +149,7 @@ def render_health(metrics):
         )
 
         fig.update_layout(
-            height=120,
+            height=125,
             margin=dict(
                 l=0,
                 r=0,
@@ -158,6 +158,7 @@ def render_health(metrics):
             ),
             showlegend=False,
             paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
             annotations=[
                 dict(
                     text=f"<b>{score}</b><br>100",
@@ -180,20 +181,37 @@ def render_health(metrics):
             }
         )
 
-    with metrics_col:
+    with col2:
 
-        row1a, row1b = st.columns([4, 1])
-        row1a.write("🟢 Design Readiness")
-        row1b.write(f"**{metrics['design_readiness']}%**")
+        rows = [
+            (
+                "🟢 Design Readiness",
+                f"{metrics['design_readiness']}%"
+            ),
+            (
+                "🟡 Critical Deliverables",
+                str(metrics["critical_deliverables"])
+            ),
+            (
+                "🟠 High Risk Activities",
+                str(metrics["high_risk"])
+            ),
+            (
+                "🟨 Upcoming Submissions",
+                str(metrics["upcoming_submissions"])
+            ),
+        ]
 
-        row2a, row2b = st.columns([4, 1])
-        row2a.write("🟡 Critical Deliverables")
-        row2b.write(f"**{metrics['critical_deliverables']}**")
+        for label, value in rows:
 
-        row3a, row3b = st.columns([4, 1])
-        row3a.write("🟠 High Risk Activities")
-        row3b.write(f"**{metrics['high_risk']}**")
+            metric_col1, metric_col2 = st.columns([4, 1])
 
-        row4a, row4b = st.columns([4, 1])
-        row4a.write("🟨 Upcoming Submissions")
-        row4b.write(f"**{metrics['upcoming_submissions']}**")
+            with metric_col1:
+                st.markdown(
+                    f"**{label}**"
+                )
+
+            with metric_col2:
+                st.markdown(
+                    f"**{value}**"
+                )
