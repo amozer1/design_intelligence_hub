@@ -6,119 +6,123 @@ def render_frameworks():
     st.markdown("""
     <style>
 
-    /* Section Title */
-    .framework-title {
-        color: #EAF2FF;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        margin-bottom: 8px;
+    .framework-title{
+        color:#EAF2FF;
+        font-size:12px;
+        font-weight:700;
+        letter-spacing:.6px;
+        margin-bottom:12px;
     }
 
-    /* Framework Header */
-    .framework-group {
-        color: #FFFFFF;
-        font-size: 14px;
-        font-weight: 700;
-        margin-top: 6px;
-        margin-bottom: 2px;
+    .framework-header{
+        color:#FFFFFF;
+        font-size:14px;
+        font-weight:700;
+        margin-top:4px;
+        margin-bottom:6px;
     }
 
-    /* Radio Groups */
-    div[role="radiogroup"] {
-        gap: 0 !important;
+    div[role="radiogroup"]{
+        gap:0 !important;
     }
 
-    /* Radio Rows */
-    div[role="radiogroup"] label {
-        padding: 2px 0 !important;
-        margin: 0 !important;
-        min-height: 24px !important;
+    div[role="radiogroup"] label{
+        padding:2px 0 !important;
+        margin:0 !important;
+        min-height:24px !important;
     }
 
-    /* Force ALL radio text white */
     div[data-baseweb="radio"] *,
     div[role="radiogroup"] p,
-    div[role="radiogroup"] span {
-        color: #FFFFFF !important;
-        opacity: 1 !important;
-        font-size: 13px !important;
-        font-weight: 500 !important;
+    div[role="radiogroup"] span{
+        color:#FFFFFF !important;
+        opacity:1 !important;
+        font-size:13px !important;
+        font-weight:500 !important;
     }
 
-    /* Reduce Streamlit spacing */
-    .element-container {
-        margin-bottom: 0rem !important;
-    }
-
-    div[data-testid="stMarkdownContainer"] p {
-        margin-bottom: 0 !important;
+    .element-container{
+        margin-bottom:0rem !important;
     }
 
     </style>
     """, unsafe_allow_html=True)
 
+    frameworks = {
+        "UU Enterprise": [
+            "Pennington Flash",
+            "Davyhulme ASP4"
+        ],
+        "UU DD&B": [
+            "Ferry PS",
+            "Rossall Outfall",
+            "Flass Lane",
+            "Tally Ho",
+            "Eccleston Bridge"
+        ]
+    }
+
+    # Default project
     if "project" not in st.session_state:
         st.session_state.project = "Ferry PS"
+
+    current_project = st.session_state.project
+
+    # Determine active framework
+    active_framework = "UU DD&B"
+
+    for fw, projects in frameworks.items():
+        if current_project in projects:
+            active_framework = fw
+            break
 
     st.markdown(
         '<div class="framework-title">FRAMEWORKS</div>',
         unsafe_allow_html=True
     )
 
-    # Enterprise Framework
+    # Enterprise
+    enterprise_expanded = active_framework == "UU Enterprise"
 
-    st.markdown(
-        '<div class="framework-group">▾ UU Enterprise Framework</div>',
-        unsafe_allow_html=True
-    )
+    with st.expander(
+        f"UU Enterprise ({len(frameworks['UU Enterprise'])})",
+        expanded=enterprise_expanded,
+    ):
+        choice = st.radio(
+            "Enterprise Projects",
+            frameworks["UU Enterprise"],
+            index=(
+                frameworks["UU Enterprise"].index(current_project)
+                if current_project in frameworks["UU Enterprise"]
+                else 0
+            ),
+            label_visibility="collapsed",
+            key="enterprise_project"
+        )
 
-    enterprise_projects = [
-        "Pennington Flash",
-        "Davyhulme ASP4"
-    ]
+        if choice != st.session_state.project:
+            st.session_state.project = choice
+            st.rerun()
 
-    enterprise_choice = st.radio(
-        "Enterprise",
-        enterprise_projects,
-        label_visibility="collapsed",
-        key="enterprise_radio"
-    )
+    # DD&B
+    ddb_expanded = active_framework == "UU DD&B"
 
-    st.divider()
+    with st.expander(
+        f"UU DD&B ({len(frameworks['UU DD&B'])})",
+        expanded=ddb_expanded,
+    ):
+        choice = st.radio(
+            "DD&B Projects",
+            frameworks["UU DD&B"],
+            index=(
+                frameworks["UU DD&B"].index(current_project)
+                if current_project in frameworks["UU DD&B"]
+                else 0
+            ),
+            label_visibility="collapsed",
+            key="ddb_project"
+        )
 
-    # DD&B Framework
-
-    st.markdown(
-        '<div class="framework-group">▾ UU DD&B Framework</div>',
-        unsafe_allow_html=True
-    )
-
-    ddb_projects = [
-        "Ferry PS",
-        "Rossall Outfall",
-        "Flass Lane",
-        "Tally Ho",
-        "Eccleston Bridge"
-    ]
-
-    ddb_choice = st.radio(
-        "DD&B",
-        ddb_projects,
-        label_visibility="collapsed",
-        key="ddb_radio"
-    )
-
-    # Selection Logic
-
-    selected = st.session_state.project
-
-    if enterprise_choice != selected:
-        selected = enterprise_choice
-
-    if ddb_choice != selected:
-        selected = ddb_choice
-
-    if selected != st.session_state.project:
-        st.session_state.project = selected
-        st.rerun()
+        if choice != st.session_state.project:
+            st.session_state.project = choice
+            st.rerun()
