@@ -53,7 +53,7 @@ def render_navigation():
         "📅 Upcoming Submissions",
         "⚠️ Critical Path & Alerts",
         "🔗 Design Dependencies",
-        "❓ Queries & TQs",
+        "❓ RFIs & TQs",
         "🤖 AI Insights & Forecast",
         "📋 Reports",
         "🗄️ Data Explorer",
