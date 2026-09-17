@@ -20,14 +20,13 @@ def calculate_health_metrics(cl32):
         cl32["SnapshotDate"] == latest_snapshot
     ].copy()
 
-    numeric_cols = [
+    for col in [
         "Activity % Complete",
         "Variance - BL1 Finish Date",
         "Total Float",
         "Remaining Duration",
-    ]
+    ]:
 
-    for col in numeric_cols:
         if col in df.columns:
             df[col] = pd.to_numeric(
                 df[col],
@@ -89,14 +88,20 @@ def calculate_health_metrics(cl32):
         ]
     )
 
-    health_score = (
-        (design_readiness * 0.60)
-        + (max(0, 100 - critical_deliverables) * 0.20)
-        + (max(0, 100 - high_risk) * 0.20)
-    )
-
     health_score = round(
-        max(0, min(100, health_score))
+        max(
+            0,
+            min(
+                100,
+                (
+                    (design_readiness * 0.60)
+                    +
+                    (max(0, 100 - critical_deliverables) * 0.20)
+                    +
+                    (max(0, 100 - high_risk) * 0.20)
+                )
+            )
+        )
     )
 
     return {
@@ -117,18 +122,30 @@ def render_health(metrics):
     elif score >= 60:
         ring_colour = "#F5A623"
     else:
-        ring_colour = "#FF1F5A"
+        ring_colour = "#FF2D5E"
 
-    st.caption("PROJECT HEALTH")
+    st.markdown(
+        """
+        <div style="
+            color:#B7C7DA;
+            font-size:12px;
+            font-weight:700;
+            letter-spacing:0.5px;
+            margin-top:8px;
+            margin-bottom:18px;
+        ">
+            PROJECT HEALTH
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-    st.write("")
-
-    col1, col2 = st.columns(
-        [1.1, 1.9],
+    donut_col, metrics_col = st.columns(
+        [1.15, 1.85],
         gap="small"
     )
 
-    with col1:
+    with donut_col:
 
         fig = go.Figure(
             go.Pie(
@@ -136,7 +153,7 @@ def render_health(metrics):
                     score,
                     max(0, 100 - score)
                 ],
-                hole=0.90,
+                hole=0.88,
                 sort=False,
                 textinfo="none",
                 marker_colors=[
@@ -147,7 +164,7 @@ def render_health(metrics):
         )
 
         fig.update_layout(
-            height=125,
+            height=130,
             margin=dict(
                 l=0,
                 r=0,
@@ -159,7 +176,7 @@ def render_health(metrics):
             plot_bgcolor="rgba(0,0,0,0)",
             annotations=[
                 dict(
-                    text=f"<b>{score}</b><br>100",
+                    text=f"<b>{score}</b><br><span style='font-size:9px'>100</span>",
                     x=0.5,
                     y=0.5,
                     showarrow=False,
@@ -174,12 +191,10 @@ def render_health(metrics):
         st.plotly_chart(
             fig,
             use_container_width=True,
-            config={
-                "displayModeBar": False
-            }
+            config={"displayModeBar": False}
         )
 
-    with col2:
+    with metrics_col:
 
         st.write("")
         st.write("")
@@ -205,16 +220,31 @@ def render_health(metrics):
 
         for label, value in rows:
 
-            c1, c2 = st.columns([3, 1])
+            left, right = st.columns([3, 1])
 
-            with c1:
+            with left:
                 st.markdown(
-                    f"<span style='color:white'>{label}</span>",
+                    f"""
+                    <span style="
+                        color:white;
+                        font-size:14px;
+                    ">
+                        {label}
+                    </span>
+                    """,
                     unsafe_allow_html=True
                 )
 
-            with c2:
+            with right:
                 st.markdown(
-                    f"<span style='color:white;font-weight:700'>{value}</span>",
+                    f"""
+                    <span style="
+                        color:white;
+                        font-size:14px;
+                        font-weight:700;
+                    ">
+                        {value}
+                    </span>
+                    """,
                     unsafe_allow_html=True
                 )
