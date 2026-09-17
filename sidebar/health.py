@@ -20,12 +20,14 @@ def calculate_health_metrics(cl32):
         cl32["SnapshotDate"] == latest_snapshot
     ].copy()
 
-    for col in [
+    numeric_cols = [
         "Activity % Complete",
         "Variance - BL1 Finish Date",
         "Total Float",
         "Remaining Duration",
-    ]:
+    ]
+
+    for col in numeric_cols:
 
         if col in df.columns:
             df[col] = pd.to_numeric(
@@ -33,11 +35,13 @@ def calculate_health_metrics(cl32):
                 errors="coerce"
             )
 
-    df["Finish"] = pd.to_datetime(
-        df["Finish"],
-        dayfirst=True,
-        errors="coerce"
-    )
+    if "Finish" in df.columns:
+
+        df["Finish"] = pd.to_datetime(
+            df["Finish"],
+            dayfirst=True,
+            errors="coerce"
+        )
 
     activities = df[
         df["Activity ID"]
@@ -108,33 +112,57 @@ def calculate_health_metrics(cl32):
 
 def render_health(metrics):
 
+    score = metrics["health_score"]
+
+    if score >= 80:
+        colour = "#22C55E"
+        status = "ON TRACK"
+
+    elif score >= 60:
+        colour = "#F59E0B"
+        status = "WATCH"
+
+    else:
+        colour = "#FF1F5A"
+        status = "AT RISK"
+
     st.markdown(
-        "<div class='section-title'>PROJECT HEALTH</div>",
+        """
+        <div style="
+            color:#B7C7DA;
+            font-size:12px;
+            font-weight:700;
+            letter-spacing:0.5px;
+            margin-bottom:6px;
+        ">
+            PROJECT HEALTH
+        </div>
+        """,
         unsafe_allow_html=True
     )
 
-    score = metrics["health_score"]
+    fig = go.Figure()
 
-    fig = go.Figure(
+    fig.add_trace(
         go.Pie(
             values=[
                 score,
-                max(0, 100 - score)
+                100 - score
             ],
-            hole=0.72,
+            hole=0.78,
             sort=False,
             textinfo="none",
             marker=dict(
                 colors=[
-                    "#ff1f5a",
-                    "#2d3d5c"
+                    colour,
+                    "#32466B"
                 ]
             )
         )
     )
 
     fig.update_layout(
-        height=180,
+        height=200,
         margin=dict(
             l=0,
             r=0,
@@ -148,10 +176,10 @@ def render_health(metrics):
             dict(
                 text=f"<b>{score}</b><br>/100",
                 x=0.5,
-                y=0.5,
+                y=0.52,
                 showarrow=False,
                 font=dict(
-                    size=22,
+                    size=24,
                     color="white"
                 )
             )
@@ -166,38 +194,46 @@ def render_health(metrics):
         }
     )
 
-    c1, c2 = st.columns([4, 1])
-
-    with c1:
-        st.caption("🟢 Design Readiness")
-    with c2:
-        st.caption(
-            f"{metrics['design_readiness']}%"
-        )
-
-    c1, c2 = st.columns([4, 1])
-
-    with c1:
-        st.caption("🟡 Critical Deliverables")
-    with c2:
-        st.caption(
-            str(metrics["critical_deliverables"])
-        )
+    st.markdown(
+        f"""
+        <div style="
+            text-align:center;
+            color:{colour};
+            font-weight:700;
+            font-size:12px;
+            margin-top:-18px;
+            margin-bottom:12px;
+        ">
+            {status}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     c1, c2 = st.columns([4, 1])
 
     with c1:
-        st.caption("🟠 High Risk Activities")
+        st.write("🟢 Readiness")
     with c2:
-        st.caption(
-            str(metrics["high_risk"])
-        )
+        st.write(f"**{metrics['design_readiness']}%**")
 
     c1, c2 = st.columns([4, 1])
 
     with c1:
-        st.caption("🟨 Upcoming Submissions")
+        st.write("🔴 Critical")
     with c2:
-        st.caption(
-            str(metrics["upcoming_submissions"])
-        )
+        st.write(f"**{metrics['critical_deliverables']}**")
+
+    c1, c2 = st.columns([4, 1])
+
+    with c1:
+        st.write("🟠 High Risk")
+    with c2:
+        st.write(f"**{metrics['high_risk']}**")
+
+    c1, c2 = st.columns([4, 1])
+
+    with c1:
+        st.write("🟡 Upcoming")
+    with c2:
+        st.write(f"**{metrics['upcoming_submissions']}**")
