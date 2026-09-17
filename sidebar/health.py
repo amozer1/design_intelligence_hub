@@ -1,61 +1,130 @@
-import streamlit as st
-import plotly.graph_objects as go
+import pandas as pd
 
 
-def render_health(metrics):
+def calculate_health_metrics(cl32):
 
-    st.markdown("##### PROJECT HEALTH")
+    if cl32.empty:
+        return {
+            "health_score": 0,
+            "design_readiness": 0,
+            "critical_deliverables": 0,
+            "high_risk": 0,
+            "upcoming_submissions": 0,
+        }
 
-    col1, col2 = st.columns([1, 2])
+    # Use latest snapshot only
+    latest_date = cl32["SnapshotDate"].max()
 
-    with col1:
+    df = cl32[
+        cl32["SnapshotDate"] == latest_date
+    ].copy()
 
-        score = metrics["health_score"]
+    # Numeric fields
+    numeric_cols = [
+        "Activity % Complete",
+        "Variance - BL1 Finish Date",
+        "Total Float",
+        "Remaining Duration"
+    ]
 
-        fig = go.Figure(
-            go.Pie(
-                values=[score, 100 - score],
-                hole=0.75,
-                sort=False,
-                rotation=90,
-                marker_colors=["#ff1744", "#2f3b52"],
-                textinfo="none",
+    for col in numeric_cols:
+        if col in df.columns:
+            df[col] = pd.to_numeric(
+                df[col],
+                errors="coerce"
             )
-        )
 
-        fig.update_layout(
-            height=140,
-            margin=dict(l=0, r=0, t=0, b=0),
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
-            showlegend=False,
-            annotations=[
-                dict(
-                    text=f"<b>{score}</b><br>/100",
-                    x=0.5,
-                    y=0.5,
-                    showarrow=False,
-                    font=dict(size=20, color="white"),
-                )
-            ],
-        )
+    df["Finish"] = pd.to_datetime(
+        df["Finish"],
+        dayfirst=True,
+        errors="coerce"
+    )
 
-        st.plotly_chart(
-            fig,
-            use_container_width=True,
-            config={"displayModeBar": False},
-        )
+    # Keep actual activities only
+    activities = df[
+        df["Activity ID"]
+        .astype(str)
+        .str.contains("-", na=False)
+    ].copy()
 
-    with col2:
+    # -------------------------
+    # Design Readiness
+    # -------------------------
 
-        st.markdown(
-            f"""
-🟢 Design Readiness&nbsp;&nbsp;&nbsp;&nbsp;**{metrics['design_readiness']}%**
+    design_readiness = round(
+        activities["Activity % Complete"]
+        .fillna(0)
+        .mean(),
+        0
+    )
 
-🟡 Critical Deliverables&nbsp;&nbsp;&nbsp;&nbsp;**{metrics['critical_deliverables']}**
+    # -------------------------
+    # Critical Deliverables
+    # Float <=0 and incomplete
+    # -------------------------
 
-🟠 High Risk Activities&nbsp;&nbsp;&nbsp;&nbsp;**{metrics['high_risk']}**
+    critical_deliverables = len(
+        activities[
+            (activities["Total Float"] <= 0)
+            &
+            (activities["Activity % Complete"] < 100)
+        ]
+    )
 
-🟨 Upcoming Submissions&nbsp;&nbsp;&nbsp;&nbsp;**{metrics['upcoming_submissions']}**
-"""
-        )
+    # -------------------------
+    # High Risk Activities
+    # >14 day negative variance
+    # -------------------------
+
+    high_risk = len(
+        activities[
+            activities[
+                "Variance - BL1 Finish Date"
+            ] <= -14
+        ]
+    )
+
+    # -------------------------
+    # Upcoming Submissions
+    # -------------------------
+
+    today = pd.Timestamp.today()
+
+    upcoming_submissions = len(
+        activities[
+            activities["Activity Name"]
+            .astype(str)
+            .str.contains(
+                "submission|review|freeze",
+                case=False,
+                na=False
+            )
+            &
+            (activities["Finish"] >= today)
+            &
+            (activities["Finish"] <= today + pd.Timedelta(days=30))
+        ]
+    )
+
+    # -------------------------
+    # Health Score
+    # derived, not hardcoded
+    # -------------------------
+
+    health_score = (
+        0.60 * design_readiness
+        + 0.20 * max(0, 100 - high_risk * 5)
+        + 0.20 * max(0, 100 - critical_deliverables * 2)
+    )
+
+    health_score = round(
+        max(0, min(100, health_score))
+    )
+
+    return {
+        "health_score": health_score,
+        "design_readiness": int(design_readiness),
+        "critical_deliverables": int(critical_deliverables),
+        "high_risk": int(high_risk),
+        "upcoming_submissions": int(upcoming_submissions),
+    }
