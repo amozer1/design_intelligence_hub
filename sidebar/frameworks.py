@@ -61,6 +61,28 @@ def render_frameworks():
     if "project" not in st.session_state:
         st.session_state.project = "Ferry PS"
 
+    enterprise_projects = [
+        "Pennington Flash",
+        "Davyhulme ASP4"
+    ]
+
+    ddb_projects = [
+        "Ferry PS",
+        "Rossall Outfall",
+        "Flass Lane",
+        "Tally Ho",
+        "Eccleston Bridge"
+    ]
+
+    # Keep radio states aligned with the active project
+    if st.session_state.project in enterprise_projects:
+        st.session_state.enterprise_radio = st.session_state.project
+        st.session_state.ddb_radio = None
+
+    elif st.session_state.project in ddb_projects:
+        st.session_state.ddb_radio = st.session_state.project
+        st.session_state.enterprise_radio = None
+
     st.markdown(
         '<div class="framework-title">FRAMEWORKS</div>',
         unsafe_allow_html=True
@@ -73,19 +95,10 @@ def render_frameworks():
         unsafe_allow_html=True
     )
 
-    enterprise_projects = [
-        "Pennington Flash",
-        "Davyhulme ASP4"
-    ]
-
     enterprise_choice = st.radio(
         "Enterprise",
-        enterprise_projects,
-        index=(
-            enterprise_projects.index(st.session_state.project)
-            if st.session_state.project in enterprise_projects
-            else None
-        ),
+        [None] + enterprise_projects,
+        format_func=lambda x: "" if x is None else x,
         label_visibility="collapsed",
         key="enterprise_radio"
     )
@@ -99,36 +112,20 @@ def render_frameworks():
         unsafe_allow_html=True
     )
 
-    ddb_projects = [
-        "Ferry PS",
-        "Rossall Outfall",
-        "Flass Lane",
-        "Tally Ho",
-        "Eccleston Bridge"
-    ]
-
     ddb_choice = st.radio(
         "DD&B",
-        ddb_projects,
-        index=(
-            ddb_projects.index(st.session_state.project)
-            if st.session_state.project in ddb_projects
-            else None
-        ),
+        [None] + ddb_projects,
+        format_func=lambda x: "" if x is None else x,
         label_visibility="collapsed",
         key="ddb_radio"
     )
 
     # Selection Logic
 
-    selected = st.session_state.project
+    if enterprise_choice and enterprise_choice != st.session_state.project:
+        st.session_state.project = enterprise_choice
+        st.rerun()
 
-    if enterprise_choice and enterprise_choice != selected:
-        selected = enterprise_choice
-
-    if ddb_choice and ddb_choice != selected:
-        selected = ddb_choice
-
-    if selected != st.session_state.project:
-        st.session_state.project = selected
+    if ddb_choice and ddb_choice != st.session_state.project:
+        st.session_state.project = ddb_choice
         st.rerun()
