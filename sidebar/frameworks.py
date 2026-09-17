@@ -6,53 +6,30 @@ def render_frameworks():
     st.markdown("""
     <style>
 
-    /* Section Title */
     .framework-title {
-        color: #EAF2FF;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        margin-bottom: 8px;
-    }
-
-    /* Framework Header */
-    .framework-group {
-        color: #FFFFFF;
+        color: #B7C7DA;
         font-size: 14px;
         font-weight: 700;
-        margin-top: 6px;
-        margin-bottom: 2px;
+        margin-bottom: 12px;
     }
 
-    /* Radio Groups */
-    div[role="radiogroup"] {
-        gap: 0 !important;
+    .framework-group {
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 12px;
+        margin-bottom: 6px;
     }
 
-    /* Radio Rows */
     div[role="radiogroup"] label {
-        padding: 2px 0 !important;
+        padding: 3px 0 !important;
         margin: 0 !important;
-        min-height: 24px !important;
     }
 
-    /* Force ALL radio text white */
-    div[data-baseweb="radio"] *,
-    div[role="radiogroup"] p,
-    div[role="radiogroup"] span {
-        color: #FFFFFF !important;
+    div[data-baseweb="radio"] * {
+        color: white !important;
         opacity: 1 !important;
         font-size: 13px !important;
-        font-weight: 500 !important;
-    }
-
-    /* Reduce Streamlit spacing */
-    .element-container {
-        margin-bottom: 0rem !important;
-    }
-
-    div[data-testid="stMarkdownContainer"] p {
-        margin-bottom: 0 !important;
     }
 
     </style>
@@ -61,38 +38,10 @@ def render_frameworks():
     if "project" not in st.session_state:
         st.session_state.project = "Ferry PS"
 
-    st.markdown(
-        '<div class="framework-title">FRAMEWORKS</div>',
-        unsafe_allow_html=True
-    )
-
-    # Enterprise Framework
-
-    st.markdown(
-        '<div class="framework-group">▾ UU Enterprise Framework</div>',
-        unsafe_allow_html=True
-    )
-
     enterprise_projects = [
         "Pennington Flash",
         "Davyhulme ASP4"
     ]
-
-    enterprise_choice = st.radio(
-        "Enterprise",
-        enterprise_projects,
-        label_visibility="collapsed",
-        key="enterprise_radio"
-    )
-
-    st.divider()
-
-    # DD&B Framework
-
-    st.markdown(
-        '<div class="framework-group">▾ UU DD&B Framework</div>',
-        unsafe_allow_html=True
-    )
 
     ddb_projects = [
         "Ferry PS",
@@ -102,22 +51,39 @@ def render_frameworks():
         "Eccleston Bridge"
     ]
 
-    ddb_choice = st.radio(
-        "DD&B",
-        ddb_projects,
-        label_visibility="collapsed",
-        key="ddb_radio"
+    all_projects = enterprise_projects + ddb_projects
+
+    st.markdown(
+        '<div class="framework-title">FRAMEWORKS</div>',
+        unsafe_allow_html=True
     )
 
-    # Selection Logic
+    selected = st.radio(
+        "",
+        all_projects,
+        index=all_projects.index(st.session_state.project),
+        label_visibility="collapsed"
+    )
 
-    selected = st.session_state.project
+    st.markdown(
+        '<div class="framework-group">▾ UU Enterprise Framework</div>',
+        unsafe_allow_html=True
+    )
 
-    if enterprise_choice != selected:
-        selected = enterprise_choice
+    for project in enterprise_projects:
+        icon = "●" if selected == project else "○"
+        st.markdown(f"{icon} {project}")
 
-    if ddb_choice != selected:
-        selected = ddb_choice
+    st.divider()
+
+    st.markdown(
+        '<div class="framework-group">▾ UU DD&B Framework</div>',
+        unsafe_allow_html=True
+    )
+
+    for project in ddb_projects:
+        icon = "●" if selected == project else "○"
+        st.markdown(f"{icon} {project}")
 
     if selected != st.session_state.project:
         st.session_state.project = selected
