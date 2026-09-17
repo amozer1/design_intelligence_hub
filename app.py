@@ -25,19 +25,8 @@ st.set_page_config(
 render_sidebar()
 
 # ==================================================
-# SESSION STATE DEFAULTS
+# SIDEBAR HEALTH METRICS
 # ==================================================
-
-if "page" not in st.session_state:
-    st.session_state.page = "Executive Dashboard"
-
-if "project" not in st.session_state:
-    st.session_state.project = "Ferry PS"
-
-# ==================================================
-# PROJECT METRICS
-# ==================================================
-# Replace with real data later
 
 metrics = {
     "health_score": 58,
@@ -55,17 +44,18 @@ with st.sidebar:
 
     render_branding()
 
-    st.divider()
-
     render_frameworks()
-
-    st.divider()
 
     render_navigation()
 
-    st.divider()
-
     render_health(metrics)
+
+# ==================================================
+# DEFAULT PAGE
+# ==================================================
+
+if "page" not in st.session_state:
+    st.session_state.page = "Executive Dashboard"
 
 # ==================================================
 # PAGE ROUTING
@@ -101,4 +91,26 @@ elif page == "Critical Path & Alerts":
 
     st.title("Critical Path & Alerts")
 
-elif page == "Design Dependencies"
+elif page == "Design Dependencies":
+
+    st.title("Design Dependencies")
+
+elif page == "Queries & TQs":
+
+    st.title("Queries & TQs")
+
+elif page == "AI Insights & Forecast":
+
+    st.title("AI Insights & Forecast")
+
+elif page == "Reports":
+
+    st.title("Reports")
+
+elif page == "Data Explorer":
+
+    st.title("Data Explorer")
+
+elif page == "Settings":
+
+    st.title("Settings")
