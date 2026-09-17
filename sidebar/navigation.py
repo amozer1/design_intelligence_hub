@@ -3,103 +3,121 @@ import streamlit as st
 
 def render_navigation():
 
-    # ==================================================
-    # SESSION STATE
-    # ==================================================
-
     if "page" not in st.session_state:
         st.session_state.page = "Executive Dashboard"
-
-    # ==================================================
-    # STYLING
-    # ==================================================
 
     st.markdown("""
     <style>
 
-    .nav-title {
-        color: #B7C7DA;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        margin-bottom: 10px;
-        border-bottom: 1px solid rgba(255,255,255,.10);
-        padding-bottom: 6px;
+    /* Navigation Title */
+
+    .nav-title{
+        color:#B7C7DA;
+        font-size:12px;
+        font-weight:700;
+        letter-spacing:.5px;
+        margin-bottom:8px;
+        padding-bottom:6px;
+        border-bottom:1px solid rgba(255,255,255,.08);
     }
 
-    div[data-testid="stButton"] button {
+    /* Button Styling */
 
-        width: 100%;
-
-        background: transparent !important;
-
-        color: #EAF2FF !important;
-
-        border: none !important;
-
-        border-radius: 8px !important;
-
-        text-align: left !important;
-
-        justify-content: flex-start !important;
-
-        padding: 8px 12px !important;
-
-        min-height: 36px !important;
-
-        font-size: 14px !important;
-
-        font-weight: 500 !important;
-
-        box-shadow: none !important;
+    div[data-testid="stButton"]{
+        margin-bottom:2px !important;
     }
 
-    div[data-testid="stButton"] button:hover {
+    div[data-testid="stButton"] button{
 
-        background: rgba(255,255,255,.05) !important;
+        width:100%;
+
+        background:transparent !important;
+
+        color:#EAF2FF !important;
+
+        border:none !important;
+
+        border-radius:8px !important;
+
+        box-shadow:none !important;
+
+        min-height:34px !important;
+
+        padding:6px 12px !important;
+
+        font-size:14px !important;
+
+        font-weight:500 !important;
+
+        text-align:left !important;
+
+        justify-content:flex-start !important;
+
     }
 
-    .active-nav {
+    div[data-testid="stButton"] button:hover{
 
-        background: linear-gradient(
+        background:rgba(255,255,255,.05) !important;
+
+    }
+
+    /* Active Item */
+
+    .active-nav{
+
+        background:linear-gradient(
             90deg,
             #2563EB,
-            #335CE5
+            #3B82F6
         );
 
-        color: white;
+        color:white;
 
-        padding: 10px 12px;
+        padding:10px 14px;
 
-        border-radius: 8px;
+        border-radius:8px;
 
-        font-size: 14px;
+        font-size:14px;
 
-        font-weight: 600;
+        font-weight:600;
 
-        margin-bottom: 2px;
+        margin-bottom:2px;
+
     }
 
-    .submenu {
-        color: #9FB5D1;
-        font-size: 13px;
-        padding-left: 34px;
-        margin-top: 2px;
-        margin-bottom: 2px;
+    /* Sub Menu */
+
+    .submenu{
+
+        color:#9FB5D1;
+
+        font-size:13px;
+
+        padding-left:38px;
+
+        line-height:1.8;
+
+        margin-top:4px;
+
+        margin-bottom:4px;
+
     }
 
-    .element-container {
-        margin-bottom: 0rem !important;
+    /* Remove extra Streamlit spacing */
+
+    .element-container{
+        margin-bottom:0rem !important;
     }
 
     </style>
     """, unsafe_allow_html=True)
 
-    # ==================================================
-    # MENU
-    # ==================================================
+    st.markdown(
+        '<div class="nav-title">MAIN NAVIGATION</div>',
+        unsafe_allow_html=True
+    )
 
-    menu_items = [
+    menu = [
         ("🏠", "Executive Dashboard"),
         ("📄", "Deliverables"),
         ("📊", "Discipline Performance"),
@@ -109,41 +127,24 @@ def render_navigation():
         ("⚠️", "Critical Path & Alerts"),
         ("🔗", "Design Dependencies"),
         ("❓", "Queries & TQs"),
-        ("🤖", "AI Insights & Forecast"),
+        ("🌐", "AI Insights & Forecast"),
         ("📋", "Reports"),
-        ("🗄️", "Data Explorer"),
-        ("⚙️", "Settings"),
+        ("🗃️", "Data Explorer"),
+        ("⚙️", "Settings")
     ]
 
-    st.markdown(
-        '<div class="nav-title">MAIN NAVIGATION</div>',
-        unsafe_allow_html=True
-    )
+    for icon, page in menu:
 
-    for icon, page in menu_items:
-
-        if st.session_state.page == page:
+        if page == st.session_state.page:
 
             st.markdown(
                 f"""
                 <div class="active-nav">
-                    {icon} &nbsp; {page}
+                    {icon} &nbsp;&nbsp; {page}
                 </div>
                 """,
                 unsafe_allow_html=True
             )
-
-            if page == "Upcoming Submissions":
-
-                st.markdown(
-                    '<div class="submenu">• Next 7 Days</div>',
-                    unsafe_allow_html=True
-                )
-
-                st.markdown(
-                    '<div class="submenu">• Next 30 Days</div>',
-                    unsafe_allow_html=True
-                )
 
         else:
 
@@ -155,14 +156,14 @@ def render_navigation():
                 st.session_state.page = page
                 st.rerun()
 
-            if page == "Upcoming Submissions":
+        if page == "Upcoming Submissions":
 
-                st.markdown(
-                    '<div class="submenu">• Next 7 Days</div>',
-                    unsafe_allow_html=True
-                )
-
-                st.markdown(
-                    '<div class="submenu">• Next 30 Days</div>',
-                    unsafe_allow_html=True
-                )
+            st.markdown(
+                """
+                <div class="submenu">
+                    • Next 7 Days<br>
+                    • Next 30 Days
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
