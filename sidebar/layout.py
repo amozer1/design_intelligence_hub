@@ -8,7 +8,7 @@ def render_sidebar():
 
     /* Sidebar background */
     section[data-testid="stSidebar"] {
-        background: #0D3B66;
+        background: #0B3A66;
     }
 
     /* Main sidebar padding */
@@ -24,9 +24,9 @@ def render_sidebar():
         margin-bottom: 0rem !important;
     }
 
-    /* Framework headers */
+    /* Framework section headers */
     .framework-group {
-        color: white;
+        color: #FFFFFF;
         font-size: 14px;
         font-weight: 700;
         margin-top: 6px;
@@ -35,11 +35,11 @@ def render_sidebar():
 
     /* Section titles */
     .framework-title {
-        color: #D6E2F0;
+        color: #DCE8F5;
         font-size: 12px;
         font-weight: 700;
         margin-bottom: 6px;
-        letter-spacing: .5px;
+        letter-spacing: 0.5px;
     }
 
     /* Radio group spacing */
@@ -66,16 +66,16 @@ def render_sidebar():
         opacity: 1 !important;
     }
 
-    /* Selected item */
+    /* Selected radio item */
     div[data-baseweb="radio"]:has(input:checked) p {
         color: #FFFFFF !important;
         font-weight: 600 !important;
     }
 
-    /* Divider */
+    /* Dividers */
     hr {
         margin: 8px 0 !important;
-        border-top: 1px solid rgba(255,255,255,0.18) !important;
+        border-top: 1px solid rgba(255,255,255,0.20) !important;
     }
 
     </style>
