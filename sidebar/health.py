@@ -30,12 +30,14 @@ def calculate_health_metrics(cl32):
     for col in numeric_cols:
 
         if col in df.columns:
+
             df[col] = pd.to_numeric(
                 df[col],
                 errors="coerce"
             )
 
     if "Finish" in df.columns:
+
         df["Finish"] = pd.to_datetime(
             df["Finish"],
             dayfirst=True,
@@ -92,20 +94,15 @@ def calculate_health_metrics(cl32):
 
     health_score = (
         (design_readiness * 0.60)
-        +
-        (
-            max(0, 100 - critical_deliverables)
-            * 0.20
-        )
-        +
-        (
-            max(0, 100 - high_risk)
-            * 0.20
-        )
+        + (max(0, 100 - critical_deliverables) * 0.20)
+        + (max(0, 100 - high_risk) * 0.20)
     )
 
     health_score = round(
-        max(0, min(100, health_score))
+        max(
+            0,
+            min(100, health_score)
+        )
     )
 
     return {
@@ -128,50 +125,27 @@ def render_health(metrics):
     else:
         ring_colour = "#FF1F5A"
 
-    st.markdown("""
-    <style>
-
-    .health-title{
-        color:white;
-        font-size:12px;
-        font-weight:700;
-        letter-spacing:.5px;
-        margin-bottom:4px;
-    }
-
-    .health-row{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        color:white;
-        font-size:13px;
-        margin-bottom:8px;
-    }
-
-    .health-label{
-        color:white;
-        font-size:13px;
-        font-weight:500;
-        white-space:nowrap;
-    }
-
-    .health-value{
-        color:white;
-        font-size:13px;
-        font-weight:700;
-    }
-
-    </style>
-    """, unsafe_allow_html=True)
-
     st.markdown(
-        '<div class="health-title">PROJECT HEALTH</div>',
+        """
+        <div style="
+            color:white;
+            font-size:12px;
+            font-weight:700;
+            letter-spacing:.5px;
+            margin-bottom:4px;
+        ">
+            PROJECT HEALTH
+        </div>
+        """,
         unsafe_allow_html=True
     )
 
-    left, right = st.columns([1, 2])
+    donut_col, metrics_col = st.columns(
+        [1.15, 1.85],
+        gap="small"
+    )
 
-    with left:
+    with donut_col:
 
         fig = go.Figure()
 
@@ -181,38 +155,38 @@ def render_health(metrics):
                     score,
                     max(0, 100 - score)
                 ],
-                hole=0.86,
+                hole=0.90,
                 sort=False,
                 textinfo="none",
                 marker=dict(
                     colors=[
                         ring_colour,
-                        "#415B8A"
+                        "#405A87"
                     ]
                 )
             )
         )
 
         fig.update_layout(
-            height=125,
+            height=105,
             margin=dict(
                 l=0,
                 r=0,
                 t=0,
                 b=0
             ),
-            showlegend=False,
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
+            showlegend=False,
             annotations=[
                 dict(
-                    text=f"<b>{score}</b><br>100",
+                    text=f"<b>{score}</b><br><span style='font-size:9px'>100</span>",
                     x=0.5,
                     y=0.5,
                     showarrow=False,
                     font=dict(
-                        size=12,
-                        color="white"
+                        color="white",
+                        size=12
                     )
                 )
             ]
@@ -221,16 +195,14 @@ def render_health(metrics):
         st.plotly_chart(
             fig,
             use_container_width=True,
-            config={
-                "displayModeBar": False
-            }
+            config={"displayModeBar": False}
         )
 
-    with right:
+    with metrics_col:
 
         rows = [
             (
-                "#41D97A",
+                "#4ADE80",
                 "Design Readiness",
                 f"{metrics['design_readiness']}%"
             ),
@@ -245,7 +217,7 @@ def render_health(metrics):
                 metrics["high_risk"]
             ),
             (
-                "#F2C94C",
+                "#F4D03F",
                 "Upcoming Submissions",
                 metrics["upcoming_submissions"]
             ),
@@ -255,12 +227,27 @@ def render_health(metrics):
 
             st.markdown(
                 f"""
-                <div class="health-row">
-                    <div class="health-label">
-                        <span style="color:{colour};font-size:16px;">●</span>
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    width:100%;
+                    margin-bottom:8px;
+                    color:white;
+                    font-size:13px;
+                ">
+                    <div>
+                        <span style="
+                            color:{colour};
+                            font-size:15px;
+                        ">●</span>
                         {label}
                     </div>
-                    <div class="health-value">
+
+                    <div style="
+                        font-weight:700;
+                        margin-left:12px;
+                    ">
                         {value}
                     </div>
                 </div>
