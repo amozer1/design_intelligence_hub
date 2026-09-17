@@ -11,38 +11,22 @@ def render_frameworks():
         font-size:12px;
         font-weight:700;
         letter-spacing:.6px;
-        margin-bottom:12px;
+        margin-bottom:10px;
     }
 
-    .framework-header{
-        color:#FFFFFF;
+    .framework-group{
+        color:white;
         font-size:14px;
         font-weight:700;
-        margin-top:4px;
-        margin-bottom:6px;
-    }
-
-    div[role="radiogroup"]{
-        gap:0 !important;
-    }
-
-    div[role="radiogroup"] label{
-        padding:2px 0 !important;
-        margin:0 !important;
-        min-height:24px !important;
+        margin-top:8px;
+        margin-bottom:4px;
     }
 
     div[data-baseweb="radio"] *,
     div[role="radiogroup"] p,
     div[role="radiogroup"] span{
-        color:#FFFFFF !important;
+        color:white !important;
         opacity:1 !important;
-        font-size:13px !important;
-        font-weight:500 !important;
-    }
-
-    .element-container{
-        margin-bottom:0rem !important;
     }
 
     </style>
@@ -62,67 +46,39 @@ def render_frameworks():
         ]
     }
 
-    # Default project
     if "project" not in st.session_state:
         st.session_state.project = "Ferry PS"
 
     current_project = st.session_state.project
-
-    # Determine active framework
-    active_framework = "UU DD&B"
-
-    for fw, projects in frameworks.items():
-        if current_project in projects:
-            active_framework = fw
-            break
 
     st.markdown(
         '<div class="framework-title">FRAMEWORKS</div>',
         unsafe_allow_html=True
     )
 
-    # Enterprise
-    enterprise_expanded = active_framework == "UU Enterprise"
+    # Detect active framework
+    active_framework = None
 
-    with st.expander(
-        f"UU Enterprise ({len(frameworks['UU Enterprise'])})",
-        expanded=enterprise_expanded,
-    ):
-        choice = st.radio(
-            "Enterprise Projects",
-            frameworks["UU Enterprise"],
-            index=(
-                frameworks["UU Enterprise"].index(current_project)
-                if current_project in frameworks["UU Enterprise"]
-                else 0
-            ),
-            label_visibility="collapsed",
-            key="enterprise_project"
-        )
+    for fw, projects in frameworks.items():
+        if current_project in projects:
+            active_framework = fw
+            break
 
-        if choice != st.session_state.project:
-            st.session_state.project = choice
-            st.rerun()
+    # Framework selector
+    framework = st.selectbox(
+        "",
+        list(frameworks.keys()),
+        index=list(frameworks.keys()).index(active_framework),
+        label_visibility="collapsed"
+    )
 
-    # DD&B
-    ddb_expanded = active_framework == "UU DD&B"
+    # Project selector
+    project = st.radio(
+        "",
+        frameworks[framework],
+        label_visibility="collapsed"
+    )
 
-    with st.expander(
-        f"UU DD&B ({len(frameworks['UU DD&B'])})",
-        expanded=ddb_expanded,
-    ):
-        choice = st.radio(
-            "DD&B Projects",
-            frameworks["UU DD&B"],
-            index=(
-                frameworks["UU DD&B"].index(current_project)
-                if current_project in frameworks["UU DD&B"]
-                else 0
-            ),
-            label_visibility="collapsed",
-            key="ddb_project"
-        )
-
-        if choice != st.session_state.project:
-            st.session_state.project = choice
-            st.rerun()
+    if project != current_project:
+        st.session_state.project = project
+        st.rerun()
