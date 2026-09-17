@@ -30,6 +30,7 @@ def calculate_health_metrics(cl32):
     for col in numeric_cols:
 
         if col in df.columns:
+
             df[col] = pd.to_numeric(
                 df[col],
                 errors="coerce"
@@ -92,13 +93,28 @@ def calculate_health_metrics(cl32):
     )
 
     health_score = (
-        (design_readiness * 0.6)
-        + (max(0, 100 - critical_deliverables) * 0.2)
-        + (max(0, 100 - high_risk) * 0.2)
+        (design_readiness * 0.60)
+        +
+        (
+            max(
+                0,
+                100 - critical_deliverables
+            ) * 0.20
+        )
+        +
+        (
+            max(
+                0,
+                100 - high_risk
+            ) * 0.20
+        )
     )
 
     health_score = round(
-        max(0, min(100, health_score))
+        max(
+            0,
+            min(100, health_score)
+        )
     )
 
     return {
@@ -126,18 +142,35 @@ def render_health(metrics):
         colour = "#FF1F5A"
         status = "AT RISK"
 
+    st.markdown("""
+    <style>
+
+    .health-title {
+        color: white;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+    }
+
+    .health-row {
+        color: white;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .health-value {
+        color: white;
+        font-size: 13px;
+        font-weight: 700;
+        text-align: right;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
     st.markdown(
-        """
-        <div style="
-            color:#B7C7DA;
-            font-size:12px;
-            font-weight:700;
-            letter-spacing:0.5px;
-            margin-bottom:6px;
-        ">
-            PROJECT HEALTH
-        </div>
-        """,
+        '<div class="health-title">PROJECT HEALTH</div>',
         unsafe_allow_html=True
     )
 
@@ -147,22 +180,22 @@ def render_health(metrics):
         go.Pie(
             values=[
                 score,
-                100 - score
+                max(0, 100 - score)
             ],
-            hole=0.78,
+            hole=0.82,
             sort=False,
             textinfo="none",
             marker=dict(
                 colors=[
                     colour,
-                    "#32466B"
+                    "#31456A"
                 ]
             )
         )
     )
 
     fig.update_layout(
-        height=200,
+        height=170,
         margin=dict(
             l=0,
             r=0,
@@ -176,10 +209,10 @@ def render_health(metrics):
             dict(
                 text=f"<b>{score}</b><br>/100",
                 x=0.5,
-                y=0.52,
+                y=0.5,
                 showarrow=False,
                 font=dict(
-                    size=24,
+                    size=18,
                     color="white"
                 )
             )
@@ -199,9 +232,9 @@ def render_health(metrics):
         <div style="
             text-align:center;
             color:{colour};
-            font-weight:700;
             font-size:12px;
-            margin-top:-18px;
+            font-weight:700;
+            margin-top:-10px;
             margin-bottom:12px;
         ">
             {status}
@@ -210,30 +243,47 @@ def render_health(metrics):
         unsafe_allow_html=True
     )
 
-    c1, c2 = st.columns([4, 1])
+    rows = [
+        (
+            "🟢 Readiness",
+            f"{metrics['design_readiness']}%"
+        ),
+        (
+            "🔴 Critical",
+            metrics["critical_deliverables"]
+        ),
+        (
+            "🟠 High Risk",
+            metrics["high_risk"]
+        ),
+        (
+            "🟡 Upcoming",
+            metrics["upcoming_submissions"]
+        ),
+    ]
 
-    with c1:
-        st.write("🟢 Readiness")
-    with c2:
-        st.write(f"**{metrics['design_readiness']}%**")
+    for label, value in rows:
 
-    c1, c2 = st.columns([4, 1])
+        col1, col2 = st.columns([4, 1])
 
-    with c1:
-        st.write("🔴 Critical")
-    with c2:
-        st.write(f"**{metrics['critical_deliverables']}**")
+        with col1:
 
-    c1, c2 = st.columns([4, 1])
+            st.markdown(
+                f"""
+                <div class="health-row">
+                    {label}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
-    with c1:
-        st.write("🟠 High Risk")
-    with c2:
-        st.write(f"**{metrics['high_risk']}**")
+        with col2:
 
-    c1, c2 = st.columns([4, 1])
-
-    with c1:
-        st.write("🟡 Upcoming")
-    with c2:
-        st.write(f"**{metrics['upcoming_submissions']}**")
+            st.markdown(
+                f"""
+                <div class="health-value">
+                    {value}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
