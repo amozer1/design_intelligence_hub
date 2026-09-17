@@ -81,6 +81,11 @@ def render_frameworks():
     enterprise_choice = st.radio(
         "Enterprise",
         enterprise_projects,
+        index=(
+            enterprise_projects.index(st.session_state.project)
+            if st.session_state.project in enterprise_projects
+            else 0
+        ),
         label_visibility="collapsed",
         key="enterprise_radio"
     )
@@ -105,20 +110,23 @@ def render_frameworks():
     ddb_choice = st.radio(
         "DD&B",
         ddb_projects,
+        index=(
+            ddb_projects.index(st.session_state.project)
+            if st.session_state.project in ddb_projects
+            else 0
+        ),
         label_visibility="collapsed",
         key="ddb_radio"
     )
 
     # Selection Logic
 
-    selected = st.session_state.project
+    previous_project = st.session_state.project
 
-    if enterprise_choice != selected:
-        selected = enterprise_choice
+    if enterprise_choice != previous_project:
+        st.session_state.project = enterprise_choice
+        st.rerun()
 
-    if ddb_choice != selected:
-        selected = ddb_choice
-
-    if selected != st.session_state.project:
-        st.session_state.project = selected
+    if ddb_choice != previous_project:
+        st.session_state.project = ddb_choice
         st.rerun()
