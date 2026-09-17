@@ -5,7 +5,6 @@ def render_frameworks():
 
     st.markdown("""
     <style>
-
     /* Section Title */
     .framework-title {
         color: #EAF2FF;
@@ -22,6 +21,15 @@ def render_frameworks():
         font-weight: 700;
         margin-top: 6px;
         margin-bottom: 2px;
+    }
+
+    /* Asset labels */
+    .framework-assets {
+        color: #BFC9D9;
+        font-size: 12px;
+        margin-left: 20px;
+        margin-bottom: 8px;
+        line-height: 1.4;
     }
 
     /* Radio Groups */
@@ -54,10 +62,21 @@ def render_frameworks():
     div[data-testid="stMarkdownContainer"] p {
         margin-bottom: 0 !important;
     }
-
     </style>
     """, unsafe_allow_html=True)
 
+    # Assets in display order
+    assets = [
+        "Pennington Flash",
+        "Davyhulme ASP4",
+        "Eccleston Bridge",
+        "Ferry PS",
+        "Rossall Outfall",
+        "Flass Lane",
+        "Tally Ho",
+    ]
+
+    # Default selection
     if "project" not in st.session_state:
         st.session_state.project = "Ferry PS"
 
@@ -66,67 +85,52 @@ def render_frameworks():
         unsafe_allow_html=True
     )
 
-    # Enterprise Framework
-
+    # Framework headers (visual only)
     st.markdown(
-        '<div class="framework-group">▾ UU Enterprise Framework</div>',
+        '<div class="framework-group">▾ UU Enterprise</div>',
         unsafe_allow_html=True
     )
 
-    enterprise_projects = [
-        "Pennington Flash",
-        "Davyhulme ASP4"
-    ]
+    st.markdown(
+        '''
+        <div class="framework-assets">
+            Pennington Flash<br>
+            Davyhulme ASP4
+        </div>
+        ''',
+        unsafe_allow_html=True
+    )
 
-    enterprise_choice = st.radio(
-        "Enterprise",
-        enterprise_projects,
-        index=(
-            enterprise_projects.index(st.session_state.project)
-            if st.session_state.project in enterprise_projects
-            else 0
-        ),
-        label_visibility="collapsed",
-        key="enterprise_radio"
+    st.markdown(
+        '<div class="framework-group">▾ UU DD&amp;B</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '''
+        <div class="framework-assets">
+            Eccleston Bridge<br>
+            Ferry PS<br>
+            Rossall Outfall<br>
+            Flass Lane<br>
+            Tally Ho
+        </div>
+        ''',
+        unsafe_allow_html=True
     )
 
     st.divider()
 
-    # DD&B Framework
-
-    st.markdown(
-        '<div class="framework-group">▾ UU DD&B Framework</div>',
-        unsafe_allow_html=True
-    )
-
-    ddb_projects = [
-        "Ferry PS",
-        "Rossall Outfall",
-        "Flass Lane",
-        "Tally Ho",
-        "Eccleston Bridge"
-    ]
-
-    ddb_choice = st.radio(
-        "DD&B",
-        ddb_projects,
-        index=(
-            ddb_projects.index(st.session_state.project)
-            if st.session_state.project in ddb_projects
-            else 0
-        ),
+    # Single selection source
+    selected_asset = st.radio(
+        "Assets",
+        assets,
+        index=assets.index(st.session_state.project),
         label_visibility="collapsed",
-        key="ddb_radio"
+        key="asset_selector"
     )
 
-    # Selection Logic
-
-    previous_project = st.session_state.project
-
-    if enterprise_choice != previous_project:
-        st.session_state.project = enterprise_choice
-        st.rerun()
-
-    if ddb_choice != previous_project:
-        st.session_state.project = ddb_choice
+    # Update selected project
+    if selected_asset != st.session_state.project:
+        st.session_state.project = selected_asset
         st.rerun()
