@@ -96,10 +96,7 @@ def calculate_health_metrics(cl32):
     )
 
     health_score = round(
-        max(
-            0,
-            min(100, health_score)
-        )
+        max(0, min(100, health_score))
     )
 
     return {
@@ -122,16 +119,14 @@ def render_health(metrics):
     else:
         ring_colour = "#FF1F5A"
 
-    st.markdown(
-        """
-        <div style='color:white;font-weight:700;font-size:12px'>
-        PROJECT HEALTH
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    st.caption("PROJECT HEALTH")
 
-    col1, col2 = st.columns([1.1, 1.9])
+    st.write("")
+
+    col1, col2 = st.columns(
+        [1.1, 1.9],
+        gap="small"
+    )
 
     with col1:
 
@@ -156,11 +151,12 @@ def render_health(metrics):
             margin=dict(
                 l=0,
                 r=0,
-                t=0,
+                t=15,
                 b=0
             ),
             showlegend=False,
             paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
             annotations=[
                 dict(
                     text=f"<b>{score}</b><br>100",
@@ -184,6 +180,9 @@ def render_health(metrics):
         )
 
     with col2:
+
+        st.write("")
+        st.write("")
 
         rows = [
             (
@@ -210,20 +209,12 @@ def render_health(metrics):
 
             with c1:
                 st.markdown(
-                    f"""
-                    <span style="color:white;">
-                    {label}
-                    </span>
-                    """,
+                    f"<span style='color:white'>{label}</span>",
                     unsafe_allow_html=True
                 )
 
             with c2:
                 st.markdown(
-                    f"""
-                    <span style="color:white;font-weight:700;">
-                    {value}
-                    </span>
-                    """,
+                    f"<span style='color:white;font-weight:700'>{value}</span>",
                     unsafe_allow_html=True
                 )
