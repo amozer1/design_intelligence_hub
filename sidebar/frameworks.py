@@ -6,6 +6,7 @@ def render_frameworks():
     st.markdown("""
     <style>
 
+    /* Section Title */
     .framework-title {
         color: #EAF2FF;
         font-size: 12px;
@@ -14,30 +15,44 @@ def render_frameworks():
         margin-bottom: 8px;
     }
 
+    /* Framework Header */
     .framework-group {
         color: #FFFFFF;
         font-size: 14px;
         font-weight: 700;
         margin-top: 6px;
-        margin-bottom: 6px;
+        margin-bottom: 2px;
     }
 
-    .stButton > button {
-        width: 100%;
-        background: transparent;
-        border: none;
-        color: white;
-        text-align: left;
-        padding: 4px 0;
-        min-height: 28px;
-        font-size: 13px;
-        font-weight: 500;
+    /* Radio Groups */
+    div[role="radiogroup"] {
+        gap: 0 !important;
     }
 
-    .stButton > button:hover {
-        background: transparent;
-        border: none;
-        color: white;
+    /* Radio Rows */
+    div[role="radiogroup"] label {
+        padding: 2px 0 !important;
+        margin: 0 !important;
+        min-height: 24px !important;
+    }
+
+    /* Force ALL radio text white */
+    div[data-baseweb="radio"] *,
+    div[role="radiogroup"] p,
+    div[role="radiogroup"] span {
+        color: #FFFFFF !important;
+        opacity: 1 !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+    }
+
+    /* Reduce Streamlit spacing */
+    .element-container {
+        margin-bottom: 0rem !important;
+    }
+
+    div[data-testid="stMarkdownContainer"] p {
+        margin-bottom: 0 !important;
     }
 
     </style>
@@ -51,19 +66,6 @@ def render_frameworks():
         unsafe_allow_html=True
     )
 
-    enterprise_projects = [
-        "Pennington Flash",
-        "Davyhulme ASP4"
-    ]
-
-    ddb_projects = [
-        "Ferry PS",
-        "Rossall Outfall",
-        "Flass Lane",
-        "Tally Ho",
-        "Eccleston Bridge"
-    ]
-
     # Enterprise Framework
 
     st.markdown(
@@ -71,17 +73,17 @@ def render_frameworks():
         unsafe_allow_html=True
     )
 
-    for project in enterprise_projects:
+    enterprise_projects = [
+        "Pennington Flash",
+        "Davyhulme ASP4"
+    ]
 
-        icon = "🔴" if project == st.session_state.project else "⚪"
-
-        if st.button(
-            f"{icon}  {project}",
-            key=f"ent_{project}",
-            use_container_width=True
-        ):
-            st.session_state.project = project
-            st.rerun()
+    enterprise_choice = st.radio(
+        "Enterprise",
+        enterprise_projects,
+        label_visibility="collapsed",
+        key="enterprise_radio"
+    )
 
     st.divider()
 
@@ -92,14 +94,31 @@ def render_frameworks():
         unsafe_allow_html=True
     )
 
-    for project in ddb_projects:
+    ddb_projects = [
+        "Ferry PS",
+        "Rossall Outfall",
+        "Flass Lane",
+        "Tally Ho",
+        "Eccleston Bridge"
+    ]
 
-        icon = "🔴" if project == st.session_state.project else "⚪"
+    ddb_choice = st.radio(
+        "DD&B",
+        ddb_projects,
+        label_visibility="collapsed",
+        key="ddb_radio"
+    )
 
-        if st.button(
-            f"{icon}  {project}",
-            key=f"ddb_{project}",
-            use_container_width=True
-        ):
-            st.session_state.project = project
-            st.rerun()
+    # Selection Logic
+
+    selected = st.session_state.project
+
+    if enterprise_choice != selected:
+        selected = enterprise_choice
+
+    if ddb_choice != selected:
+        selected = ddb_choice
+
+    if selected != st.session_state.project:
+        st.session_state.project = selected
+        st.rerun()
