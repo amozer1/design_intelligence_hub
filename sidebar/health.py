@@ -1,34 +1,61 @@
 import streamlit as st
+import plotly.graph_objects as go
 
 
 def render_health(metrics):
 
-    st.markdown(
-        "<div class='section-title'>PROJECT HEALTH</div>",
-        unsafe_allow_html=True
-    )
+    st.markdown("##### PROJECT HEALTH")
 
-    st.metric(
-        "Health Score",
-        metrics["health_score"]
-    )
+    col1, col2 = st.columns([1, 2])
 
-    st.metric(
-        "Design Readiness",
-        f"{metrics['design_readiness']}%"
-    )
+    with col1:
 
-    st.metric(
-        "Critical Deliverables",
-        metrics["critical_deliverables"]
-    )
+        score = metrics["health_score"]
 
-    st.metric(
-        "High Risk Activities",
-        metrics["high_risk"]
-    )
+        fig = go.Figure(
+            go.Pie(
+                values=[score, 100 - score],
+                hole=0.75,
+                sort=False,
+                rotation=90,
+                marker_colors=["#ff1744", "#2f3b52"],
+                textinfo="none",
+            )
+        )
 
-    st.metric(
-        "Upcoming Submissions",
-        metrics["upcoming_submissions"]
-    )
+        fig.update_layout(
+            height=140,
+            margin=dict(l=0, r=0, t=0, b=0),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            showlegend=False,
+            annotations=[
+                dict(
+                    text=f"<b>{score}</b><br>/100",
+                    x=0.5,
+                    y=0.5,
+                    showarrow=False,
+                    font=dict(size=20, color="white"),
+                )
+            ],
+        )
+
+        st.plotly_chart(
+            fig,
+            use_container_width=True,
+            config={"displayModeBar": False},
+        )
+
+    with col2:
+
+        st.markdown(
+            f"""
+🟢 Design Readiness&nbsp;&nbsp;&nbsp;&nbsp;**{metrics['design_readiness']}%**
+
+🟡 Critical Deliverables&nbsp;&nbsp;&nbsp;&nbsp;**{metrics['critical_deliverables']}**
+
+🟠 High Risk Activities&nbsp;&nbsp;&nbsp;&nbsp;**{metrics['high_risk']}**
+
+🟨 Upcoming Submissions&nbsp;&nbsp;&nbsp;&nbsp;**{metrics['upcoming_submissions']}**
+"""
+        )
