@@ -10,64 +10,31 @@ def render_frameworks():
         color: #B7C7DA;
         font-size: 14px;
         font-weight: 700;
-        margin-top: 8px;
         margin-bottom: 12px;
     }
 
     .framework-group {
-        color: #DCE6F2;
+        color: white;
         font-size: 14px;
         font-weight: 600;
         margin-top: 12px;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 
-    /* Framework Buttons */
-
-    div[data-testid="stButton"] button {
-
-        width: 100%;
-
-        background: #0A254A !important;
-
-        color: white !important;
-
-        border: 1px solid rgba(255,255,255,.08) !important;
-
-        border-radius: 8px !important;
-
-        padding: 8px 12px !important;
-
-        min-height: 40px !important;
-
-        font-size: 14px !important;
-
-        font-weight: 500 !important;
-
-        text-align: left !important;
-
-        justify-content: flex-start !important;
-
-        box-shadow: none !important;
-    }
-
-    div[data-testid="stButton"] button:hover {
-
-        background: #12315C !important;
-
-        border: 1px solid rgba(139,92,246,.4) !important;
+    div[role="radiogroup"] label {
+        padding: 4px 0;
     }
 
     </style>
     """, unsafe_allow_html=True)
 
+    if "project" not in st.session_state:
+        st.session_state.project = "Ferry PS"
+
     st.markdown(
         '<div class="framework-title">FRAMEWORKS</div>',
         unsafe_allow_html=True
     )
-
-    if "project" not in st.session_state:
-        st.session_state.project = "Ferry PS"
 
     # ==================================================
     # UU ENTERPRISE FRAMEWORK
@@ -83,15 +50,24 @@ def render_frameworks():
         "Davyhulme ASP4"
     ]
 
-    for project in enterprise_projects:
+    selected_enterprise = (
+        st.session_state.project
+        if st.session_state.project in enterprise_projects
+        else None
+    )
 
-        if st.button(
-            project,
-            key=f"project_{project}",
-            use_container_width=True
-        ):
-            st.session_state.project = project
-            st.rerun()
+    if selected_enterprise:
+        idx = enterprise_projects.index(selected_enterprise)
+    else:
+        idx = None
+
+    enterprise_choice = st.radio(
+        "Enterprise",
+        enterprise_projects,
+        index=idx if idx is not None else 0,
+        label_visibility="collapsed",
+        key="enterprise_radio"
+    )
 
     # ==================================================
     # UU DD&B FRAMEWORK
@@ -110,36 +86,32 @@ def render_frameworks():
         "Eccleston Bridge"
     ]
 
-    for project in ddb_projects:
+    selected_ddb = (
+        st.session_state.project
+        if st.session_state.project in ddb_projects
+        else None
+    )
 
-        active = st.session_state.project == project
+    if selected_ddb:
+        idx = ddb_projects.index(selected_ddb)
+    else:
+        idx = 0
 
-        if active:
+    ddb_choice = st.radio(
+        "DD&B",
+        ddb_projects,
+        index=idx,
+        label_visibility="collapsed",
+        key="ddb_radio"
+    )
 
-            st.markdown(f"""
-            <div style="
-                background: linear-gradient(
-                    90deg,
-                    #6D28D9,
-                    #8B5CF6
-                );
-                color: white;
-                padding: 10px 12px;
-                border-radius: 8px;
-                font-size: 14px;
-                font-weight: 600;
-                margin-bottom: 6px;
-            ">
-                {project}
-            </div>
-            """, unsafe_allow_html=True)
+    selected = (
+        enterprise_choice
+        if enterprise_choice in enterprise_projects
+        and enterprise_choice != selected_enterprise
+        else ddb_choice
+    )
 
-        else:
-
-            if st.button(
-                project,
-                key=f"project_{project}",
-                use_container_width=True
-            ):
-                st.session_state.project = project
-                st.rerun()
+    if selected != st.session_state.project:
+        st.session_state.project = selected
+        st.rerun()
