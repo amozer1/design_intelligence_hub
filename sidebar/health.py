@@ -30,14 +30,12 @@ def calculate_health_metrics(cl32):
     for col in numeric_cols:
 
         if col in df.columns:
-
             df[col] = pd.to_numeric(
                 df[col],
                 errors="coerce"
             )
 
     if "Finish" in df.columns:
-
         df["Finish"] = pd.to_datetime(
             df["Finish"],
             dayfirst=True,
@@ -125,31 +123,16 @@ def render_health(metrics):
     else:
         ring_colour = "#FF1F5A"
 
-    st.markdown(
-        """
-        <div style="
-            color:white;
-            font-size:12px;
-            font-weight:700;
-            letter-spacing:.5px;
-            margin-bottom:4px;
-        ">
-            PROJECT HEALTH
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    st.markdown("##### PROJECT HEALTH")
 
     donut_col, metrics_col = st.columns(
-        [1.15, 1.85],
+        [1.25, 1.75],
         gap="small"
     )
 
     with donut_col:
 
-        fig = go.Figure()
-
-        fig.add_trace(
+        fig = go.Figure(
             go.Pie(
                 values=[
                     score,
@@ -158,35 +141,32 @@ def render_health(metrics):
                 hole=0.90,
                 sort=False,
                 textinfo="none",
-                marker=dict(
-                    colors=[
-                        ring_colour,
-                        "#405A87"
-                    ]
-                )
+                marker_colors=[
+                    ring_colour,
+                    "#405A87"
+                ]
             )
         )
 
         fig.update_layout(
-            height=105,
+            height=120,
             margin=dict(
                 l=0,
                 r=0,
                 t=0,
                 b=0
             ),
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
             showlegend=False,
+            paper_bgcolor="rgba(0,0,0,0)",
             annotations=[
                 dict(
-                    text=f"<b>{score}</b><br><span style='font-size:9px'>100</span>",
+                    text=f"<b>{score}</b><br>100",
                     x=0.5,
                     y=0.5,
                     showarrow=False,
                     font=dict(
-                        color="white",
-                        size=12
+                        size=12,
+                        color="white"
                     )
                 )
             ]
@@ -195,62 +175,25 @@ def render_health(metrics):
         st.plotly_chart(
             fig,
             use_container_width=True,
-            config={"displayModeBar": False}
+            config={
+                "displayModeBar": False
+            }
         )
 
     with metrics_col:
 
-        rows = [
-            (
-                "#4ADE80",
-                "Design Readiness",
-                f"{metrics['design_readiness']}%"
-            ),
-            (
-                "#B8A33A",
-                "Critical Deliverables",
-                metrics["critical_deliverables"]
-            ),
-            (
-                "#FF8A00",
-                "High Risk Activities",
-                metrics["high_risk"]
-            ),
-            (
-                "#F4D03F",
-                "Upcoming Submissions",
-                metrics["upcoming_submissions"]
-            ),
-        ]
+        row1a, row1b = st.columns([4, 1])
+        row1a.write("🟢 Design Readiness")
+        row1b.write(f"**{metrics['design_readiness']}%**")
 
-        for colour, label, value in rows:
+        row2a, row2b = st.columns([4, 1])
+        row2a.write("🟡 Critical Deliverables")
+        row2b.write(f"**{metrics['critical_deliverables']}**")
 
-            st.markdown(
-                f"""
-                <div style="
-                    display:flex;
-                    justify-content:space-between;
-                    align-items:center;
-                    width:100%;
-                    margin-bottom:8px;
-                    color:white;
-                    font-size:13px;
-                ">
-                    <div>
-                        <span style="
-                            color:{colour};
-                            font-size:15px;
-                        ">●</span>
-                        {label}
-                    </div>
+        row3a, row3b = st.columns([4, 1])
+        row3a.write("🟠 High Risk Activities")
+        row3b.write(f"**{metrics['high_risk']}**")
 
-                    <div style="
-                        font-weight:700;
-                        margin-left:12px;
-                    ">
-                        {value}
-                    </div>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+        row4a, row4b = st.columns([4, 1])
+        row4a.write("🟨 Upcoming Submissions")
+        row4b.write(f"**{metrics['upcoming_submissions']}**")
