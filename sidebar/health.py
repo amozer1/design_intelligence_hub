@@ -1,5 +1,6 @@
 import pandas as pd
 import streamlit as st
+import plotly.graph_objects as go
 
 
 def calculate_health_metrics(cl32):
@@ -13,32 +14,30 @@ def calculate_health_metrics(cl32):
             "upcoming_submissions": 0,
         }
 
-    latest_date = cl32["SnapshotDate"].max()
+    latest_snapshot = cl32["SnapshotDate"].max()
 
     df = cl32[
-        cl32["SnapshotDate"] == latest_date
+        cl32["SnapshotDate"] == latest_snapshot
     ].copy()
 
-    numeric_cols = [
+    for col in [
         "Activity % Complete",
         "Variance - BL1 Finish Date",
         "Total Float",
-        "Remaining Duration"
-    ]
+        "Remaining Duration",
+    ]:
 
-    for col in numeric_cols:
         if col in df.columns:
             df[col] = pd.to_numeric(
                 df[col],
                 errors="coerce"
             )
 
-    if "Finish" in df.columns:
-        df["Finish"] = pd.to_datetime(
-            df["Finish"],
-            dayfirst=True,
-            errors="coerce"
-        )
+    df["Finish"] = pd.to_datetime(
+        df["Finish"],
+        dayfirst=True,
+        errors="coerce"
+    )
 
     activities = df[
         df["Activity ID"]
@@ -63,9 +62,7 @@ def calculate_health_metrics(cl32):
 
     high_risk = len(
         activities[
-            activities[
-                "Variance - BL1 Finish Date"
-            ] <= -14
+            activities["Variance - BL1 Finish Date"] <= -14
         ]
     )
 
@@ -83,14 +80,17 @@ def calculate_health_metrics(cl32):
             &
             (activities["Finish"] >= today)
             &
-            (activities["Finish"] <= today + pd.Timedelta(days=30))
+            (
+                activities["Finish"]
+                <= today + pd.Timedelta(days=30)
+            )
         ]
     )
 
     health_score = (
-        0.60 * design_readiness
-        + 0.20 * max(0, 100 - high_risk * 5)
-        + 0.20 * max(0, 100 - critical_deliverables * 2)
+        (design_readiness * 0.6)
+        + (max(0, 100 - critical_deliverables) * 0.2)
+        + (max(0, 100 - high_risk) * 0.2)
     )
 
     health_score = round(
@@ -108,29 +108,96 @@ def calculate_health_metrics(cl32):
 
 def render_health(metrics):
 
-    st.markdown("### PROJECT HEALTH")
-
-    st.metric(
-        "Health Score",
-        metrics["health_score"]
+    st.markdown(
+        "<div class='section-title'>PROJECT HEALTH</div>",
+        unsafe_allow_html=True
     )
 
-    st.metric(
-        "Design Readiness",
-        f"{metrics['design_readiness']}%"
+    score = metrics["health_score"]
+
+    fig = go.Figure(
+        go.Pie(
+            values=[
+                score,
+                max(0, 100 - score)
+            ],
+            hole=0.72,
+            sort=False,
+            textinfo="none",
+            marker=dict(
+                colors=[
+                    "#ff1f5a",
+                    "#2d3d5c"
+                ]
+            )
+        )
     )
 
-    st.metric(
-        "Critical Deliverables",
-        metrics["critical_deliverables"]
+    fig.update_layout(
+        height=180,
+        margin=dict(
+            l=0,
+            r=0,
+            t=0,
+            b=0
+        ),
+        showlegend=False,
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        annotations=[
+            dict(
+                text=f"<b>{score}</b><br>/100",
+                x=0.5,
+                y=0.5,
+                showarrow=False,
+                font=dict(
+                    size=22,
+                    color="white"
+                )
+            )
+        ]
     )
 
-    st.metric(
-        "High Risk Activities",
-        metrics["high_risk"]
+    st.plotly_chart(
+        fig,
+        use_container_width=True,
+        config={
+            "displayModeBar": False
+        }
     )
 
-    st.metric(
-        "Upcoming Submissions",
-        metrics["upcoming_submissions"]
-    )
+    c1, c2 = st.columns([4, 1])
+
+    with c1:
+        st.caption("🟢 Design Readiness")
+    with c2:
+        st.caption(
+            f"{metrics['design_readiness']}%"
+        )
+
+    c1, c2 = st.columns([4, 1])
+
+    with c1:
+        st.caption("🟡 Critical Deliverables")
+    with c2:
+        st.caption(
+            str(metrics["critical_deliverables"])
+        )
+
+    c1, c2 = st.columns([4, 1])
+
+    with c1:
+        st.caption("🟠 High Risk Activities")
+    with c2:
+        st.caption(
+            str(metrics["high_risk"])
+        )
+
+    c1, c2 = st.columns([4, 1])
+
+    with c1:
+        st.caption("🟨 Upcoming Submissions")
+    with c2:
+        st.caption(
+            str(metrics["upcoming_submissions"])
+        )
