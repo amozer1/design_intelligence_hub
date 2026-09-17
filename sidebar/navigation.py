@@ -1,83 +1,160 @@
 import streamlit as st
 
+
 def render_navigation():
-
-    st.markdown("""
-    <style>
-
-    .nav-title {
-        color: #B7C7DA;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        margin-bottom: 8px;
-    }
-
-    div[role="radiogroup"] {
-        gap: 0 !important;
-    }
-
-    div[role="radiogroup"] label {
-        padding: 3px 0 !important;
-        margin: 0 !important;
-    }
-
-    div[data-baseweb="radio"] * {
-        color: white !important;
-        opacity: 1 !important;
-        font-size: 13px !important;
-    }
-
-    </style>
-    """, unsafe_allow_html=True)
 
     if "page" not in st.session_state:
         st.session_state.page = "Executive Dashboard"
 
-    pages = [
-        "🏠  Executive Dashboard",
-        "📄  Deliverables",
-        "📊  Discipline Performance",
-        "📈  Programme Drift",
-        "🕒  Design Readiness",
-        "📅  Upcoming Submissions",
-        "⚠️  Critical Path & Alerts",
-        "🔗  Design Dependencies",
-        "❓  Queries & TQs",
-        "🤖  AI Insights & Forecast",
-        "📋  Reports",
-        "🗄️  Data Explorer",
-        "⚙️  Settings"
-    ]
+    st.markdown("""
+    <style>
+
+    .nav-title{
+        color:#B7C7DA;
+        font-size:12px;
+        font-weight:700;
+        letter-spacing:.5px;
+        margin-bottom:10px;
+        padding-bottom:6px;
+        border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    div[data-testid="stButton"]{
+        margin-bottom:2px !important;
+    }
+
+    div[data-testid="stButton"] button{
+
+        width:100%;
+
+        background:transparent !important;
+
+        color:#FFFFFF !important;
+
+        border:none !important;
+
+        border-radius:8px !important;
+
+        box-shadow:none !important;
+
+        min-height:34px !important;
+
+        padding:8px 12px !important;
+
+        font-size:14px !important;
+
+        font-weight:500 !important;
+
+        text-align:left !important;
+
+        justify-content:flex-start !important;
+
+    }
+
+    div[data-testid="stButton"] button:hover{
+
+        background:rgba(255,255,255,.05) !important;
+
+    }
+
+    .active-nav{
+
+        background:linear-gradient(
+            90deg,
+            #2563EB,
+            #3B82F6
+        );
+
+        color:white;
+
+        padding:10px 14px;
+
+        border-radius:8px;
+
+        font-size:14px;
+
+        font-weight:600;
+
+        margin-bottom:2px;
+
+    }
+
+    .submenu{
+
+        padding-left:34px;
+
+        color:#9FB5D1;
+
+        font-size:12px;
+
+        margin-top:-2px;
+
+        margin-bottom:4px;
+
+        line-height:1.8;
+
+    }
+
+    .element-container{
+        margin-bottom:0rem !important;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
 
     st.markdown(
         '<div class="nav-title">MAIN NAVIGATION</div>',
         unsafe_allow_html=True
     )
 
-    selected = st.radio(
-        "",
-        pages,
-        label_visibility="collapsed"
-    )
+    menu = [
+        ("🏠", "Executive Dashboard"),
+        ("📄", "Deliverables"),
+        ("📊", "Discipline Performance"),
+        ("📈", "Programme Drift"),
+        ("🕒", "Design Readiness"),
+        ("📅", "Upcoming Submissions"),
+        ("⚠️", "Critical Path & Alerts"),
+        ("🔗", "Design Dependencies"),
+        ("❓", "Queries & TQs"),
+        ("🌐", "AI Insights & Forecast"),
+        ("📋", "Reports"),
+        ("🗃️", "Data Explorer"),
+        ("⚙️", "Settings")
+    ]
 
-    st.markdown(
-        """
-        <div style="
-            padding-left:32px;
-            color:#9FB5D1;
-            font-size:12px;
-            line-height:1.8;
-        ">
-        • Next 7 Days<br>
-        • Next 30 Days
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    for icon, page in menu:
 
-    page_name = selected.split("  ", 1)[1]
+        if st.session_state.page == page:
 
-    if page_name != st.session_state.page:
-        st.session_state.page = page_name
-        st.rerun()
+            st.markdown(
+                f"""
+                <div class="active-nav">
+                    {icon}&nbsp;&nbsp;{page}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        else:
+
+            if st.button(
+                f"{icon}  {page}",
+                key=f"nav_{page}",
+                use_container_width=True
+            ):
+                st.session_state.page = page
+                st.rerun()
+
+        # Upcoming Submissions children
+        if page == "Upcoming Submissions":
+
+            st.markdown(
+                """
+                <div class="submenu">
+                    • Next 7 Days<br>
+                    • Next 30 Days
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
