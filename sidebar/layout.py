@@ -1,5 +1,6 @@
 import streamlit as st
 
+
 def render_sidebar():
 
     st.markdown("""
@@ -7,7 +8,7 @@ def render_sidebar():
 
     /* Sidebar background */
     section[data-testid="stSidebar"] {
-        background: #00142D;
+        background: #0D3B66;
     }
 
     /* Main sidebar padding */
@@ -32,7 +33,7 @@ def render_sidebar():
         margin-bottom: 2px;
     }
 
-    /* Framework title */
+    /* Section titles */
     .framework-title {
         color: #D6E2F0;
         font-size: 12px;
@@ -59,22 +60,22 @@ def render_sidebar():
         min-height: 24px !important;
     }
 
-    /* Make project names white */
+    /* Radio text */
     div[data-baseweb="radio"] * {
         color: #FFFFFF !important;
         opacity: 1 !important;
     }
 
-    /* Optional: slightly brighter selected item */
+    /* Selected item */
     div[data-baseweb="radio"]:has(input:checked) p {
         color: #FFFFFF !important;
         font-weight: 600 !important;
     }
 
-    /* Divider spacing */
+    /* Divider */
     hr {
         margin: 8px 0 !important;
-        border-top: 1px solid rgba(255,255,255,0.12) !important;
+        border-top: 1px solid rgba(255,255,255,0.18) !important;
     }
 
     </style>
