@@ -22,42 +22,17 @@ def render_header(project, snapshot=None):
 
     today = datetime.now().strftime("%d %b %Y")
 
-    st.markdown(
-        f"""
-        <div style="
-            background:#062447;
-            border:1px solid #1d4e89;
-            border-radius:10px;
-            padding:18px 24px;
-            margin-bottom:15px;
-        ">
+    with st.container(border=True):
 
-            <div style="
-                font-size:34px;
-                font-weight:700;
-                color:#FFFFFF;
-                margin-bottom:12px;
-                display:flex;
-                align-items:center;
-                gap:12px;
-            ">
-                📊 Design Performance Dashboard
-            </div>
+        st.markdown("## Design Performance Dashboard")
 
-            <div style="
-                color:#FFFFFF;
-                font-size:18px;
-                font-weight:600;
-                line-height:1.5;
-            ">
-                Project: {project}
-                &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-                Date: {today}
-                &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-                Design Manager: {manager}
-            </div>
+        col1, col2, col3 = st.columns([3, 2, 3])
 
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+        with col1:
+            st.write(f"**Project:** {project}")
+
+        with col2:
+            st.write(f"**Date:** {today}")
+
+        with col3:
+            st.write(f"**Design Manager:** {manager}")
