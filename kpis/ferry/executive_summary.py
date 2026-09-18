@@ -38,6 +38,11 @@ def build_insights(metrics):
             f"{metrics['critical_deliverables']} critical deliverables have low float."
         )
 
+    if metrics["upcoming_submissions"] > 0:
+        insights.append(
+            f"{metrics['upcoming_submissions']} submissions due within 7 days."
+        )
+
     if not insights:
         insights.append(
             "No significant delivery risks identified."
@@ -55,7 +60,7 @@ def build_gauge(score):
             values=[
                 score,
                 100 - score,
-                100
+                100,
             ],
             hole=0.82,
             rotation=180,
@@ -73,16 +78,16 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=110,
+        height=130,
         margin=dict(
             l=0,
             r=0,
             t=0,
-            b=0
+            b=0,
         ),
+        showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        showlegend=False,
         annotations=[
             dict(
                 text=f"<b>{score}%</b>",
@@ -114,47 +119,38 @@ def render(cl32):
 
     insights = build_insights(metrics)
 
-    title_col, status_col = st.columns([4, 1])
+    with st.container(border=True):
 
-    with title_col:
-        st.caption(
-            "EXECUTIVE SUMMARY (AI GENERATED)"
-        )
+        title_col, status_col = st.columns([4, 1])
 
-    with status_col:
+        with title_col:
+            st.subheader("Executive Summary")
 
-        if status == "AT RISK":
-            st.error(status)
+        with status_col:
 
-        elif status == "WATCHLIST":
-            st.warning(status)
+            if status == "AT RISK":
+                st.error(status)
 
-        else:
-            st.success(status)
+            elif status == "WATCHLIST":
+                st.warning(status)
 
-    gauge_col, insight_col = st.columns([2, 3])
-
-    with gauge_col:
+            else:
+                st.success(status)
 
         st.plotly_chart(
             build_gauge(health_score),
             use_container_width=True,
             config={
                 "displayModeBar": False
-            }
+            },
         )
 
-        st.caption(
-            "Design Readiness Index"
+        st.metric(
+            "Design Readiness Index",
+            f"{design_readiness}%"
         )
 
-        st.write(
-            f"**{design_readiness}%**"
-        )
-
-    with insight_col:
+        st.divider()
 
         for insight in insights:
-            st.write(
-                f"✅ {insight}"
-            )
+            st.write(f"✅ {insight}")
