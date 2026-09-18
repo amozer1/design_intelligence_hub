@@ -4,8 +4,14 @@ from sidebar.layout import render_sidebar
 from sidebar.branding import render_branding
 from sidebar.frameworks import render_frameworks
 from sidebar.navigation import render_navigation
-from sidebar.health import render_health
+from sidebar.health import (
+    calculate_health_metrics,
+    render_health
+)
+
 from components.header import render_header
+
+from loaders.ferry_loader import load_ferry
 
 
 # ==================================================
@@ -20,25 +26,31 @@ st.set_page_config(
 )
 
 # ==================================================
+# LOAD DATA
+# ==================================================
+
+cl31, cl32 = load_ferry()
+
+metrics = calculate_health_metrics(cl32)
+
+# ==================================================
+# SESSION STATE
+# ==================================================
+
+if "page" not in st.session_state:
+    st.session_state.page = "Executive Dashboard"
+
+if "project" not in st.session_state:
+    st.session_state.project = "Ferry PS"
+
+# ==================================================
 # SIDEBAR STYLING
 # ==================================================
 
 render_sidebar()
 
 # ==================================================
-# SIDEBAR HEALTH METRICS
-# ==================================================
-
-metrics = {
-    "health_score": 58,
-    "design_readiness": 78,
-    "critical_deliverables": 18,
-    "high_risk": 5,
-    "upcoming_submissions": 5
-}
-
-# ==================================================
-# SIDEBAR CONTENT
+# SIDEBAR
 # ==================================================
 
 with st.sidebar:
@@ -52,11 +64,24 @@ with st.sidebar:
     render_health(metrics)
 
 # ==================================================
-# DEFAULT PAGE
+# HEADER
 # ==================================================
 
-if "page" not in st.session_state:
-    st.session_state.page = "Executive Dashboard"
+latest_snapshot = "No Snapshot"
+
+if not cl32.empty:
+
+    latest_snapshot = (
+        cl32
+        .sort_values("SnapshotDate")
+        ["Snapshot"]
+        .iloc[-1]
+    )
+
+render_header(
+    project=st.session_state.project,
+    snapshot=latest_snapshot
+)
 
 # ==================================================
 # PAGE ROUTING
