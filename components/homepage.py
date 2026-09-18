@@ -1,20 +1,35 @@
 import streamlit as st
 
 
+PAGE_BG = "#061F3B"
+CARD_BG = "#08264F"
+CARD_BORDER = "#1B4B77"
+
+
 def card_placeholder(title, height=250):
 
-    with st.container(border=True):
-
-        st.markdown(
-            f"##### {title}"
-        )
-
-        st.markdown(
-            f"""
-            <div style="height:{height}px;"></div>
-            """,
-            unsafe_allow_html=True
-        )
+    st.markdown(
+        f"""
+        <div style="
+            background:{CARD_BG};
+            border:1px solid {CARD_BORDER};
+            border-radius:12px;
+            padding:16px;
+            height:{height}px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.20);
+        ">
+            <div style="
+                color:white;
+                font-size:14px;
+                font-weight:700;
+                margin-bottom:12px;
+            ">
+                {title}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 
 def render_homepage(
@@ -25,63 +40,71 @@ def render_homepage(
     cl32
 ):
 
-    st.markdown("""
-    <style>
+    st.markdown(
+        f"""
+        <style>
 
-    .stApp {
-        background: #061F3B;
-    }
+        .stApp {{
+            background:{PAGE_BG};
+        }}
 
-    div[data-testid="stVerticalBlock"] {
-        gap: 0.75rem;
-    }
-
-    </style>
-    """, unsafe_allow_html=True)
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
     # ==================================================
     # HEADER
     # ==================================================
 
-    with st.container(border=True):
-
-        st.markdown("### HEADER")
-
-        st.markdown(
-            """
-            <div style="height:70px;"></div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    st.write("")
+    st.markdown(
+        f"""
+        <div style="
+            background:{CARD_BG};
+            border:1px solid {CARD_BORDER};
+            border-radius:12px;
+            padding:20px;
+            height:120px;
+            margin-bottom:16px;
+        ">
+            <div style="
+                color:white;
+                font-size:18px;
+                font-weight:700;
+            ">
+                HEADER
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # ==================================================
-    # KPI ROW
+    # KPI STRIP
     # ==================================================
 
     k1, k2, k3, k4, k5, k6, k7 = st.columns(7)
 
     with k1:
-        card_placeholder("Executive Summary", 60)
+        card_placeholder("Executive Summary", 90)
 
     with k2:
-        card_placeholder("Programme Finish", 60)
+        card_placeholder("Programme Finish", 90)
 
     with k3:
-        card_placeholder("Contract Completion", 60)
+        card_placeholder("Contract Completion", 90)
 
     with k4:
-        card_placeholder("Total Deliverables", 60)
+        card_placeholder("Total Deliverables", 90)
 
     with k5:
-        card_placeholder("Critical Deliverables", 60)
+        card_placeholder("Critical Deliverables", 90)
 
     with k6:
-        card_placeholder("Avg Float", 60)
+        card_placeholder("Avg Float", 90)
 
     with k7:
-        card_placeholder("Avg Variance", 60)
+        card_placeholder("Avg Variance", 90)
 
     st.write("")
 
@@ -194,16 +217,16 @@ def render_homepage(
     f1, f2, f3, f4, f5 = st.columns(5)
 
     with f1:
-        card_placeholder("Data Status", 40)
+        card_placeholder("Data Status", 60)
 
     with f2:
-        card_placeholder("Last Refresh", 40)
+        card_placeholder("Last Refresh", 60)
 
     with f3:
-        card_placeholder("Snapshots Loaded", 40)
+        card_placeholder("Snapshots Loaded", 60)
 
     with f4:
-        card_placeholder("Activities Tracked", 40)
+        card_placeholder("Activities Tracked", 60)
 
     with f5:
-        card_placeholder("Powered By", 40)
+        card_placeholder("Powered By", 60)
