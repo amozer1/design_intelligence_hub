@@ -9,7 +9,7 @@ PROJECT_MANAGERS = {
     "Tally Ho": "Ebenezer Amoako",
     "Eccleston Bridge": "Ebenezer Amoako",
     "Pennington Flash": "Ebenezer Amoako",
-    "Davyhulme ASP4": "Ebenezer Amoako"
+    "Davyhulme ASP4": "Ebenezer Amoako",
 }
 
 
@@ -27,13 +27,13 @@ def render_header(project, snapshot):
     with st.container(border=True):
 
         c0, c1, c2, c3, c4 = st.columns(
-            [0.5, 3, 3, 2, 2],
+            [0.4, 3.5, 3.5, 2.2, 1.2],
             gap="medium"
         )
 
         with c0:
             st.write("")
-            st.markdown("### ☰")
+            st.markdown("☰")
 
         with c1:
             st.caption("Project")
@@ -53,19 +53,16 @@ def render_header(project, snapshot):
 
         with c3:
             st.caption("Design Manager")
-            st.write(design_manager)
+            st.markdown(f"**{design_manager}**")
+            st.caption(f"Last Updated: {updated}")
 
         with c4:
             st.caption("System")
 
-            icon1, icon2 = st.columns(2)
+            s1, s2 = st.columns(2)
 
-            with icon1:
-                st.markdown("🔔")
+            with s1:
+                st.write("🔔")
 
-            with icon2:
-                st.markdown("⚙️")
-
-            st.caption(
-                f"Last Updated: {updated}"
-            )
+            with s2:
+                st.write("⚙️")
