@@ -6,11 +6,11 @@ def render_header(project, snapshot):
     st.markdown("""
     <style>
 
-    .header-bar{
+    .header-card{
         background:#08264F;
         border:1px solid #1B4B77;
         border-radius:12px;
-        padding:14px 18px;
+        padding:14px;
         margin-bottom:16px;
     }
 
@@ -27,75 +27,67 @@ def render_header(project, snapshot):
         font-weight:600;
     }
 
-    .upload-btn{
-        background:#6D28D9;
-        color:white;
-        padding:8px 18px;
-        border-radius:8px;
-        text-align:center;
-        font-weight:600;
-        border:none;
-    }
-
-    .last-updated{
-        color:#B7C7DA;
-        font-size:11px;
-        text-align:right;
-    }
-
     </style>
     """, unsafe_allow_html=True)
 
     with st.container(border=True):
 
-        c1, c2, c3, c4, c5 = st.columns(
-            [3, 3, 2, 1, 2]
+        col1, col2, col3, col4, col5 = st.columns(
+            [3, 3, 2, 1.5, 2]
         )
 
-        with c1:
+        with col1:
 
             st.selectbox(
                 "Project",
                 [project],
-                label_visibility="visible"
+                index=0
             )
 
-        with c2:
+        with col2:
 
             st.selectbox(
                 "Current CL32 Snapshot",
                 [snapshot],
-                label_visibility="visible"
+                index=0
             )
 
-        with c3:
+        with col3:
 
             st.write("")
             st.button(
                 "⬆ Upload New CL32",
-                use_container_width=True
+                use_container_width=True,
+                type="primary"
             )
 
-        with c4:
+        with col4:
 
             st.write("")
             st.write("")
 
-            icons = st.columns(4)
+            i1, i2, i3, i4 = st.columns(4)
 
-            icons[0].write("🔄")
-            icons[1].write("🔔")
-            icons[2].write("❓")
-            icons[3].write("⚙️")
+            with i1:
+                st.markdown("🔄")
 
-        with c5:
+            with i2:
+                st.markdown("🔔")
+
+            with i3:
+                st.markdown("❓")
+
+            with i4:
+                st.markdown("⚙️")
+
+        with col5:
 
             st.selectbox(
                 "Design Manager",
                 [
                     "Ebenezer Amoako"
                 ],
-                label_visibility="visible"
+                index=0
             )
 
             st.caption(

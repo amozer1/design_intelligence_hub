@@ -1,4 +1,5 @@
 import streamlit as st
+from components.header import render_header
 
 
 PAGE_BG = "#061F3B"
@@ -44,22 +45,18 @@ def render_homepage(
         f"""
         <style>
 
-        /* Entire app */
         .stApp {{
             background:{PAGE_BG};
         }}
 
-        /* Main page */
         [data-testid="stAppViewContainer"] {{
             background:{PAGE_BG};
         }}
 
-        /* Main content */
         .main {{
             background:{PAGE_BG};
         }}
 
-        /* Remove white strip */
         [data-testid="stHeader"] {{
             background:{PAGE_BG};
         }}
@@ -68,9 +65,7 @@ def render_homepage(
             background:{PAGE_BG};
         }}
 
-        /* Main container */
         .block-container {{
-            background:{PAGE_BG};
             padding-top:1rem;
         }}
 
@@ -83,27 +78,9 @@ def render_homepage(
     # HEADER
     # ==================================================
 
-    st.markdown(
-        f"""
-        <div style="
-            background:{CARD_BG};
-            border:1px solid {CARD_BORDER};
-            border-radius:12px;
-            padding:20px;
-            height:120px;
-            margin-bottom:16px;
-            box-shadow:0 2px 8px rgba(0,0,0,0.20);
-        ">
-            <div style="
-                color:white;
-                font-size:18px;
-                font-weight:700;
-            ">
-                HEADER
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
+    render_header(
+        project=project,
+        snapshot=snapshot
     )
 
     # ==================================================
@@ -133,7 +110,7 @@ def render_homepage(
     with k7:
         card_placeholder("Avg Variance", 90)
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.write("")
 
     # ==================================================
     # ROW 1
@@ -153,7 +130,7 @@ def render_homepage(
     with r1c4:
         card_placeholder("Upcoming Submissions", 320)
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.write("")
 
     # ==================================================
     # ROW 2
@@ -173,7 +150,7 @@ def render_homepage(
     with r2c4:
         card_placeholder("Discipline Health", 260)
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.write("")
 
     # ==================================================
     # ROW 3
@@ -196,7 +173,7 @@ def render_homepage(
     with r3c5:
         card_placeholder("Quick Actions", 260)
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.write("")
 
     # ==================================================
     # FOOTER
