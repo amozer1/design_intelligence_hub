@@ -5,6 +5,7 @@ from sidebar.branding import render_branding
 from sidebar.frameworks import render_frameworks
 from sidebar.navigation import render_navigation
 from sidebar.health import render_health
+from components.header import render_header
 
 
 # ==================================================
