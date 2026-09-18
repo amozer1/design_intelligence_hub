@@ -24,64 +24,33 @@ def render_header(project, snapshot=None):
         "%d %b %Y"
     )
 
-    st.markdown(
-        """
-        <style>
-
-        div[data-testid="stHorizontalBlock"]{
-            align-items:center;
-        }
-
-        div[data-testid="stVerticalBlockBorderWrapper"]{
-            border:1px solid #183B63 !important;
-            border-radius:12px !important;
-            background:#071D3A;
-        }
-
-        .stSelectbox label{
-            color:white !important;
-            font-size:12px !important;
-            font-weight:600 !important;
-        }
-
-        .stSelectbox > div > div{
-            background-color:#0C2950 !important;
-        }
-
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
     with st.container(border=True):
 
-        col1, col2, col3, col4, col5 = st.columns(
-            [0.5, 3.5, 3, 1.5, 2]
+        st.markdown(
+            f"""
+### 📊 Executive Dashboard
+
+**Project:** {project} &nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;
+**Date:** {today}
+&nbsp;&nbsp;&nbsp;&nbsp; |
+&nbsp;&nbsp;&nbsp;&nbsp;
+**Design Manager:** {manager}
+            """
         )
 
-        with col1:
-            st.markdown("### ☰")
+        c1, c2, c3, c4 = st.columns(
+            [3, 3, 2, 2]
+        )
 
-        with col2:
-            st.selectbox(
-                "Project",
-                [project],
-                disabled=True,
-                key="header_project"
-            )
+        with c1:
+            st.info(f"📁 {project}")
 
-        with col3:
-            st.selectbox(
-                "Current CL32 Snapshot",
-                [today],
-                disabled=True,
-                key="header_date"
-            )
+        with c2:
+            st.info(f"📅 {today}")
 
-        with col4:
-            st.caption("Actions")
-            st.write("🔄  🔔  ❓  ⚙️")
+        with c3:
+            st.info("🔄 Refresh")
 
-        with col5:
-            st.caption("User")
-            st.write(f"👤 {manager}")
+        with c4:
+            st.info(f"👤 {manager}")
