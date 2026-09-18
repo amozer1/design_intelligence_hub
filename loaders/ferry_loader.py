@@ -1,97 +1,106 @@
 import pandas as pd
+import os
 
 
-def calculate_health_metrics(cl32):
+def get_latest(folder, prefix):
 
-    if cl32.empty:
-        return {
-            "health_score": 0,
-            "design_readiness": 0,
-            "critical_deliverables": 0,
-            "high_risk": 0,
-            "upcoming_submissions": 0
-        }
+    files = [
+        f for f in os.listdir(folder)
+        if f.startswith(prefix)
+        and f.endswith(".xlsx")
+    ]
 
-    df = cl32.copy()
+    files.sort()
 
-    # Numeric conversions
-    for col in [
-        "Activity % Complete",
-        "Total Float",
-        "Variance - BL1 Finish Date"
-    ]:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors="coerce")
+    return (
+        os.path.join(folder, files[-1])
+        if files else None
+    )
 
-    # Dates
-    if "Finish" in df.columns:
-        df["Finish"] = pd.to_datetime(
-            df["Finish"],
-            dayfirst=True,
+
+def get_all(folder, prefix):
+
+    files = [
+        f for f in os.listdir(folder)
+        if f.startswith(prefix)
+        and f.endswith(".xlsx")
+    ]
+
+    files.sort()
+
+    return [
+        os.path.join(folder, f)
+        for f in files
+    ]
+
+
+def load_ferry():
+
+    base = "data/Ferry/"
+
+    cl31_path = get_latest(
+        base,
+        "CL31"
+    )
+
+    cl31 = (
+        pd.read_excel(
+            cl31_path,
+            engine="openpyxl"
+        )
+        if cl31_path
+        else pd.DataFrame()
+    )
+
+    cl32_files = get_all(
+        base,
+        "CL32"
+    )
+
+    cl32_list = []
+
+    for file_path in cl32_files:
+
+        df = pd.read_excel(
+            file_path,
+            engine="openpyxl"
+        )
+
+        file_name = (
+            os.path.basename(file_path)
+            .replace(".xlsx", "")
+        )
+
+        df["Snapshot"] = file_name
+
+        df["SnapshotDate"] = pd.to_datetime(
+            file_name.replace(
+                "CL32-",
+                "01-"
+            ),
+            format="%d-%B-%Y",
             errors="coerce"
         )
 
-    # Activities only
-    activities = df[
-        df["Activity ID"].astype(str).str.contains("-", na=False)
-    ].copy()
+        cl32_list.append(df)
 
-    # Design Readiness
-    design_readiness = round(
-        activities["Activity % Complete"].fillna(0).mean(),
-        0
-    )
+    if cl32_list:
 
-    # Critical Deliverables
-    critical_deliverables = len(
-        activities[
-            (activities["Total Float"] <= 0)
-            & (activities["Activity % Complete"] < 100)
-        ]
-    )
+        cl32 = pd.concat(
+            cl32_list,
+            ignore_index=True
+        )
 
-    # High Risk
-    high_risk = len(
-        activities[
-            activities["Variance - BL1 Finish Date"] <= -14
-        ]
-    )
+        cl32 = cl32.dropna(
+            subset=["SnapshotDate"]
+        )
 
-    # Upcoming Submissions
-    today = pd.Timestamp.today()
+        cl32 = cl32.sort_values(
+            "SnapshotDate"
+        )
 
-    upcoming_submissions = len(
-        activities[
-            activities["Activity Name"]
-            .astype(str)
-            .str.contains(
-                "submission|review|freeze",
-                case=False,
-                na=False
-            )
-            &
-            (activities["Finish"] >= today)
-            &
-            (activities["Finish"] <= today + pd.Timedelta(days=30))
-        ]
-    )
+    else:
 
-    # Health Score
-    score = (
-        design_readiness
-        - (critical_deliverables * 1.5)
-        - (high_risk * 2)
-    )
+        cl32 = pd.DataFrame()
 
-    health_score = max(
-        0,
-        min(100, round(score))
-    )
-
-    return {
-        "health_score": health_score,
-        "design_readiness": design_readiness,
-        "critical_deliverables": critical_deliverables,
-        "high_risk": high_risk,
-        "upcoming_submissions": upcoming_submissions
-    }
+    return cl31, cl32
