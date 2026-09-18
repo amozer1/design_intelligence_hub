@@ -20,49 +20,166 @@ def render_header(project, snapshot):
         "Not Assigned"
     )
 
-    updated = datetime.today().strftime(
-        "%d %b %Y"
+    updated = datetime.today().strftime("%d %b %Y")
+
+    st.markdown(
+        f"""
+        <style>
+
+        .top-header {{
+            background: linear-gradient(
+                90deg,
+                #08152d 0%,
+                #0b1f42 100%
+            );
+            border: 1px solid rgba(70,120,255,.25);
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+        }}
+
+        .top-row {{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }}
+
+        .left-side {{
+            display:flex;
+            align-items:center;
+            gap:18px;
+        }}
+
+        .menu {{
+            font-size:24px;
+            color:white;
+        }}
+
+        .card {{
+            border:1px solid rgba(255,255,255,.15);
+            border-radius:8px;
+            padding:8px 14px;
+            min-width:230px;
+            background:rgba(255,255,255,.03);
+        }}
+
+        .label {{
+            color:#9fb3d9;
+            font-size:11px;
+            text-transform:uppercase;
+        }}
+
+        .value {{
+            color:white;
+            font-size:15px;
+            font-weight:600;
+        }}
+
+        .right-side {{
+            display:flex;
+            align-items:center;
+            gap:14px;
+        }}
+
+        .upload-btn {{
+            background:#6c3cff;
+            color:white;
+            padding:10px 18px;
+            border-radius:8px;
+            font-size:14px;
+            font-weight:600;
+        }}
+
+        .icon {{
+            color:white;
+            font-size:18px;
+        }}
+
+        .avatar {{
+            width:38px;
+            height:38px;
+            border-radius:50%;
+            background:#6c3cff;
+            color:white;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:700;
+        }}
+
+        .user-block {{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }}
+
+        .user-info {{
+            line-height:1.2;
+        }}
+
+        .user-name {{
+            color:white;
+            font-size:14px;
+            font-weight:600;
+        }}
+
+        .updated {{
+            color:#aebddb;
+            font-size:11px;
+        }}
+
+        </style>
+
+        <div class="top-header">
+            <div class="top-row">
+
+                <div class="left-side">
+
+                    <div class="menu">☰</div>
+
+                    <div class="card">
+                        <div class="label">Project</div>
+                        <div class="value">{project}</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="label">Current CL32 Snapshot</div>
+                        <div class="value">{snapshot}</div>
+                    </div>
+
+                </div>
+
+                <div class="right-side">
+
+                    <div class="upload-btn">
+                        ⬆ Upload New CL32
+                    </div>
+
+                    <div class="icon">🔄</div>
+                    <div class="icon">🔔</div>
+                    <div class="icon">❓</div>
+                    <div class="icon">⚙️</div>
+
+                    <div class="user-block">
+                        <div class="avatar">
+                            {"".join([x[0] for x in design_manager.split()[:2]])}
+                        </div>
+
+                        <div class="user-info">
+                            <div class="user-name">
+                                {design_manager}
+                            </div>
+
+                            <div class="updated">
+                                Last Updated: {updated}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
-
-    with st.container(border=True):
-
-        c0, c1, c2, c3, c4 = st.columns(
-            [0.4, 3.5, 3.5, 2.2, 1.2],
-            gap="medium"
-        )
-
-        with c0:
-            st.write("")
-            st.markdown("☰")
-
-        with c1:
-            st.caption("Project")
-            st.selectbox(
-                "",
-                [project],
-                label_visibility="collapsed"
-            )
-
-        with c2:
-            st.caption("Current CL32 Snapshot")
-            st.selectbox(
-                "",
-                [snapshot],
-                label_visibility="collapsed"
-            )
-
-        with c3:
-            st.caption("Design Manager")
-            st.markdown(f"**{design_manager}**")
-            st.caption(f"Last Updated: {updated}")
-
-        with c4:
-            st.caption("System")
-
-            s1, s2 = st.columns(2)
-
-            with s1:
-                st.write("🔔")
-
-            with s2:
-                st.write("⚙️")
