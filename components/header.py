@@ -36,13 +36,14 @@ def render_header(
 
         with left:
             st.write(
-                f"**Project:** {project}    "
-                f"|    "
-                f"**Current CL32 Snapshot:** {snapshot}    "
-                f"|    "
-                f"**Today:** {today}    "
-                f"|    "
-                f"**Design Manager:** {manager}"
+                f"**Project:** {project}"
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                f"**Current CL32 Snapshot:** {snapshot}"
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                f"**Today:** {today}"
+                f"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                f"**Design Manager:** {manager}",
+                unsafe_allow_html=True
             )
 
         with right:
