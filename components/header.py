@@ -4,14 +4,27 @@ import streamlit as st
 PROJECT_MANAGERS = {
     "Ferry PS": "Conal Cunningham",
     "Flass Lane": "Conal Cunningham",
-
     "Rossall Outfall": "Michael Harbon",
-
     "Tally Ho": "Ebenezer Amoako",
     "Eccleston Bridge": "Ebenezer Amoako",
     "Pennington Flash": "Ebenezer Amoako",
     "Davyhulme ASP4": "Ebenezer Amoako"
 }
+
+
+def header_card(title, value):
+
+    with st.container(border=True):
+
+        st.markdown(
+            f"<span style='color:#DCE8F5;font-size:12px;font-weight:700'>{title}</span>",
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            f"<span style='color:white;font-size:22px;font-weight:700'>{value}</span>",
+            unsafe_allow_html=True
+        )
 
 
 def render_header(project, snapshot):
@@ -31,36 +44,16 @@ def render_header(project, snapshot):
     )
 
     with c1:
-
-        with st.container(border=True):
-
-            st.markdown("**PROJECT**")
-            st.write(project)
+        header_card("PROJECT", project)
 
     with c2:
-
-        with st.container(border=True):
-
-            st.markdown("**SNAPSHOT**")
-            st.write(snapshot)
+        header_card("SNAPSHOT", snapshot)
 
     with c3:
-
-        with st.container(border=True):
-
-            st.markdown("**DESIGN MANAGER**")
-            st.write(design_manager)
+        header_card("DESIGN MANAGER", design_manager)
 
     with c4:
-
-        with st.container(border=True):
-
-            st.markdown("**LAST UPDATED**")
-            st.write(last_updated)
+        header_card("LAST UPDATED", last_updated)
 
     with c5:
-
-        with st.container(border=True):
-
-            st.markdown("**SYSTEM**")
-            st.write("🔔 ⚙️")
+        header_card("SYSTEM", "🔔 ⚙️")
