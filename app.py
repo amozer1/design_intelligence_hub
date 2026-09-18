@@ -13,6 +13,11 @@ from components.homepage import render_homepage
 
 from loaders.ferry_loader import load_ferry
 
+from kpis.ferry.executive_summary import (
+
+render as render_executive_summary
+
+)
 
 # ==================================================
 # PAGE CONFIG
