@@ -3,68 +3,76 @@ import streamlit as st
 
 def render_header(project, snapshot):
 
-    st.markdown("""
-    <style>
+    st.markdown(
+        """
+        <style>
 
-    .header-card{
-        background:#08264F;
-        border:1px solid #1B4B77;
-        border-radius:12px;
-        padding:14px;
-        margin-bottom:16px;
-    }
+        div[data-testid="stHorizontalBlock"]{
+            align-items:center;
+        }
 
-    .header-label{
-        color:#B7C7DA;
-        font-size:11px;
-        font-weight:600;
-        margin-bottom:4px;
-    }
+        .header-title{
+            color:white;
+            font-size:28px;
+            font-weight:700;
+            margin-bottom:4px;
+        }
 
-    .header-value{
-        color:white;
-        font-size:14px;
-        font-weight:600;
-    }
+        .header-subtitle{
+            color:#B7C7DA;
+            font-size:13px;
+        }
 
-    </style>
-    """, unsafe_allow_html=True)
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
     with st.container(border=True):
 
-        col1, col2, col3, col4, col5 = st.columns(
-            [3, 3, 2, 1.5, 2]
+        left, centre, right = st.columns(
+            [3, 3, 2]
         )
 
-        with col1:
+        with left:
 
-            st.selectbox(
-                "Project",
-                [project],
-                index=0
+            st.markdown(
+                f"""
+                <div class="header-title">
+                {project}
+                </div>
+
+                <div class="header-subtitle">
+                Design Management Hub
+                </div>
+                """,
+                unsafe_allow_html=True
             )
 
-        with col2:
+        with centre:
 
-            st.selectbox(
-                "Current CL32 Snapshot",
-                [snapshot],
-                index=0
-            )
+            c1, c2 = st.columns(2)
 
-        with col3:
+            with c1:
+                st.selectbox(
+                    "Project",
+                    [project],
+                    label_visibility="collapsed"
+                )
 
-            st.write("")
+            with c2:
+                st.selectbox(
+                    "Snapshot",
+                    [snapshot],
+                    label_visibility="collapsed"
+                )
+
+        with right:
+
             st.button(
-                "⬆ Upload New CL32",
-                use_container_width=True,
-                type="primary"
+                "⬆ Upload CL32",
+                use_container_width=True
             )
-
-        with col4:
-
-            st.write("")
-            st.write("")
 
             i1, i2, i3, i4 = st.columns(4)
 
@@ -79,17 +87,3 @@ def render_header(project, snapshot):
 
             with i4:
                 st.markdown("⚙️")
-
-        with col5:
-
-            st.selectbox(
-                "Design Manager",
-                [
-                    "Ebenezer Amoako"
-                ],
-                index=0
-            )
-
-            st.caption(
-                f"Last Updated: {snapshot}"
-            )
