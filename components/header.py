@@ -14,6 +14,42 @@ PROJECT_MANAGERS = {
 }
 
 
+def header_card(title, value):
+
+    st.markdown(
+        f"""
+        <div style="
+            background:#08264F;
+            border:1px solid #1B4B77;
+            border-radius:12px;
+            padding:14px;
+            height:80px;
+        ">
+            <div style="
+                color:#DCE8F5;
+                font-size:11px;
+                font-weight:700;
+                letter-spacing:0.6px;
+                margin-bottom:10px;
+                text-transform:uppercase;
+            ">
+                {title}
+            </div>
+
+            <div style="
+                color:#FFFFFF;
+                font-size:18px;
+                font-weight:700;
+                line-height:1.1;
+            ">
+                {value}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
 def render_header(project, snapshot):
 
     design_manager = PROJECT_MANAGERS.get(
@@ -26,56 +62,36 @@ def render_header(project, snapshot):
         ""
     )
 
-    c1, c2, c3, c4, c5 = st.columns(
+    col1, col2, col3, col4, col5 = st.columns(
         [2, 2, 2, 2, 1]
     )
 
-    with c1:
+    with col1:
+        header_card(
+            "Project",
+            project
+        )
 
-        with st.container(border=True):
+    with col2:
+        header_card(
+            "Snapshot",
+            snapshot
+        )
 
-            st.caption("PROJECT")
+    with col3:
+        header_card(
+            "Design Manager",
+            design_manager
+        )
 
-            st.markdown(
-                f"### {project}"
-            )
+    with col4:
+        header_card(
+            "Last Updated",
+            last_updated
+        )
 
-    with c2:
-
-        with st.container(border=True):
-
-            st.caption("SNAPSHOT")
-
-            st.markdown(
-                f"### {snapshot}"
-            )
-
-    with c3:
-
-        with st.container(border=True):
-
-            st.caption("DESIGN MANAGER")
-
-            st.markdown(
-                f"### {design_manager}"
-            )
-
-    with c4:
-
-        with st.container(border=True):
-
-            st.caption("LAST UPDATED")
-
-            st.markdown(
-                f"### {last_updated}"
-            )
-
-    with c5:
-
-        with st.container(border=True):
-
-            st.caption("SYSTEM")
-
-            st.markdown(
-                "### 🔔 ⚙️"
-            )
+    with col5:
+        header_card(
+            "System",
+            "🔔 ⚙️"
+        )
