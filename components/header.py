@@ -1,89 +1,92 @@
 import streamlit as st
 
 
-def render_header(project, snapshot):
+PAGE_BG = "#061F3B"
+CARD_BG = "#08264F"
+CARD_BORDER = "#1B4B77"
+
+
+PROJECT_MANAGERS = {
+    "Ferry PS": "Conal Cunningham",
+    "Flass Lane": "Conal Cunningham",
+
+    "Tally Ho": "Ebenezer Amoako",
+    "Eccleston Bridge": "Ebenezer Amoako",
+    "Pennington Flash": "Ebenezer Amoako",
+    "Davyhulme ASP4": "Ebenezer Amoako",
+
+    "Rossall Outfall": "Michael Harbon"
+}
+
+
+def header_card(title, value):
 
     st.markdown(
-        """
-        <style>
+        f"""
+        <div style="
+            background:{CARD_BG};
+            border:1px solid {CARD_BORDER};
+            border-radius:12px;
+            padding:16px;
+            height:90px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.20);
+        ">
+            <div style="
+                color:#B7C7DA;
+                font-size:11px;
+                font-weight:600;
+                letter-spacing:.5px;
+                margin-bottom:8px;
+            ">
+                {title}
+            </div>
 
-        div[data-testid="stHorizontalBlock"]{
-            align-items:center;
-        }
-
-        .header-title{
-            color:white;
-            font-size:28px;
-            font-weight:700;
-            margin-bottom:4px;
-        }
-
-        .header-subtitle{
-            color:#B7C7DA;
-            font-size:13px;
-        }
-
-        </style>
+            <div style="
+                color:white;
+                font-size:16px;
+                font-weight:700;
+            ">
+                {value}
+            </div>
+        </div>
         """,
         unsafe_allow_html=True
     )
 
-    with st.container(border=True):
 
-        left, centre, right = st.columns(
-            [3, 3, 2]
+def render_header(project, snapshot):
+
+    design_manager = PROJECT_MANAGERS.get(
+        project,
+        "Not Assigned"
+    )
+
+    cols = st.columns([2, 2, 2, 2, 1])
+
+    with cols[0]:
+        header_card(
+PROJECT",
+            project
         )
 
-        with left:
+    with cols[1]:
+        header      "SNAPSHOT",
+            snapshot
+        )
 
-            st.markdown(
-                f"""
-                <div class="header-title">
-                {project}
-                </div>
+    with cols[2]:
+     d(
+            "DESIGN MANAGER",
+            design_manager
+        )
 
-                <div class="header-subtitle">
-                Design Management Hub
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+    with cols[3]:
+        header_card(
+            "LAST UPDATED",
+            snapshot2-", "")
+        )
 
-        with centre:
-
-            c1, c2 = st.columns(2)
-
-            with c1:
-                st.selectbox(
-                    "Project",
-                    [project],
-                    label_visibility="collapsed"
-                )
-
-            with c2:
-                st.selectbox(
-                    "Snapshot",
-                    [snapshot],
-                    label_visibility="collapsed"
-                )
-
-        with right:
-
-            st.button(
-                "⬆ Upload CL32",
-                use_container_width=True
-            )
-
-            i1, i2, i3, i4 = st.columns(4)
-
-            with i1:
-                st.markdown("🔄")
-
-            with i2:
-                st.markdown("🔔")
-
-            with i3:
-                st.markdown("❓")
-
-            with i4:
-                st.markdown("⚙️")
+    with cols[4]:
+        header_card(
+            "SYSTEM",
+            " )
