@@ -1,89 +1,85 @@
 import streamlit as st
-from datetime import datetime
 
 
 def render_header(project, snapshot):
 
-    today = datetime.today().strftime("%d %b %Y")
-
     st.markdown("""
     <style>
 
-    .header-container{
-        background:#FFFFFF;
-        padding:20px 24px;
-        border-radius:12px;
-        border:1px solid #E5E7EB;
-        margin-bottom:20px;
+    .hub-header {
+        background: white;
+        border: 1px solid #E5E7EB;
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin-bottom: 20px;
     }
 
-    .header-label{
-        color:#6B7280;
-        font-size:11px;
-        font-weight:600;
-        text-transform:uppercase;
-        letter-spacing:.5px;
+    .hub-label {
+        color: #6B7280;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        margin-bottom: 4px;
     }
 
-    .header-value{
-        color:#111827;
-        font-size:20px;
-        font-weight:700;
+    .hub-value {
+        color: #111827;
+        font-size: 20px;
+        font-weight: 700;
     }
 
-    .header-date{
-        color:#6B7280;
-        font-size:13px;
+    .hub-sub {
+        color: #6B7280;
+        font-size: 13px;
     }
 
     </style>
     """, unsafe_allow_html=True)
 
-    left, middle, right = st.columns([4, 3, 2])
+    st.markdown('<div class="hub-header">', unsafe_allow_html=True)
 
-    with left:
+    col1, col2, col3 = st.columns([4, 3, 3])
+
+    with col1:
 
         st.markdown(
-            '<div class="header-label">Project</div>',
+            '<div class="hub-label">Project</div>',
             unsafe_allow_html=True
         )
 
         st.markdown(
-            f'<div class="header-value">{project}</div>',
+            f'<div class="hub-value">{project}</div>',
             unsafe_allow_html=True
         )
 
-    with middle:
+    with col2:
 
         st.markdown(
-            '<div class="header-label">Current Snapshot</div>',
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            f'<div class="header-value">{snapshot}</div>',
-            unsafe_allow_html=True
-        )
-
-    with right:
-
-        st.markdown(
-            '<div class="header-label">Design Manager</div>',
+            '<div class="hub-label">Current Snapshot</div>',
             unsafe_allow_html=True
         )
 
         st.markdown(
-            '<div class="header-value">Ebenezer Amoako</div>',
+            f'<div class="hub-value">{snapshot}</div>',
+            unsafe_allow_html=True
+        )
+
+    with col3:
+
+        st.markdown(
+            '<div class="hub-label">Design Manager</div>',
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            '<div class="hub-value">Ebenezer Amoako</div>',
             unsafe_allow_html=True
         )
 
     st.markdown(
-        f"""
-        <div class="header-date">
-            Last Refreshed: {today}
-        </div>
-        """,
+        '<div class="hub-sub">Design Intelligence Hub</div>',
         unsafe_allow_html=True
     )
 
-    st.divider()
+    st.markdown('</div>', unsafe_allow_html=True)
