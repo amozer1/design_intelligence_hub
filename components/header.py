@@ -6,80 +6,98 @@ def render_header(project, snapshot):
     st.markdown("""
     <style>
 
-    .hub-header {
-        background: white;
-        border: 1px solid #E5E7EB;
-        border-radius: 12px;
-        padding: 20px 24px;
-        margin-bottom: 20px;
+    .header-bar{
+        background:#08264F;
+        border:1px solid #1B4B77;
+        border-radius:12px;
+        padding:14px 18px;
+        margin-bottom:16px;
     }
 
-    .hub-label {
-        color: #6B7280;
-        font-size: 11px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: .5px;
-        margin-bottom: 4px;
+    .header-label{
+        color:#B7C7DA;
+        font-size:11px;
+        font-weight:600;
+        margin-bottom:4px;
     }
 
-    .hub-value {
-        color: #111827;
-        font-size: 20px;
-        font-weight: 700;
+    .header-value{
+        color:white;
+        font-size:14px;
+        font-weight:600;
     }
 
-    .hub-sub {
-        color: #6B7280;
-        font-size: 13px;
+    .upload-btn{
+        background:#6D28D9;
+        color:white;
+        padding:8px 18px;
+        border-radius:8px;
+        text-align:center;
+        font-weight:600;
+        border:none;
+    }
+
+    .last-updated{
+        color:#B7C7DA;
+        font-size:11px;
+        text-align:right;
     }
 
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="hub-header">', unsafe_allow_html=True)
+    with st.container(border=True):
 
-    col1, col2, col3 = st.columns([4, 3, 3])
-
-    with col1:
-
-        st.markdown(
-            '<div class="hub-label">Project</div>',
-            unsafe_allow_html=True
+        c1, c2, c3, c4, c5 = st.columns(
+            [3, 3, 2, 1, 2]
         )
 
-        st.markdown(
-            f'<div class="hub-value">{project}</div>',
-            unsafe_allow_html=True
-        )
+        with c1:
 
-    with col2:
+            st.selectbox(
+                "Project",
+                [project],
+                label_visibility="visible"
+            )
 
-        st.markdown(
-            '<div class="hub-label">Current Snapshot</div>',
-            unsafe_allow_html=True
-        )
+        with c2:
 
-        st.markdown(
-            f'<div class="hub-value">{snapshot}</div>',
-            unsafe_allow_html=True
-        )
+            st.selectbox(
+                "Current CL32 Snapshot",
+                [snapshot],
+                label_visibility="visible"
+            )
 
-    with col3:
+        with c3:
 
-        st.markdown(
-            '<div class="hub-label">Design Manager</div>',
-            unsafe_allow_html=True
-        )
+            st.write("")
+            st.button(
+                "⬆ Upload New CL32",
+                use_container_width=True
+            )
 
-        st.markdown(
-            '<div class="hub-value">Ebenezer Amoako</div>',
-            unsafe_allow_html=True
-        )
+        with c4:
 
-    st.markdown(
-        '<div class="hub-sub">Design Intelligence Hub</div>',
-        unsafe_allow_html=True
-    )
+            st.write("")
+            st.write("")
 
-    st.markdown('</div>', unsafe_allow_html=True)
+            icons = st.columns(4)
+
+            icons[0].write("🔄")
+            icons[1].write("🔔")
+            icons[2].write("❓")
+            icons[3].write("⚙️")
+
+        with c5:
+
+            st.selectbox(
+                "Design Manager",
+                [
+                    "Ebenezer Amoako"
+                ],
+                label_visibility="visible"
+            )
+
+            st.caption(
+                f"Last Updated: {snapshot}"
+            )
