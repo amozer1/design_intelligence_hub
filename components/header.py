@@ -1,11 +1,6 @@
 import streamlit as st
 
 
-PAGE_BG = "#061F3B"
-CARD_BG = "#08264F"
-CARD_BORDER = "#1B4B77"
-
-
 PROJECT_MANAGERS = {
     "Ferry PS": "Conal Cunningham",
     "Flass Lane": "Conal Cunningham",
@@ -24,12 +19,14 @@ def header_card(title, value):
     st.markdown(
         f"""
         <div style="
-            background:{CARD_BG};
-            border:1px solid {CARD_BORDER};
+            background:#08264F;
+            border:1px solid #1B4B77;
             border-radius:12px;
             padding:16px;
             height:90px;
-            box-shadow:0 2px 8px rgba(0,0,0,0.20);
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
         ">
             <div style="
                 color:#B7C7DA;
@@ -61,29 +58,41 @@ def render_header(project, snapshot):
         "Not Assigned"
     )
 
-    cols = st.columns([2, 2, 2, 2, 1])
+    last_updated = snapshot.replace(
+        "CL32-",
+        ""
+    )
 
-    with colsheader_card(
+    col1, col2, col3, col4, col5 = st.columns(
+        [2, 2, 2, 2, 1]
+    )
+
+    with col1:
+        header_card(
             "PROJECT",
             project
         )
 
-    with colsheader_card(
+    with col2:
+        header_card(
             "SNAPSHOT",
             snapshot
         )
 
-    with colsheader_card(
+    with col3:
+        header_card(
             "DESIGN MANAGER",
             design_manager
         )
 
-    with colsheader_card(
+    with col4:
+        header_card(
             "LAST UPDATED",
-            snapshot.replace("CL32-", "")
+            last_updated
         )
 
-    with colsheader_card(
+    with col5:
+        header_card(
             "SYSTEM",
             "🔔 ⚙"
         )
