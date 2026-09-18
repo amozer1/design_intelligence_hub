@@ -63,30 +63,27 @@ def render_header(project, snapshot):
 
     cols = st.columns([2, 2, 2, 2, 1])
 
-    with cols[0]:
-        header_card(
-PROJECT",
+    with colsheader_card(
+            "PROJECT",
             project
         )
 
-    with cols[1]:
-        header      "SNAPSHOT",
+    with colsheader_card(
+            "SNAPSHOT",
             snapshot
         )
 
-    with cols[2]:
-     d(
+    with colsheader_card(
             "DESIGN MANAGER",
             design_manager
         )
 
-    with cols[3]:
-        header_card(
+    with colsheader_card(
             "LAST UPDATED",
-            snapshot2-", "")
+            snapshot.replace("CL32-", "")
         )
 
-    with cols[4]:
-        header_card(
+    with colsheader_card(
             "SYSTEM",
-            " )
+            "🔔 ⚙"
+        )
