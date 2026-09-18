@@ -1,6 +1,6 @@
 import streamlit as st
 
-from project_metrics import (
+from utils.project_metrics import (
     get_current_snapshot,
     get_project_metrics
 )
