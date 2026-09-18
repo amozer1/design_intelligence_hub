@@ -44,8 +44,34 @@ def render_homepage(
         f"""
         <style>
 
+        /* Entire app */
         .stApp {{
             background:{PAGE_BG};
+        }}
+
+        /* Main page */
+        [data-testid="stAppViewContainer"] {{
+            background:{PAGE_BG};
+        }}
+
+        /* Main content */
+        .main {{
+            background:{PAGE_BG};
+        }}
+
+        /* Remove white strip */
+        [data-testid="stHeader"] {{
+            background:{PAGE_BG};
+        }}
+
+        [data-testid="stToolbar"] {{
+            background:{PAGE_BG};
+        }}
+
+        /* Main container */
+        .block-container {{
+            background:{PAGE_BG};
+            padding-top:1rem;
         }}
 
         </style>
@@ -66,6 +92,7 @@ def render_homepage(
             padding:20px;
             height:120px;
             margin-bottom:16px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.20);
         ">
             <div style="
                 color:white;
@@ -106,7 +133,7 @@ def render_homepage(
     with k7:
         card_placeholder("Avg Variance", 90)
 
-    st.write("")
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # ==================================================
     # ROW 1
@@ -115,30 +142,18 @@ def render_homepage(
     r1c1, r1c2, r1c3, r1c4 = st.columns(4)
 
     with r1c1:
-        card_placeholder(
-            "Executive Summary",
-            300
-        )
+        card_placeholder("Executive Summary", 320)
 
     with r1c2:
-        card_placeholder(
-            "Deliverables by Status",
-            300
-        )
+        card_placeholder("Deliverables by Status", 320)
 
     with r1c3:
-        card_placeholder(
-            "Deliverables by Discipline",
-            300
-        )
+        card_placeholder("Deliverables by Discipline", 320)
 
     with r1c4:
-        card_placeholder(
-            "Upcoming Submissions",
-            300
-        )
+        card_placeholder("Upcoming Submissions", 320)
 
-    st.write("")
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # ==================================================
     # ROW 2
@@ -147,30 +162,18 @@ def render_homepage(
     r2c1, r2c2, r2c3, r2c4 = st.columns(4)
 
     with r2c1:
-        card_placeholder(
-            "Critical Deliverables",
-            250
-        )
+        card_placeholder("Critical Deliverables", 260)
 
     with r2c2:
-        card_placeholder(
-            "What's Changed",
-            250
-        )
+        card_placeholder("What's Changed", 260)
 
     with r2c3:
-        card_placeholder(
-            "Top 5 Biggest Slippers",
-            250
-        )
+        card_placeholder("Top 5 Biggest Slippers", 260)
 
     with r2c4:
-        card_placeholder(
-            "Discipline Health",
-            250
-        )
+        card_placeholder("Discipline Health", 260)
 
-    st.write("")
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # ==================================================
     # ROW 3
@@ -179,36 +182,21 @@ def render_homepage(
     r3c1, r3c2, r3c3, r3c4, r3c5 = st.columns(5)
 
     with r3c1:
-        card_placeholder(
-            "AI Risk Forecast",
-            250
-        )
+        card_placeholder("AI Risk Forecast", 260)
 
     with r3c2:
-        card_placeholder(
-            "Design Dependencies",
-            250
-        )
+        card_placeholder("Design Dependencies", 260)
 
     with r3c3:
-        card_placeholder(
-            "Queries & TQs",
-            250
-        )
+        card_placeholder("Queries & TQs", 260)
 
     with r3c4:
-        card_placeholder(
-            "AI Insights",
-            250
-        )
+        card_placeholder("AI Insights", 260)
 
     with r3c5:
-        card_placeholder(
-            "Quick Actions",
-            250
-        )
+        card_placeholder("Quick Actions", 260)
 
-    st.write("")
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # ==================================================
     # FOOTER
@@ -217,16 +205,16 @@ def render_homepage(
     f1, f2, f3, f4, f5 = st.columns(5)
 
     with f1:
-        card_placeholder("Data Status", 60)
+        card_placeholder("Data Status", 70)
 
     with f2:
-        card_placeholder("Last Refresh", 60)
+        card_placeholder("Last Refresh", 70)
 
     with f3:
-        card_placeholder("Snapshots Loaded", 60)
+        card_placeholder("Snapshots Loaded", 70)
 
     with f4:
-        card_placeholder("Activities Tracked", 60)
+        card_placeholder("Activities Tracked", 70)
 
     with f5:
-        card_placeholder("Powered By", 60)
+        card_placeholder("Powered By", 70)
