@@ -1,6 +1,32 @@
 import streamlit as st
 from datetime import datetime
 
+st.markdown("""
+<style>
+
+/* Remove Streamlit top bar */
+[data-testid="stHeader"] {
+    display: none;
+}
+
+/* Remove floating deploy/menu controls */
+[data-testid="stToolbar"] {
+    display: none;
+}
+
+/* Remove top padding */
+.block-container {
+    padding-top: 0.5rem !important;
+}
+
+/* Dark background */
+.stApp {
+    background: #061F3B;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 
 PROJECT_MANAGERS = {
     "Ferry PS": "Conal Cunningham",
