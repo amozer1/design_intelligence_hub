@@ -4,7 +4,9 @@ import streamlit as st
 PROJECT_MANAGERS = {
     "Ferry PS": "Conal Cunningham",
     "Flass Lane": "Conal Cunningham",
+
     "Rossall Outfall": "Michael Harbon",
+
     "Tally Ho": "Ebenezer Amoako",
     "Eccleston Bridge": "Ebenezer Amoako",
     "Pennington Flash": "Ebenezer Amoako",
@@ -32,33 +34,33 @@ def render_header(project, snapshot):
 
         with st.container(border=True):
 
-            st.caption("PROJECT")
-            st.subheader(project)
+            st.markdown("**PROJECT**")
+            st.write(project)
 
     with c2:
 
         with st.container(border=True):
 
-            st.caption("SNAPSHOT")
-            st.subheader(snapshot)
+            st.markdown("**SNAPSHOT**")
+            st.write(snapshot)
 
     with c3:
 
         with st.container(border=True):
 
-            st.caption("DESIGN MANAGER")
-            st.subheader(design_manager)
+            st.markdown("**DESIGN MANAGER**")
+            st.write(design_manager)
 
     with c4:
 
         with st.container(border=True):
 
-            st.caption("LAST UPDATED")
-            st.subheader(last_updated)
+            st.markdown("**LAST UPDATED**")
+            st.write(last_updated)
 
     with c5:
 
         with st.container(border=True):
 
-            st.caption("SYSTEM")
-            st.subheader("🔔 ⚙️")
+            st.markdown("**SYSTEM**")
+            st.write("🔔 ⚙️")
