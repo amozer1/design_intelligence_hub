@@ -20,37 +20,39 @@ def render_header(project, snapshot):
         "Not Assigned"
     )
 
-    updated = datetime.now().strftime(
-        "%d %b %Y %H:%M"
-    )
+    updated = datetime.now().strftime("%d %b %Y")
 
     st.markdown("""
     <style>
 
-    .stApp {
-        background: #0b1020;
+    div[data-testid="stVerticalBlockBorderWrapper"]{
+        border:1px solid #1E4976 !important;
+        border-radius:12px !important;
     }
 
-    .navbar {
-        background: linear-gradient(90deg,#07142b,#0b1c3d);
-        border: 1px solid rgba(80,120,255,.25);
-        border-radius: 12px;
-        padding: 0.75rem;
-        margin-bottom: 1rem;
+    .dashboard-title{
+        color:white;
+        font-size:24px;
+        font-weight:700;
+        margin-bottom:0;
     }
 
-    div[data-testid="stButton"] button {
-        background: #6d28ff !important;
-        color: white !important;
-        border: none !important;
-        font-weight: 600 !important;
-        border-radius: 8px !important;
+    .dashboard-subtitle{
+        color:#9BB3D1;
+        font-size:13px;
+        margin-bottom:15px;
     }
 
-    div[data-testid="stInfo"] {
-        background-color: rgba(255,255,255,.03);
-        border: 1px solid rgba(255,255,255,.12);
-        border-radius: 8px;
+    .stTextInput input{
+        background-color:#0B2D5B !important;
+        color:white !important;
+        border:1px solid #2F5F98 !important;
+        border-radius:8px !important;
+    }
+
+    .stTextInput label{
+        color:#A7BDD8 !important;
+        font-size:12px !important;
     }
 
     </style>
@@ -58,47 +60,48 @@ def render_header(project, snapshot):
 
     with st.container(border=True):
 
-        c1, c2, c3, c4, c5, c6 = st.columns(
-            [0.4, 3, 3, 2, 1.2, 2]
+        st.markdown(
+            '<div class="dashboard-title">UU DESIGN PROGRAMME DASHBOARD</div>',
+            unsafe_allow_html=True
         )
 
-        # Menu
+        st.markdown(
+            '<div class="dashboard-subtitle">CL31 & CL32 • Delivery Tracking • Forecasting</div>',
+            unsafe_allow_html=True
+        )
+
+        c1, c2, c3, c4, c5 = st.columns(
+            [0.4, 3, 3, 1.2, 2]
+        )
+
         with c1:
             st.markdown("### ☰")
 
-        # Project Card
         with c2:
-            st.caption("Project")
-            st.info(project)
-
-        # Snapshot Card
-        with c3:
-            st.caption("Current CL32 Snapshot")
-            st.info(snapshot)
-
-        # Upload Button Card
-        with c4:
-            st.write("")
-            st.button(
-                "⬆ Upload New CL32",
-                use_container_width=True
+            st.text_input(
+                "Project",
+                value=project,
+                disabled=True,
+                key="hdr_project"
             )
 
-        # Icons Card
-        with c5:
+        with c3:
+            st.text_input(
+                "Current CL32 Snapshot",
+                value=snapshot,
+                disabled=True,
+                key="hdr_snapshot"
+            )
+
+        with c4:
             st.write("")
             st.markdown(
                 """
-                🔄  🔔
-
-                ❓  ⚙️
+                ### 🔄 🔔 ❓ ⚙️
                 """
             )
 
-        # User Card
-        with c6:
+        with c5:
             st.caption("Design Manager")
             st.markdown(f"**{manager}**")
-            st.caption(
-                f"Last Updated: {updated}"
-            )
+            st.caption(f"Last Updated: {updated}")
