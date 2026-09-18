@@ -10,6 +10,7 @@ from sidebar.health import (
 )
 
 from components.header import render_header
+from components.homepage import render_homepage
 
 from loaders.ferry_loader import load_ferry
 
@@ -91,7 +92,7 @@ page = st.session_state.page
 
 if page == "Executive Dashboard":
 
-    st.title("Executive Dashboard")
+    render_homepage()
 
 elif page == "Deliverables":
 
