@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import datetime
 
+
 PROJECT_MANAGERS = {
     "Ferry PS": "Conal Cunningham",
     "Flass Lane": "Conal Cunningham",
@@ -25,49 +26,46 @@ def render_header(project, snapshot):
 
     with st.container(border=True):
 
-        # Branding
-        st.markdown("## UU DESIGN PROGRAMME DASHBOARD")
-        st.caption(
-            "CL31 & CL32 • Delivery Tracking • Forecasting"
+        st.markdown(
+            """
+            ## UU DESIGN PROGRAMME DASHBOARD
+            ##### CL31 & CL32 • Delivery Tracking • Forecasting
+            """
         )
 
         st.divider()
 
-        col1, col2, col3, col4, col5 = st.columns(
-            [0.4, 3, 3, 1.2, 2]
+        c1, c2, c3, c4, c5 = st.columns(
+            [0.5, 3, 3, 1.5, 2]
         )
 
-        with col1:
+        with c1:
             st.markdown("## ☰")
 
-        with col2:
-            st.caption("Project")
-            st.metric(
-                label="",
-                value=project
+        with c2:
+            st.caption("PROJECT")
+            st.markdown(
+                f"### {project}"
             )
 
-        with col3:
-            st.caption("Current CL32 Snapshot")
-            st.metric(
-                label="",
-                value=snapshot
+        with c3:
+            st.caption("CURRENT SNAPSHOT")
+            st.markdown(
+                f"### {snapshot}"
             )
 
-        with col4:
-            st.caption("Tools")
-            st.write("🔄")
-            st.write("🔔")
-            st.write("❓")
-            st.write("⚙️")
+        with c4:
+            st.caption("TOOLS")
+            st.markdown(
+                "### 🔄 🔔 ❓ ⚙️"
+            )
 
-        with col5:
-            st.caption("Design Manager")
-            st.metric(
-                label="",
-                value=manager
+        with c5:
+            st.caption("DESIGN MANAGER")
+            st.markdown(
+                f"### {manager}"
             )
 
             st.caption(
-                f"Last Updated: {today}"
+                f"Updated {today}"
             )
