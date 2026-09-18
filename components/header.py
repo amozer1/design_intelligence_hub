@@ -1,7 +1,6 @@
 import streamlit as st
 from datetime import datetime
 
-
 PROJECT_MANAGERS = {
     "Ferry PS": "Conal Cunningham",
     "Flass Lane": "Conal Cunningham",
@@ -20,88 +19,71 @@ def render_header(project, snapshot):
         "Not Assigned"
     )
 
-    updated = datetime.now().strftime("%d %b %Y")
+    today = datetime.now().strftime(
+        "%d %b %Y"
+    )
 
-    st.markdown("""
-    <style>
+    st.markdown(
+        f"""
+        <div style="
+            background:#062447;
+            border:1px solid #1d4e89;
+            border-radius:12px;
+            padding:18px;
+            margin-bottom:15px;
+        ">
+            <div style="
+                color:white;
+                font-size:28px;
+                font-weight:700;
+                margin-bottom:2px;
+            ">
+                UU DESIGN PROGRAMME DASHBOARD
+            </div>
 
-    div[data-testid="stVerticalBlockBorderWrapper"]{
-        border:1px solid #1E4976 !important;
-        border-radius:12px !important;
-    }
+            <div style="
+                color:#9db8d8;
+                font-size:13px;
+                margin-bottom:16px;
+            ">
+                CL31 & CL32 • Delivery Tracking • Forecasting
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-    .dashboard-title{
-        color:white;
-        font-size:24px;
-        font-weight:700;
-        margin-bottom:0;
-    }
+    c1, c2, c3, c4, c5 = st.columns(
+        [0.4, 2.7, 2.7, 1.2, 1.8]
+    )
 
-    .dashboard-subtitle{
-        color:#9BB3D1;
-        font-size:13px;
-        margin-bottom:15px;
-    }
+    with c1:
+        st.markdown("## ☰")
 
-    .stTextInput input{
-        background-color:#0B2D5B !important;
-        color:white !important;
-        border:1px solid #2F5F98 !important;
-        border-radius:8px !important;
-    }
+    with c2:
+        st.metric(
+            "Project",
+            project
+        )
 
-    .stTextInput label{
-        color:#A7BDD8 !important;
-        font-size:12px !important;
-    }
+    with c3:
+        st.metric(
+            "Current CL32 Snapshot",
+            snapshot
+        )
 
-    </style>
-    """, unsafe_allow_html=True)
-
-    with st.container(border=True):
-
+    with c4:
         st.markdown(
-            '<div class="dashboard-title">UU DESIGN PROGRAMME DASHBOARD</div>',
-            unsafe_allow_html=True
+            """
+            ### 🔄 🔔 ❓ ⚙️
+            """
         )
 
-        st.markdown(
-            '<div class="dashboard-subtitle">CL31 & CL32 • Delivery Tracking • Forecasting</div>',
-            unsafe_allow_html=True
+    with c5:
+        st.metric(
+            "Design Manager",
+            manager
         )
-
-        c1, c2, c3, c4, c5 = st.columns(
-            [0.4, 3, 3, 1.2, 2]
+        st.caption(
+            f"Last Updated: {today}"
         )
-
-        with c1:
-            st.markdown("### ☰")
-
-        with c2:
-            st.text_input(
-                "Project",
-                value=project,
-                disabled=True,
-                key="hdr_project"
-            )
-
-        with c3:
-            st.text_input(
-                "Current CL32 Snapshot",
-                value=snapshot,
-                disabled=True,
-                key="hdr_snapshot"
-            )
-
-        with c4:
-            st.write("")
-            st.markdown(
-                """
-                ### 🔄 🔔 ❓ ⚙️
-                """
-            )
-
-        with c5:
-            st.caption("Design Manager")
-            st.markdown(f"**{manager}**")
-            st.caption(f"Last Updated: {updated}")
