@@ -23,67 +23,51 @@ def render_header(project, snapshot):
         "%d %b %Y"
     )
 
-    st.markdown(
-        f"""
-        <div style="
-            background:#062447;
-            border:1px solid #1d4e89;
-            border-radius:12px;
-            padding:18px;
-            margin-bottom:15px;
-        ">
-            <div style="
-                color:white;
-                font-size:28px;
-                font-weight:700;
-                margin-bottom:2px;
-            ">
-                UU DESIGN PROGRAMME DASHBOARD
-            </div>
+    with st.container(border=True):
 
-            <div style="
-                color:#9db8d8;
-                font-size:13px;
-                margin-bottom:16px;
-            ">
-                CL31 & CL32 • Delivery Tracking • Forecasting
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    c1, c2, c3, c4, c5 = st.columns(
-        [0.4, 2.7, 2.7, 1.2, 1.8]
-    )
-
-    with c1:
-        st.markdown("## ☰")
-
-    with c2:
-        st.metric(
-            "Project",
-            project
-        )
-
-    with c3:
-        st.metric(
-            "Current CL32 Snapshot",
-            snapshot
-        )
-
-    with c4:
-        st.markdown(
-            """
-            ### 🔄 🔔 ❓ ⚙️
-            """
-        )
-
-    with c5:
-        st.metric(
-            "Design Manager",
-            manager
-        )
+        # Branding
+        st.markdown("## UU DESIGN PROGRAMME DASHBOARD")
         st.caption(
-            f"Last Updated: {today}"
+            "CL31 & CL32 • Delivery Tracking • Forecasting"
         )
+
+        st.divider()
+
+        col1, col2, col3, col4, col5 = st.columns(
+            [0.4, 3, 3, 1.2, 2]
+        )
+
+        with col1:
+            st.markdown("## ☰")
+
+        with col2:
+            st.caption("Project")
+            st.metric(
+                label="",
+                value=project
+            )
+
+        with col3:
+            st.caption("Current CL32 Snapshot")
+            st.metric(
+                label="",
+                value=snapshot
+            )
+
+        with col4:
+            st.caption("Tools")
+            st.write("🔄")
+            st.write("🔔")
+            st.write("❓")
+            st.write("⚙️")
+
+        with col5:
+            st.caption("Design Manager")
+            st.metric(
+                label="",
+                value=manager
+            )
+
+            st.caption(
+                f"Last Updated: {today}"
+            )
