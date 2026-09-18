@@ -1,5 +1,6 @@
-from datetime import datetime
 import streamlit as st
+from datetime import datetime
+
 
 PROJECT_MANAGERS = {
     "Ferry PS": "Conal Cunningham",
@@ -19,29 +20,39 @@ def render_header(project):
         "Not Assigned"
     )
 
-    today = datetime.now().strftime("%d %b %Y")
+    today = datetime.now().strftime(
+        "%d %b %Y"
+    )
+
+    st.title("UU DESIGN PROGRAMME DASHBOARD")
+    st.caption(
+        "CL31 & CL32 • Delivery Tracking • Forecasting"
+    )
 
     with st.container(border=True):
 
-        c1, c2, c3, c4, c5 = st.columns(
-            [0.5, 3, 3, 1.2, 2]
+        menu, project_col, date_col, tools_col, manager_col = st.columns(
+            [0.5, 3, 3, 1.5, 2]
         )
 
-        with c1:
+        with menu:
+            st.write("")
             st.markdown("## ☰")
 
-        with c2:
+        with project_col:
             st.caption("PROJECT")
             st.write(f"**{project}**")
 
-        with c3:
+        with date_col:
             st.caption("SNAPSHOT")
             st.write(f"**{today}**")
 
-        with c4:
+        with tools_col:
             st.caption("TOOLS")
             st.write("🔄 🔔 ❓ ⚙️")
 
-        with c5:
+        with manager_col:
             st.caption("DESIGN MANAGER")
             st.write(f"**{manager}**")
+
+    st.markdown("")
