@@ -1,7 +1,6 @@
 import streamlit as st
 from datetime import datetime
 
-
 PROJECT_MANAGERS = {
     "Ferry PS": "Conal Cunningham",
     "Flass Lane": "Conal Cunningham",
@@ -16,103 +15,105 @@ PROJECT_MANAGERS = {
 
 
 def render_header(project, snapshot):
-
     design_manager = PROJECT_MANAGERS.get(
         project,
         "Not Assigned"
     )
 
-    last_updated = datetime.today().strftime(
+    updated = datetime.today().strftime(
         "%d %b %Y"
     )
 
     st.markdown("""
     <style>
 
-    .header-card {
-        background: #0D315F;
-        border: 2px solid #2F6AA3;
-        border-radius: 12px;
-        padding: 18px;
-        min-height: 95px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    .header-bar{
+        background:#08264F;
+        border:1px solid #1B4B77;
+        border-radius:12px;
+        padding:12px 16px;
+        margin-bottom:16px;
     }
 
-    .header-label {
-        color: #DCE8F5;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.6px;
-        text-transform: uppercase;
-        margin-bottom: 10px;
+    .header-label{
+        color:#B7C7DA;
+        font-size:11px;
+        font-weight:600;
+        margin-bottom:4px;
     }
 
-    .header-value {
-        color: white;
-        font-size: 18px;
-        font-weight: 700;
-        line-height: 1.2;
+    .header-value{
+        color:white;
+        font-size:13px;
+        font-weight:600;
     }
 
     </style>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3, col4, col5 = st.columns(
-        [2, 2, 2, 2, 1],
-        gap="large"
-    )
-
-    with col1:
-        st.markdown(
-            f"""
-            <div class="header-card">
-                <div class="header-label">PROJECT</div>
-                <div class="header-value">{project}</div>
-            </div>
-            """,
-            unsafe_allow_html=True
+    with st.container(border=True):
+        c1, c2, c3, c4, c5 = st.columns(
+            [3, 3, 2, 2, 2]
         )
 
-    with col2:
-        st.markdown(
-            f"""
-            <div class="header-card">
-                <div class="header-label">SNAPSHOT</div>
-                <div class="header-value">{snapshot}</div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        with c1:
+            st.markdown(
+                '<div class="header-label">Project</div>',
+                unsafe_allow_html=True
+            )
 
-    with col3:
-        st.markdown(
-            f"""
-            <div class="header-card">
-                <div class="header-label">DESIGN MANAGER</div>
-                <div class="header-value">{design_manager}</div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+            st.selectbox(
+                "",
+                [project],
+                label_visibility="collapsed"
+            )
 
-    with col4:
-        st.markdown(
-            f"""
-            <div class="header-card">
-                <div class="header-label">LAST UPDATED</div>
-                <div class="header-value">{last_updated}</div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        with c2:
+            st.markdown(
+                '<div class="header-label">Current CL32 Snapshot</div>',
+                unsafe_allow_html=True
+            )
 
-    with col5:
-        st.markdown(
-            """
-            <div class="header-card">
-                <div class="header-label">SYSTEM</div>
-                <div class="header-value">🔔 ⚙️</div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+            st.selectbox(
+                "",
+                [snapshot],
+                label_visibility="collapsed"
+            )
+
+        with c3:
+            st.markdown(
+                '<div class="header-label">Design Manager</div>',
+                unsafe_allow_html=True
+            )
+
+            st.markdown(
+                f"""
+                <div class="header-value">
+                    {design_manager}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with c4:
+            st.markdown(
+                '<div class="header-label">Last Updated</div>',
+                unsafe_allow_html=True
+            )
+
+            st.markdown(
+                f"""
+                <div class="header-value">
+                    {updated}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with c5:
+            st.markdown(
+                '<div class="header-label">System</div>',
+                unsafe_allow_html=True
+            )
+
+            st.markdown(
