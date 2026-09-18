@@ -23,21 +23,17 @@ def render_header(project, snapshot=None):
 
     with st.container(border=True):
 
-        col1, col2, col3, col4, col5 = st.columns(
-            [0.5, 3, 3, 1.5, 2]
+        a, b, c = st.columns([4, 2, 3])
+
+        with a:
+            st.subheader(project)
+
+        with b:
+            st.subheader(today)
+
+        with c:
+            st.subheader(manager)
+
+        st.caption(
+            "UU DESIGN PROGRAMME DASHBOARD • CL31 & CL32 • Delivery Tracking • Forecasting"
         )
-
-        with col1:
-            st.write("☰")
-
-        with col2:
-            st.write(f"📁 {project}")
-
-        with col3:
-            st.write(f"📅 {today}")
-
-        with col4:
-            st.write("🔄 🔔 ❓ ⚙️")
-
-        with col5:
-            st.write(f"👤 {manager}")
