@@ -56,13 +56,28 @@ def render_homepage(
             background:{PAGE_BG};
         }}
 
+        /* Hide Streamlit top white bar */
+        [data-testid="stHeader"] {{
+            display:none;
+        }}
+
+        /* Hide Streamlit toolbar */
+        [data-testid="stToolbar"] {{
+            display:none;
+        }}
+
+        /* Remove top spacing */
         .block-container {{
-            padding-top:1rem;
+            padding-top:0rem !important;
             max-width:100%;
         }}
 
-        h1,h2,h3,h4,p {{
-            color:white;
+        h1,h2,h3,h4,h5,h6 {{
+            color:white !important;
+        }}
+
+        p {{
+            color:white !important;
         }}
 
         </style>
