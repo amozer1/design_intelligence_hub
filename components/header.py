@@ -16,7 +16,7 @@ PROJECT_MANAGERS = {
 def render_header(
     project,
     snapshot=None,
-    status="Programme Live"
+    status="🟢 Programme Live"
 ):
 
     manager = PROJECT_MANAGERS.get(
