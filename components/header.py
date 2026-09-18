@@ -29,10 +29,12 @@ def render_header(project, snapshot=None):
         st.title("Design Performance Dashboard")
 
         st.write(
-            f"**📁 Project:** {project}    "
+            f"**Project:** {project}    "
             f"&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; "
-            f"**📅 Date:** {today}    "
+            f"**Current CL32 Snapshot:** {snapshot}    "
             f"&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; "
-            f"**👤 Design Manager:** {manager}",
+            f"**Date:** {today}    "
+            f"&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; "
+            f"**Design Manager:** {manager}",
             unsafe_allow_html=True
         )
