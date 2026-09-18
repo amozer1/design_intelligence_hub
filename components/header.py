@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import datetime
 
+
 PROJECT_MANAGERS = {
     "Ferry PS": "Conal Cunningham",
     "Flass Lane": "Conal Cunningham",
@@ -23,17 +24,33 @@ def render_header(project, snapshot=None):
 
     with st.container(border=True):
 
-        a, b, c = st.columns([4, 2, 3])
-
-        with a:
-            st.subheader(project)
-
-        with b:
-            st.subheader(today)
-
-        with c:
-            st.subheader(manager)
-
+        st.markdown("## DESIGN INTELLIGENCE HUB")
         st.caption(
-            "UU DESIGN PROGRAMME DASHBOARD • CL31 & CL32 • Delivery Tracking • Forecasting"
+            "Smarter Design Delivery Through Data"
         )
+
+        st.divider()
+
+        col1, col2 = st.columns([3, 2])
+
+        with col1:
+            st.markdown(
+                f"""
+**PROJECT**
+
+{project}
+
+**DESIGN MANAGER**
+
+{manager}
+                """
+            )
+
+        with col2:
+            st.markdown(
+                f"""
+**DATE**
+
+{today}
+                """
+            )
