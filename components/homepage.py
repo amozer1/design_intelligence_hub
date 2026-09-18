@@ -1,6 +1,11 @@
 import streamlit as st
 from components.header import render_header
 
+render_header(
+    project=project,
+    snapshot=snapshot
+)
+
 
 PAGE_BG = "#061F3B"
 CARD_BG = "#08264F"
