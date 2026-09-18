@@ -9,7 +9,6 @@ from sidebar.health import (
     render_health
 )
 
-from components.header import render_header
 from components.homepage import render_homepage
 
 from loaders.ferry_loader import load_ferry
@@ -65,7 +64,7 @@ with st.sidebar:
     render_health(metrics)
 
 # ==================================================
-# HEADER
+# SNAPSHOT
 # ==================================================
 
 latest_snapshot = "No Snapshot"
@@ -79,11 +78,6 @@ if not cl32.empty:
         .iloc[-1]
     )
 
-render_header(
-    project=st.session_state.project,
-    snapshot=latest_snapshot
-)
-
 # ==================================================
 # PAGE ROUTING
 # ==================================================
@@ -92,7 +86,13 @@ page = st.session_state.page
 
 if page == "Executive Dashboard":
 
-    render_homepage()
+    render_homepage(
+        project=st.session_state.project,
+        snapshot=latest_snapshot,
+        metrics=metrics,
+        cl31=cl31,
+        cl32=cl32
+    )
 
 elif page == "Deliverables":
 
