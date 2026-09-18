@@ -5,9 +5,7 @@ from datetime import datetime
 PROJECT_MANAGERS = {
     "Ferry PS": "Conal Cunningham",
     "Flass Lane": "Conal Cunningham",
-
     "Rossall Outfall": "Michael Harbon",
-
     "Tally Ho": "Ebenezer Amoako",
     "Eccleston Bridge": "Ebenezer Amoako",
     "Pennington Flash": "Ebenezer Amoako",
@@ -22,35 +20,9 @@ def render_header(project, snapshot):
         "Not Assigned"
     )
 
-    last_updated = datetime.today().strftime(
+    updated = datetime.today().strftime(
         "%d %b %Y"
     )
-
-    st.markdown("""
-    <style>
-
-    .toolbar {
-        background: #08264F;
-        border: 1px solid #1B4B77;
-        border-radius: 12px;
-        padding: 12px 18px;
-        margin-bottom: 18px;
-    }
-
-    .toolbar-label {
-        color: #B7C7DA;
-        font-size: 11px;
-        font-weight: 600;
-    }
-
-    .toolbar-value {
-        color: white;
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    </style>
-    """, unsafe_allow_html=True)
 
     with st.container(border=True):
 
@@ -60,14 +32,11 @@ def render_header(project, snapshot):
         )
 
         with c0:
-
             st.write("")
             st.markdown("### ☰")
 
         with c1:
-
             st.caption("Project")
-
             st.selectbox(
                 "",
                 [project],
@@ -75,9 +44,7 @@ def render_header(project, snapshot):
             )
 
         with c2:
-
             st.caption("Current CL32 Snapshot")
-
             st.selectbox(
                 "",
                 [snapshot],
@@ -85,23 +52,20 @@ def render_header(project, snapshot):
             )
 
         with c3:
-
             st.caption("Design Manager")
-
-            st.markdown(
-                f"**{design_manager}**"
-            )
+            st.write(design_manager)
 
         with c4:
-
             st.caption("System")
 
-            icons = st.columns(2)
+            icon1, icon2 = st.columns(2)
 
-            with iconsst.markdown("🔔")
+            with icon1:
+                st.markdown("🔔")
 
-            with iconsst.markdown("⚙️")
+            with icon2:
+                st.markdown("⚙️")
 
             st.caption(
-                f"Last Updated: {last_updated}"
+                f"Last Updated: {updated}"
             )
