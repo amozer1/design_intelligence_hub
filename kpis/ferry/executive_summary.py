@@ -38,7 +38,12 @@ def build_insights(metrics):
             f"{metrics['critical_deliverables']} critical deliverables have low float."
         )
 
-    if len(insights) == 0:
+    if metrics["upcoming_submissions"] > 0:
+        insights.append(
+            f"{metrics['upcoming_submissions']} submissions are due in the next 7 days."
+        )
+
+    if not insights:
         insights.append(
             "No significant delivery risks identified."
         )
@@ -52,47 +57,32 @@ def render(cl32):
 
     metrics = get_project_metrics(current_df)
 
-    readiness = metrics["design_readiness"]
-
-    health_score = metrics["health_score"]
-
     status = get_status(metrics)
 
     insights = build_insights(metrics)
 
-    title_col, status_col = st.columns([4, 1])
+    st.markdown("#### Executive Summary")
 
-    with title_col:
-        st.caption(
-            "EXECUTIVE SUMMARY (AI GENERATED)"
-        )
+    if status == "AT RISK":
+        st.error(status)
 
-    with status_col:
+    elif status == "WATCHLIST":
+        st.warning(status)
 
-        if status == "AT RISK":
-            st.error(status)
+    else:
+        st.success(status)
 
-        elif status == "WATCHLIST":
-            st.warning(status)
+    st.metric(
+        "Design Readiness Index",
+        f"{metrics['design_readiness']}%"
+    )
 
-        else:
-            st.success(status)
+    st.metric(
+        "Health Score",
+        metrics["health_score"]
+    )
 
-    left, right = st.columns([2, 3])
+    st.divider()
 
-    with left:
-
-        st.metric(
-            "Design Readiness Index",
-            f"{readiness}%"
-        )
-
-        st.metric(
-            "Health Score",
-            health_score
-        )
-
-    with right:
-
-        for insight in insights:
-            st.write(f"✅ {insight}")
+    for insight in insights:
+        st.write(f"✅ {insight}")
