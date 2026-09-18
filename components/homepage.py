@@ -6,6 +6,9 @@ from kpis.ferry.executive_summary import (
     render as render_executive_summary
 )
 
+with r1c1:
+    render_executive_summary(cl32)
+
 PAGE_BG = "#051A33"
 CARD_BG = "#103766"
 CARD_BORDER = "#4B80C7"
