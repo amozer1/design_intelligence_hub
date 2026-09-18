@@ -52,8 +52,12 @@ def build_gauge(score):
 
     fig.add_trace(
         go.Pie(
-            values=[score, 100 - score, 100],
-            hole=0.80,
+            values=[
+                score,
+                100 - score,
+                100
+            ],
+            hole=0.82,
             rotation=180,
             sort=False,
             direction="clockwise",
@@ -61,7 +65,7 @@ def build_gauge(score):
             marker=dict(
                 colors=[
                     "#FF6A00",
-                    "#2D3B52",
+                    "#324760",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -69,23 +73,24 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=190,
+        height=110,
         margin=dict(
             l=0,
             r=0,
             t=0,
             b=0
         ),
-        showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=False,
         annotations=[
             dict(
                 text=f"<b>{score}%</b>",
                 x=0.5,
-                y=0.42,
+                y=0.40,
                 showarrow=False,
                 font=dict(
-                    size=34,
+                    size=24,
                     color="white"
                 )
             )
@@ -109,14 +114,14 @@ def render(cl32):
 
     insights = build_insights(metrics)
 
-    header_left, header_right = st.columns([4, 1])
+    title_col, status_col = st.columns([4, 1])
 
-    with header_left:
+    with title_col:
         st.caption(
             "EXECUTIVE SUMMARY (AI GENERATED)"
         )
 
-    with header_right:
+    with status_col:
 
         if status == "AT RISK":
             st.error(status)
@@ -127,34 +132,29 @@ def render(cl32):
         else:
             st.success(status)
 
-    fig = build_gauge(health_score)
+    gauge_col, insight_col = st.columns([2, 3])
 
-    st.plotly_chart(
-        fig,
-        use_container_width=True,
-        config={
-            "displayModeBar": False
-        }
-    )
+    with gauge_col:
 
-    st.markdown(
-        "<div style='text-align:center;color:white;font-weight:600;'>"
-        "Design Readiness Index"
-        "</div>",
-        unsafe_allow_html=True
-    )
+        st.plotly_chart(
+            build_gauge(health_score),
+            use_container_width=True,
+            config={
+                "displayModeBar": False
+            }
+        )
 
-    st.markdown(
-        f"<div style='text-align:center;"
-        f"color:#A8D1FF;"
-        f"font-size:18px;"
-        f"font-weight:700;'>"
-        f"{design_readiness}%"
-        f"</div>",
-        unsafe_allow_html=True
-    )
+        st.caption(
+            "Design Readiness Index"
+        )
 
-    st.divider()
+        st.write(
+            f"**{design_readiness}%**"
+        )
 
-    for insight in insights:
-        st.write(f"✅ {insight}")
+    with insight_col:
+
+        for insight in insights:
+            st.write(
+                f"✅ {insight}"
+            )
