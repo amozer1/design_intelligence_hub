@@ -1,5 +1,10 @@
 import streamlit as st
+
 from components.header import render_header
+
+from kpis.ferry.executive_summary import (
+    render as render_executive_summary
+)
 
 PAGE_BG = "#051A33"
 CARD_BG = "#103766"
@@ -56,17 +61,14 @@ def render_homepage(
             background:{PAGE_BG};
         }}
 
-        /* Hide Streamlit top white bar */
         [data-testid="stHeader"] {{
             display:none;
         }}
 
-        /* Hide Streamlit toolbar */
         [data-testid="stToolbar"] {{
             display:none;
         }}
 
-        /* Remove top spacing */
         .block-container {{
             padding-top:0rem !important;
             max-width:100%;
@@ -132,7 +134,7 @@ def render_homepage(
     r1c1, r1c2, r1c3, r1c4 = st.columns(4)
 
     with r1c1:
-        card_placeholder("Executive Summary", 320)
+        render_executive_summary(cl32)
 
     with r1c2:
         card_placeholder("Deliverables by Status", 320)
