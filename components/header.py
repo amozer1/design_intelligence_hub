@@ -13,7 +13,11 @@ PROJECT_MANAGERS = {
 }
 
 
-def render_header(project, snapshot=None):
+def render_header(
+    project,
+    snapshot=None,
+    status="Programme Live"
+):
 
     manager = PROJECT_MANAGERS.get(
         project,
@@ -25,7 +29,10 @@ def render_header(project, snapshot=None):
     )
 
     with st.container(border=True):
-        left, right = st.columns([9, 1])
+
+        st.title("Design Performance Dashboard")
+
+        left, right = st.columns([9, 2])
 
         with left:
             st.write(
@@ -39,5 +46,6 @@ def render_header(project, snapshot=None):
             )
 
         with right:
-            st.write(f"**Status:** {status}")
-        `
+            st.write(
+                f"**Status:** {status}"
+            )
