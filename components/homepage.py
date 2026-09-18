@@ -1,7 +1,6 @@
 import streamlit as st
 from components.header import render_header
 
-
 PAGE_BG = "#061F3B"
 CARD_BG = "#08264F"
 CARD_BORDER = "#1B4B77"
@@ -9,27 +8,11 @@ CARD_BORDER = "#1B4B77"
 
 def card_placeholder(title, height=250):
 
-    st.markdown(
-        f"""
-        <div style="
-            background:{CARD_BG};
-            border:1px solid {CARD_BORDER};
-            border-radius:12px;
-            padding:16px;
-            height:{height}px;
-            box-shadow:0 2px 6px rgba(0,0,0,0.15);
-        ">
-            <div style="
-                color:white;
-                font-size:14px;
-                font-weight:600;
-            ">
-                {title}
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    with st.container(border=True):
+        st.markdown(f"**{title}**")
+
+        for _ in range(max(1, height // 80)):
+            st.write("")
 
 
 def render_homepage(
@@ -52,14 +35,8 @@ def render_homepage(
             background:{PAGE_BG};
         }}
 
-        .main {{
-            background:{PAGE_BG};
-        }}
-
         .block-container {{
-            padding-top:0.8rem;
-            padding-left:1rem;
-            padding-right:1rem;
+            padding-top:1rem;
             max-width:100%;
         }}
 
@@ -77,7 +54,7 @@ def render_homepage(
         snapshot=snapshot,
     )
 
-    st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
+    st.write("")
 
     # ==================================================
     # KPI STRIP
@@ -106,70 +83,70 @@ def render_homepage(
     with k7:
         card_placeholder("Average Variance", 80)
 
-    st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
+    st.write("")
 
     # ==================================================
     # ROW 1
     # ==================================================
 
-    r1c1, r1c2, r1c3, r1c4 = st.columns(4)
+    c1, c2, c3, c4 = st.columns(4)
 
-    with r1c1:
+    with c1:
         card_placeholder("Executive Summary", 320)
 
-    with r1c2:
+    with c2:
         card_placeholder("Deliverables by Status", 320)
 
-    with r1c3:
+    with c3:
         card_placeholder("Deliverables by Discipline", 320)
 
-    with r1c4:
+    with c4:
         card_placeholder("Upcoming Submissions", 320)
 
-    st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
+    st.write("")
 
     # ==================================================
     # ROW 2
     # ==================================================
 
-    r2c1, r2c2, r2c3, r2c4 = st.columns(4)
+    c1, c2, c3, c4 = st.columns(4)
 
-    with r2c1:
+    with c1:
         card_placeholder("Critical Deliverables", 260)
 
-    with r2c2:
+    with c2:
         card_placeholder("What's Changed", 260)
 
-    with r2c3:
+    with c3:
         card_placeholder("Top 5 Biggest Slippers", 260)
 
-    with r2c4:
+    with c4:
         card_placeholder("Discipline Health", 260)
 
-    st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
+    st.write("")
 
     # ==================================================
     # ROW 3
     # ==================================================
 
-    r3c1, r3c2, r3c3, r3c4, r3c5 = st.columns(5)
+    c1, c2, c3, c4, c5 = st.columns(5)
 
-    with r3c1:
+    with c1:
         card_placeholder("AI Risk Forecast", 240)
 
-    with r3c2:
+    with c2:
         card_placeholder("Design Dependencies", 240)
 
-    with r3c3:
+    with c3:
         card_placeholder("Queries & TQs", 240)
 
-    with r3c4:
+    with c4:
         card_placeholder("AI Insights", 240)
 
-    with r3c5:
+    with c5:
         card_placeholder("Quick Actions", 240)
 
-    st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
+    st.write("")
 
     # ==================================================
     # FOOTER
@@ -178,16 +155,16 @@ def render_homepage(
     f1, f2, f3, f4, f5 = st.columns(5)
 
     with f1:
-        card_placeholder("Data Status", 60)
+        card_placeholder("Data Status", 70)
 
     with f2:
-        card_placeholder("Last Refresh", 60)
+        card_placeholder("Last Refresh", 70)
 
     with f3:
-        card_placeholder("Snapshots Loaded", 60)
+        card_placeholder("Snapshots Loaded", 70)
 
     with f4:
-        card_placeholder("Activities Tracked", 60)
+        card_placeholder("Activities Tracked", 70)
 
     with f5:
-        card_placeholder("Powered By", 60)
+        card_placeholder("Powered By", 70)
