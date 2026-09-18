@@ -13,7 +13,7 @@ PROJECT_MANAGERS = {
 }
 
 
-def render_header(project):
+def render_header(project, snapshot=None):
 
     manager = PROJECT_MANAGERS.get(
         project,
@@ -24,35 +24,27 @@ def render_header(project):
         "%d %b %Y"
     )
 
-    st.title("UU DESIGN PROGRAMME DASHBOARD")
-    st.caption(
-        "CL31 & CL32 • Delivery Tracking • Forecasting"
-    )
-
     with st.container(border=True):
 
-        menu, project_col, date_col, tools_col, manager_col = st.columns(
+        col1, col2, col3, col4, col5 = st.columns(
             [0.5, 3, 3, 1.5, 2]
         )
 
-        with menu:
-            st.write("")
+        with col1:
             st.markdown("## ☰")
 
-        with project_col:
+        with col2:
             st.caption("PROJECT")
             st.write(f"**{project}**")
 
-        with date_col:
-            st.caption("SNAPSHOT")
+        with col3:
+            st.caption("DATE")
             st.write(f"**{today}**")
 
-        with tools_col:
+        with col4:
             st.caption("TOOLS")
             st.write("🔄 🔔 ❓ ⚙️")
 
-        with manager_col:
+        with col5:
             st.caption("DESIGN MANAGER")
             st.write(f"**{manager}**")
-
-    st.markdown("")
