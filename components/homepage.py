@@ -99,60 +99,7 @@ def render_homepage(
 
     st.write("")
 
-    # ==================================================
-    # KPI STRIP
-    # ==================================================
-
-    k1, k2, k3, k4, k5, k6, k7 = st.columns(7)
-
-    with k1:
-        card_placeholder("Executive Summary", 90)
-
-    with k2:
-        card_placeholder("Programme Finish", 90)
-
-    with k3:
-        card_placeholder("Contract Completion", 90)
-
-    with k4:
-        card_placeholder("Total Deliverables", 90)
-
-    with k5:
-        card_placeholder("Critical Deliverables", 90)
-
-    with k6:
-        card_placeholder("Average Float", 90)
-
-    with k7:
-        card_placeholder("Average Variance", 90)
-
-    st.write("")
-
-    # ==================================================
-    # ROW 1
-    # ==================================================
-
-    r1c1, r1c2, r1c3, r1c4 = st.columns(4)
-
-    with r1c1:
-        render_executive_summary(cl32)
-
-    with r1c2:
-        card_placeholder("Deliverables by Status", 320)
-
-    with r1c3:
-        card_placeholder("Deliverables by Discipline", 320)
-
-    with r1c4:
-        card_placeholder("Upcoming Submissions", 320)
-
-    st.write("")
-
-    # ==================================================
-    # ROW 2
-    # ==================================================
-
-    r2c1, r2c2, r2c3, r2c4 = st.columns(4)
+   (4)
 
     with r2c1:
         card_placeholder("Critical Deliverables", 260)
@@ -211,3 +158,80 @@ def render_homepage(
 
     with f5:
         card_placeholder("Powered By", 70)
+
+# ==================================================
+# KPI STRIP
+# ==================================================
+
+k1, k2, k3, k4, k5, k6, k7 = st.columns(
+    [1.5, 1, 1, 1, 1, 1, 1]
+)
+
+with k1:
+    st.metric(
+        "Executive Summary",
+        f"{metrics['health_score']}%"
+    )
+
+with k2:
+    card_placeholder("Programme Finish", 90)
+
+with k3:
+    card_placeholder("Contract Completion", 90)
+
+with k4:
+    card_placeholder("Total Deliverables", 90)
+
+with k5:
+    card_placeholder("Critical Deliverables", 90)
+
+with k6:
+    card_placeholder("Average Float", 90)
+
+with k7:
+    card_placeholder("Average Variance", 90)
+
+st.write("")
+
+# ==================================================
+# ROW 1
+# ==================================================
+
+r1c1, r1c2, r1c3 = st.columns(
+    [1.5, 2, 2]
+)
+
+with r1c1:
+    render_executive_summary(cl32)
+
+with r1c2:
+    card_placeholder(
+        "Deliverables by Status",
+        320
+    )
+
+with r1c3:
+    card_placeholder(
+        "Deliverables by Discipline",
+        320
+    )
+
+st.write("")
+
+# ==================================================
+# ROW 1B
+# ==================================================
+
+r1b1, r1b2 = st.columns(2)
+
+with r1b1:
+    card_placeholder(
+        "Upcoming Submissions",
+        320
+    )
+
+with r1b2:
+    card_placeholder(
+        "Critical Deliverables",
+        320
+    )

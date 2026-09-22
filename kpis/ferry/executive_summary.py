@@ -68,6 +68,11 @@ def build_insights(metrics):
             f"{metrics['critical_deliverables']} deliverables ≤5d float"
         )
 
+    if metrics["upcoming_submissions"] > 0:
+        insights.append(
+            f"{metrics['upcoming_submissions']} submissions due within 7 days"
+        )
+
     if not insights:
         insights.append(
             "No material delivery risks identified"
@@ -87,7 +92,7 @@ def build_gauge(score):
                 100 - score,
                 100
             ],
-            hole=0.82,
+            hole=0.80,
             rotation=180,
             sort=False,
             direction="clockwise",
@@ -95,7 +100,7 @@ def build_gauge(score):
             marker=dict(
                 colors=[
                     "#FF5A1F",
-                    "#3A4D67",
+                    "#36506D",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -103,7 +108,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=150,
+        height=180,
         margin=dict(
             l=0,
             r=0,
@@ -117,10 +122,10 @@ def build_gauge(score):
             dict(
                 text=f"{score}%",
                 x=0.5,
-                y=0.42,
+                y=0.43,
                 showarrow=False,
                 font=dict(
-                    size=28,
+                    size=34,
                     color="white"
                 )
             )
@@ -160,21 +165,25 @@ def render(cl32):
         metrics
     )
 
-    with st.container(border=True):
+    header_left, header_right = st.columns(
+        [3, 2]
+    )
 
-        title_col, status_col = st.columns(
-            [3, 2]
+    with header_left:
+
+        st.caption(
+            "EXECUTIVE SUMMARY (AI GENERATED)"
         )
 
-        with title_col:
+    with header_right:
 
-            st.caption(
-                "EXECUTIVE SUMMARY (AI GENERATED)"
-            )
+        st.caption(status)
 
-        with status_col:
+    gauge_col, insight_col = st.columns(
+        [2, 3]
+    )
 
-            st.caption(status)
+    with gauge_col:
 
         st.plotly_chart(
             build_gauge(
@@ -190,7 +199,7 @@ def render(cl32):
             "Design Readiness Index"
         )
 
-        st.markdown(
+        st.write(
             f"### {design_readiness}%"
         )
 
@@ -200,7 +209,9 @@ def render(cl32):
             f"{arrow} {abs(trend)} vs last snapshot"
         )
 
-        st.divider()
+    with insight_col:
+
+        st.write("")
 
         for insight in insights:
             st.write(
