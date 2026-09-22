@@ -6,7 +6,6 @@ from kpis.ferry.executive_summary import (
     render as render_executive_summary
 )
 
-
 PAGE_BG = "#051A33"
 CARD_BG = "#103766"
 CARD_BORDER = "#4B80C7"
@@ -99,19 +98,92 @@ def render_homepage(
 
     st.write("")
 
-   (4)
+    # ==================================================
+    # KPI STRIP
+    # ==================================================
+
+    k1, k2, k3, k4, k5, k6, k7 = st.columns(7)
+
+    with k1:
+        st.metric(
+            "Executive Summary",
+            f"{metrics['health_score']}%"
+        )
+
+    with k2:
+        card_placeholder("Programme Finish", 90)
+
+    with k3:
+        card_placeholder("Contract Completion", 90)
+
+    with k4:
+        card_placeholder("Total Deliverables", 90)
+
+    with k5:
+        card_placeholder("Critical Deliverables", 90)
+
+    with k6:
+        card_placeholder("Average Float", 90)
+
+    with k7:
+        card_placeholder("Average Variance", 90)
+
+    st.write("")
+
+    # ==================================================
+    # ROW 1
+    # ==================================================
+
+    r1c1, r1c2, r1c3 = st.columns(
+        [1.5, 2, 2]
+    )
+
+    with r1c1:
+        render_executive_summary(cl32)
+
+    with r1c2:
+        card_placeholder(
+            "Deliverables by Status",
+            320
+        )
+
+    with r1c3:
+        card_placeholder(
+            "Deliverables by Discipline",
+            320
+        )
+
+    st.write("")
+
+    # ==================================================
+    # ROW 2
+    # ==================================================
+
+    r2c1, r2c2, r2c3, r2c4 = st.columns(4)
 
     with r2c1:
-        card_placeholder("Critical Deliverables", 260)
+        card_placeholder(
+            "Critical Deliverables",
+            260
+        )
 
     with r2c2:
-        card_placeholder("What's Changed", 260)
+        card_placeholder(
+            "What's Changed",
+            260
+        )
 
     with r2c3:
-        card_placeholder("Top 5 Biggest Slippers", 260)
+        card_placeholder(
+            "Top 5 Biggest Slippers",
+            260
+        )
 
     with r2c4:
-        card_placeholder("Discipline Health", 260)
+        card_placeholder(
+            "Discipline Health",
+            260
+        )
 
     st.write("")
 
@@ -122,19 +194,34 @@ def render_homepage(
     r3c1, r3c2, r3c3, r3c4, r3c5 = st.columns(5)
 
     with r3c1:
-        card_placeholder("AI Risk Forecast", 240)
+        card_placeholder(
+            "AI Risk Forecast",
+            240
+        )
 
     with r3c2:
-        card_placeholder("Design Dependencies", 240)
+        card_placeholder(
+            "Design Dependencies",
+            240
+        )
 
     with r3c3:
-        card_placeholder("Queries & TQs", 240)
+        card_placeholder(
+            "Queries & TQs",
+            240
+        )
 
     with r3c4:
-        card_placeholder("AI Insights", 240)
+        card_placeholder(
+            "AI Insights",
+            240
+        )
 
     with r3c5:
-        card_placeholder("Quick Actions", 240)
+        card_placeholder(
+            "Quick Actions",
+            240
+        )
 
     st.write("")
 
@@ -145,93 +232,31 @@ def render_homepage(
     f1, f2, f3, f4, f5 = st.columns(5)
 
     with f1:
-        card_placeholder("Data Status", 70)
+        card_placeholder(
+            "Data Status",
+            70
+        )
 
     with f2:
-        card_placeholder("Last Refresh", 70)
+        card_placeholder(
+            "Last Refresh",
+            70
+        )
 
     with f3:
-        card_placeholder("Snapshots Loaded", 70)
+        card_placeholder(
+            "Snapshots Loaded",
+            70
+        )
 
     with f4:
-        card_placeholder("Activities Tracked", 70)
+        card_placeholder(
+            "Activities Tracked",
+            70
+        )
 
     with f5:
-        card_placeholder("Powered By", 70)
-
-# ==================================================
-# KPI STRIP
-# ==================================================
-
-k1, k2, k3, k4, k5, k6, k7 = st.columns(
-    [1.5, 1, 1, 1, 1, 1, 1]
-)
-
-with k1:
-    st.metric(
-        "Executive Summary",
-        f"{metrics['health_score']}%"
-    )
-
-with k2:
-    card_placeholder("Programme Finish", 90)
-
-with k3:
-    card_placeholder("Contract Completion", 90)
-
-with k4:
-    card_placeholder("Total Deliverables", 90)
-
-with k5:
-    card_placeholder("Critical Deliverables", 90)
-
-with k6:
-    card_placeholder("Average Float", 90)
-
-with k7:
-    card_placeholder("Average Variance", 90)
-
-st.write("")
-
-# ==================================================
-# ROW 1
-# ==================================================
-
-r1c1, r1c2, r1c3 = st.columns(
-    [1.5, 2, 2]
-)
-
-with r1c1:
-    render_executive_summary(cl32)
-
-with r1c2:
-    card_placeholder(
-        "Deliverables by Status",
-        320
-    )
-
-with r1c3:
-    card_placeholder(
-        "Deliverables by Discipline",
-        320
-    )
-
-st.write("")
-
-# ==================================================
-# ROW 1B
-# ==================================================
-
-r1b1, r1b2 = st.columns(2)
-
-with r1b1:
-    card_placeholder(
-        "Upcoming Submissions",
-        320
-    )
-
-with r1b2:
-    card_placeholder(
-        "Critical Deliverables",
-        320
-    )
+        card_placeholder(
+            "Powered By",
+            70
+        )
