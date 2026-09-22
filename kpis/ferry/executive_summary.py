@@ -67,24 +67,13 @@ def render(cl32):
 
     st.markdown(
         f"""
-        <style>
-
-        div[data-testid="stVerticalBlockBorderWrapper"] {{
-            background:{CARD_BG} !important;
-            border:2px solid {CARD_BORDER} !important;
-            border-radius:16px !important;
-            box-shadow:0 8px 20px rgba(0,0,0,0.35) !important;
-        }}
-
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    with st.container(border=True):
-
-        st.markdown(
-            """
+        <div style="
+            background:{CARD_BG};
+            border:2px solid {CARD_BORDER};
+            border-radius:18px;
+            padding:20px;
+            margin-bottom:10px;
+        ">
             <div style="
                 color:#DDEAFF;
                 font-size:12px;
@@ -94,12 +83,7 @@ def render(cl32):
             ">
                 EXECUTIVE SUMMARY (AI GENERATED)
             </div>
-            """,
-            unsafe_allow_html=True
-        )
 
-        st.markdown(
-            """
             <div style="
                 display:inline-block;
                 background:#E0005A;
@@ -108,85 +92,83 @@ def render(cl32):
                 border-radius:8px;
                 font-size:12px;
                 font-weight:700;
-                margin-bottom:14px;
+                margin-bottom:12px;
             ">
                 AT RISK
             </div>
-            """,
-            unsafe_allow_html=True
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    gauge_col, insight_col = st.columns(
+        [1.4, 2.6]
+    )
+
+    with gauge_col:
+
+        st.plotly_chart(
+            build_gauge(score),
+            use_container_width=True,
+            config={
+                "displayModeBar": False
+            }
         )
 
-        gauge_col, insight_col = st.columns(
-            [1.4, 2.6]
-        )
+    with insight_col:
 
-        with gauge_col:
-
-            st.plotly_chart(
-                build_gauge(score),
-                use_container_width=True,
-                config={
-                    "displayModeBar": False
-                }
-            )
-
-        with insight_col:
-
-            st.markdown(
-                "<br>",
-                unsafe_allow_html=True
-            )
-
-            st.markdown(
-                "✅ 26 days behind baseline"
-            )
-
-            st.markdown(
-                "✅ 31 activities with negative float"
-            )
-
-            st.markdown(
-                "✅ 43 deliverables ≤5d float"
-            )
+        st.markdown("<br>", unsafe_allow_html=True)
 
         st.markdown(
-            """
-            <div style="
-                color:#DDEAFF;
-                font-size:13px;
-            ">
-                Design Readiness Index
-            </div>
-            """,
-            unsafe_allow_html=True
+            "✅ 26 days behind baseline"
         )
 
         st.markdown(
-            f"""
-            <div style="
-                color:white;
-                font-size:42px;
-                font-weight:700;
-            ">
-                {readiness}%
-            </div>
-            """,
-            unsafe_allow_html=True
+            "✅ 31 activities with negative float"
         )
 
         st.markdown(
-            """
-            <div style="
-                display:inline-block;
-                background:#0D6E95;
-                padding:6px 12px;
-                border-radius:16px;
-                color:white;
-                font-weight:600;
-                font-size:12px;
-            ">
-                ↓ 7 vs last snapshot
-            </div>
-            """,
-            unsafe_allow_html=True
+            "✅ 43 deliverables ≤5d float"
         )
+
+    st.markdown(
+        """
+        <div style="
+            color:#DDEAFF;
+            font-size:13px;
+        ">
+            Design Readiness Index
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        f"""
+        <div style="
+            color:white;
+            font-size:42px;
+            font-weight:700;
+        ">
+            {readiness}%
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        """
+        <div style="
+            display:inline-block;
+            background:#0D6E95;
+            padding:6px 12px;
+            border-radius:16px;
+            color:white;
+            font-weight:600;
+            font-size:12px;
+        ">
+            ↓ 7 vs last snapshot
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
