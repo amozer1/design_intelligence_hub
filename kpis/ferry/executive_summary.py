@@ -7,6 +7,10 @@ from utils.project_metrics import (
 )
 
 
+CARD_BG = "#062B5B"
+CARD_BORDER = "#0EA5E9"
+
+
 def get_status(score):
 
     if score >= 80:
@@ -112,7 +116,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=180,
+        height=190,
         margin=dict(
             l=0,
             r=0,
@@ -125,7 +129,7 @@ def build_gauge(score):
         annotations=[
             dict(
                 text=f"{score}%",
-                x=0.50,
+                x=0.5,
                 y=0.42,
                 showarrow=False,
                 font=dict(
@@ -141,38 +145,47 @@ def build_gauge(score):
 
 def render(cl32):
 
-    current_df, _ = get_current_snapshot(
-        cl32
-    )
+    current_df, _ = get_current_snapshot(cl32)
 
     metrics = get_project_metrics(
         current_df
     )
 
     score = metrics["health_score"]
+
     readiness = metrics["design_readiness"]
+
     trend = get_trend(cl32)
 
     status = get_status(score)
 
     insights = build_insights(metrics)
 
-    with st.container(border=True):
-
-        st.markdown(
-            """
+    # CARD HEADER
+    st.markdown(
+        f"""
+        <div style="
+            background:{CARD_BG};
+            border:2px solid {CARD_BORDER};
+            border-bottom:none;
+            border-radius:18px 18px 0 0;
+            padding:18px 18px 8px 18px;
+        ">
             <div style="
                 color:#DDEAFF;
                 font-size:12px;
                 font-weight:600;
                 letter-spacing:0.5px;
-                margin-bottom:8px;
             ">
                 EXECUTIVE SUMMARY (AI GENERATED)
             </div>
-            """,
-            unsafe_allow_html=True
-        )
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # BODY
+    with st.container(border=True):
 
         if status == "AT RISK":
             badge_colour = "#E0005A"
@@ -193,7 +206,7 @@ def render(cl32):
                 border-radius:8px;
                 font-size:12px;
                 font-weight:700;
-                margin-bottom:14px;
+                margin-bottom:12px;
             ">
                 {status}
             </div>
@@ -231,71 +244,4 @@ def render(cl32):
                         font-size:16px;
                         font-weight:700;
                         margin-bottom:16px;
-                        line-height:1.3;
                     ">
-                        ✅ {insight}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-        st.markdown(
-            """
-            <div style="
-                color:#DDEAFF;
-                font-size:13px;
-                margin-top:-8px;
-            ">
-                Design Readiness Index
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            f"""
-            <div style="
-                color:white;
-                font-size:42px;
-                font-weight:700;
-                line-height:1;
-                margin-top:4px;
-            ">
-                {readiness}%
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        trend_arrow = (
-            "↑"
-            if trend >= 0
-            else "↓"
-        )
-
-        trend_colour = (
-            "#22C55E"
-            if trend >= 0
-            else "#FF5A5A"
-        )
-
-        st.markdown(
-            f"""
-            <div style="
-                display:inline-block;
-                margin-top:8px;
-                background:#0D6E95;
-                padding:6px 12px;
-                border-radius:16px;
-                color:white;
-                font-weight:600;
-                font-size:12px;
-            ">
-                <span style="color:{trend_colour};">
-                    {trend_arrow}
-                </span>
-                {abs(trend)} vs last snapshot
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
