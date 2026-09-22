@@ -8,7 +8,6 @@ from utils.project_metrics import (
 
 
 def get_status(score):
-
     if score >= 80:
         return "ON TRACK"
 
@@ -19,7 +18,6 @@ def get_status(score):
 
 
 def get_trend(cl32):
-
     snapshots = sorted(
         cl32["SnapshotDate"].dropna().unique()
     )
@@ -29,11 +27,11 @@ def get_trend(cl32):
 
     current_df = cl32[
         cl32["SnapshotDate"] == snapshots[-1]
-    ]
+        ]
 
     previous_df = cl32[
         cl32["SnapshotDate"] == snapshots[-2]
-    ]
+        ]
 
     current_metrics = get_project_metrics(
         current_df
@@ -44,13 +42,12 @@ def get_trend(cl32):
     )
 
     return (
-        current_metrics["health_score"]
-        - previous_metrics["health_score"]
+            current_metrics["health_score"]
+            - previous_metrics["health_score"]
     )
 
 
 def build_insights(metrics):
-
     insights = []
 
     if metrics["programme_drift"] > 0:
@@ -77,7 +74,6 @@ def build_insights(metrics):
 
 
 def build_gauge(score):
-
     if score >= 80:
         colour = "#22C55E"
 
@@ -104,7 +100,7 @@ def build_gauge(score):
             marker=dict(
                 colors=[
                     colour,
-                    "#667085",
+                    "#64748B",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -112,7 +108,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=260,
+        height=220,
         margin=dict(
             l=0,
             r=0,
@@ -129,7 +125,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=48,
+                    size=44,
                     color="white"
                 )
             )
@@ -140,7 +136,6 @@ def build_gauge(score):
 
 
 def render(cl32):
-
     current_df, _ = get_current_snapshot(
         cl32
     )
@@ -151,7 +146,9 @@ def render(cl32):
 
     score = metrics["health_score"]
 
-    readiness = metrics["design_readiness"]
+    readiness = metrics[
+        "design_readiness"
+    ]
 
     trend = get_trend(cl32)
 
@@ -161,71 +158,50 @@ def render(cl32):
 
     with st.container(border=True):
 
-        header_left, header_right = st.columns(
-            [4, 1.4]
+        st.markdown(
+            """
+            <div style="
+                color:#B5C4D8;
+                font-size:12px;
+                font-weight:600;
+                letter-spacing:0.5px;
+                margin-bottom:10px;
+            ">
+                EXECUTIVE SUMMARY (AI GENERATED)
+            </div>
+            """,
+            unsafe_allow_html=True
         )
 
-        with header_left:
+        if status == "AT RISK":
+            badge_colour = "#7A003C"
 
-            st.caption(
-                "EXECUTIVE SUMMARY (AI GENERATED)"
-            )
+        elif status == "WATCHLIST":
+            badge_colour = "#8A6200"
 
-        with header_right:
+        else:
+            badge_colour = "#0F7B3E"
 
-            if status == "AT RISK":
-                st.markdown(
-                    """
-                    <div style="
-                        background:#7A003C;
-                        color:white;
-                        padding:10px 14px;
-                        border-radius:10px;
-                        text-align:center;
-                        font-weight:700;
-                    ">
-                        AT RISK
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-            elif status == "WATCHLIST":
-                st.markdown(
-                    """
-                    <div style="
-                        background:#8A6200;
-                        color:white;
-                        padding:10px 14px;
-                        border-radius:10px;
-                        text-align:center;
-                        font-weight:700;
-                    ">
-                        WATCHLIST
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-            else:
-                st.markdown(
-                    """
-                    <div style="
-                        background:#0F7B3E;
-                        color:white;
-                        padding:10px 14px;
-                        border-radius:10px;
-                        text-align:center;
-                        font-weight:700;
-                    ">
-                        ON TRACK
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+        st.markdown(
+            f"""
+            <div style="
+                display:inline-block;
+                background:{badge_colour};
+                color:white;
+                padding:8px 14px;
+                border-radius:10px;
+                font-size:13px;
+                font-weight:700;
+                margin-bottom:15px;
+            ">
+                {status}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
         gauge_col, insight_col = st.columns(
-            [2, 3]
+            [1.6, 2.4]
         )
 
         with gauge_col:
@@ -240,17 +216,17 @@ def render(cl32):
 
         with insight_col:
 
-            st.write("")
+            st.markdown("<br>", unsafe_allow_html=True)
 
             for insight in insights:
-
                 st.markdown(
                     f"""
                     <div style="
-                        font-size:18px;
-                        font-weight:600;
-                        margin-bottom:22px;
                         color:white;
+                        font-size:18px;
+                        font-weight:700;
+                        margin-bottom:20px;
+                        line-height:1.4;
                     ">
                         ✅ {insight}
                     </div>
@@ -261,57 +237,10 @@ def render(cl32):
         st.markdown(
             """
             <div style="
-                color:#AEBBD0;
-                font-size:14px;
-                margin-top:-10px;
+                color:#B5C4D8;
+                font-size:13px;
+                margin-top:-5px;
             ">
                 Design Readiness Index
             </div>
             """,
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            f"""
-            <div style="
-                font-size:52px;
-                font-weight:700;
-                color:white;
-                line-height:1;
-                margin-top:5px;
-            ">
-                {readiness}%
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        trend_arrow = "↑" if trend >= 0 else "↓"
-
-        trend_colour = (
-            "#22C55E"
-            if trend >= 0
-            else "#EF4444"
-        )
-
-        st.markdown(
-            f"""
-            <div style="
-                display:inline-block;
-                margin-top:8px;
-                background:#063B52;
-                padding:6px 12px;
-                border-radius:20px;
-                color:white;
-                font-weight:600;
-            ">
-                <span style="
-                    color:{trend_colour};
-                ">
-                    {trend_arrow}
-                </span>
-                {abs(trend)} vs last snapshot
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
