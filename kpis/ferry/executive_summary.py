@@ -35,13 +35,9 @@ def get_trend(cl32):
         cl32["SnapshotDate"] == snapshots[-2]
     ]
 
-    current_metrics = get_project_metrics(
-        current_df
-    )
+    current_metrics = get_project_metrics(current_df)
 
-    previous_metrics = get_project_metrics(
-        previous_df
-    )
+    previous_metrics = get_project_metrics(previous_df)
 
     return (
         current_metrics["health_score"]
@@ -55,8 +51,7 @@ def build_insights(metrics):
 
     if metrics["programme_drift"] > 0:
         insights.append(
-            f"Programme is behind baseline by "
-            f"{metrics['programme_drift']} days."
+            f"Programme is behind baseline by {metrics['programme_drift']} days."
         )
 
     if metrics["high_risk"] > 0:
@@ -88,7 +83,7 @@ def build_gauge(score):
                 100 - score,
                 100
             ],
-            hole=0.78,
+            hole=0.80,
             rotation=180,
             sort=False,
             direction="clockwise",
@@ -96,7 +91,7 @@ def build_gauge(score):
             marker=dict(
                 colors=[
                     "#FF5A1F",
-                    "#50627D",
+                    "#4A5870",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -104,7 +99,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=180,
+        height=160,
         margin=dict(
             l=0,
             r=0,
@@ -121,7 +116,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=34,
+                    size=32,
                     color="white"
                 )
             )
@@ -135,52 +130,63 @@ def render(cl32):
 
     current_df, _ = get_current_snapshot(cl32)
 
-    metrics = get_project_metrics(current_df)
+    metrics = get_project_metrics(
+        current_df
+    )
 
-    health_score = metrics["health_score"]
+    score = metrics["health_score"]
 
-    design_readiness = metrics["design_readiness"]
+    readiness = metrics["design_readiness"]
 
     trend = get_trend(cl32)
 
-    status = get_status(health_score)
+    status = get_status(score)
 
     insights = build_insights(metrics)
 
-    header_left, header_right = st.columns(
-        [4, 1]
-    )
+    with st.container(border=True):
 
-    with header_left:
-
-        st.caption(
-            "EXECUTIVE SUMMARY (AI GENERATED)"
+        header_left, header_right = st.columns(
+            [4, 1]
         )
 
-    with header_right:
+        with header_left:
 
-        if status == "AT RISK":
-            st.error(status)
+            st.caption(
+                "EXECUTIVE SUMMARY (AI GENERATED)"
+            )
 
-        elif status == "WATCHLIST":
-            st.warning(status)
+        with header_right:
 
-        else:
-            st.success(status)
+            if status == "AT RISK":
+                st.error(status)
 
-    gauge_col, insight_col = st.columns(
-        [2, 3]
-    )
+            elif status == "WATCHLIST":
+                st.warning(status)
 
-    with gauge_col:
+            else:
+                st.success(status)
 
-        st.plotly_chart(
-            build_gauge(health_score),
-            use_container_width=True,
-            config={
-                "displayModeBar": False
-            }
+        gauge_col, insight_col = st.columns(
+            [2, 3]
         )
+
+        with gauge_col:
+
+            st.plotly_chart(
+                build_gauge(score),
+                use_container_width=True,
+                config={
+                    "displayModeBar": False
+                }
+            )
+
+        with insight_col:
+
+            st.write("")
+
+            for insight in insights:
+                st.write(f"✅ {insight}")
 
         st.caption(
             "Design Readiness Index"
@@ -188,20 +194,8 @@ def render(cl32):
 
         arrow = "↑" if trend >= 0 else "↓"
 
-        colour = "normal" if trend >= 0 else "inverse"
-
         st.metric(
-            label="",
-            value=f"{design_readiness}%",
-            delta=f"{arrow} {abs(trend)} vs last snapshot",
-            delta_color=colour
+            "",
+            f"{readiness}%",
+            delta=f"{arrow} {abs(trend)} vs last snapshot"
         )
-
-    with insight_col:
-
-        st.write("")
-
-        for insight in insights:
-            st.write(
-                f"✅ {insight}"
-            )
