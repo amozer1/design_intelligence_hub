@@ -3,7 +3,7 @@ import streamlit as st
 from components.header import render_header
 
 from kpis.ferry.executive_summary import (
-    render as render_executive_summary
+    render as render_executive_summary,
 )
 
 PAGE_BG = "#051A33"
@@ -74,7 +74,7 @@ def render_homepage(
             max-width:100%;
         }}
 
-        h1,h2,h3,h4,h5,h6 {{
+        h1, h2, h3, h4, h5, h6 {{
             color:white !important;
         }}
 
@@ -84,7 +84,7 @@ def render_homepage(
 
         </style>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
     # ==================================================
@@ -93,7 +93,7 @@ def render_homepage(
 
     render_header(
         project=project,
-        snapshot=snapshot
+        snapshot=snapshot,
     )
 
     st.write("")
@@ -134,9 +134,7 @@ def render_homepage(
     # ROW 1
     # ==================================================
 
-    r1c1, r1c2, r1c3 = st.columns(
-        [1.5, 2, 2]
-    )
+    r1c1, r1c2 = st.columns([2, 3])
 
     with r1c1:
         render_executive_summary(cl32)
@@ -147,42 +145,24 @@ def render_homepage(
             320
         )
 
-    with r1c3:
-        card_placeholder(
-            "Deliverables by Discipline",
-            320
-        )
-
     st.write("")
 
     # ==================================================
     # ROW 2
     # ==================================================
 
-    r2c1, r2c2, r2c3, r2c4 = st.columns(4)
+    r2c1, r2c2 = st.columns(2)
 
     with r2c1:
         card_placeholder(
-            "Critical Deliverables",
-            260
+            "Deliverables by Discipline",
+            320
         )
 
     with r2c2:
         card_placeholder(
-            "What's Changed",
-            260
-        )
-
-    with r2c3:
-        card_placeholder(
-            "Top 5 Biggest Slippers",
-            260
-        )
-
-    with r2c4:
-        card_placeholder(
-            "Discipline Health",
-            260
+            "Upcoming Submissions",
+            320
         )
 
     st.write("")
@@ -191,33 +171,65 @@ def render_homepage(
     # ROW 3
     # ==================================================
 
-    r3c1, r3c2, r3c3, r3c4, r3c5 = st.columns(5)
+    r3c1, r3c2, r3c3, r3c4 = st.columns(4)
 
     with r3c1:
+        card_placeholder(
+            "Critical Deliverables",
+            260
+        )
+
+    with r3c2:
+        card_placeholder(
+            "What's Changed",
+            260
+        )
+
+    with r3c3:
+        card_placeholder(
+            "Top 5 Biggest Slippers",
+            260
+        )
+
+    with r3c4:
+        card_placeholder(
+            "Discipline Health",
+            260
+        )
+
+    st.write("")
+
+    # ==================================================
+    # ROW 4
+    # ==================================================
+
+    r4c1, r4c2, r4c3, r4c4, r4c5 = st.columns(5)
+
+    with r4c1:
         card_placeholder(
             "AI Risk Forecast",
             240
         )
 
-    with r3c2:
+    with r4c2:
         card_placeholder(
             "Design Dependencies",
             240
         )
 
-    with r3c3:
+    with r4c3:
         card_placeholder(
             "Queries & TQs",
             240
         )
 
-    with r3c4:
+    with r4c4:
         card_placeholder(
             "AI Insights",
             240
         )
 
-    with r3c5:
+    with r4c5:
         card_placeholder(
             "Quick Actions",
             240
