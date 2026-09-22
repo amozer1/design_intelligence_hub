@@ -8,6 +8,7 @@ from utils.project_metrics import (
 
 
 def get_status(score):
+
     if score >= 80:
         return "ON TRACK"
 
@@ -18,6 +19,7 @@ def get_status(score):
 
 
 def get_trend(cl32):
+
     snapshots = sorted(
         cl32["SnapshotDate"].dropna().unique()
     )
@@ -27,11 +29,11 @@ def get_trend(cl32):
 
     current_df = cl32[
         cl32["SnapshotDate"] == snapshots[-1]
-        ]
+    ]
 
     previous_df = cl32[
         cl32["SnapshotDate"] == snapshots[-2]
-        ]
+    ]
 
     current_metrics = get_project_metrics(
         current_df
@@ -42,12 +44,13 @@ def get_trend(cl32):
     )
 
     return (
-            current_metrics["health_score"]
-            - previous_metrics["health_score"]
+        current_metrics["health_score"]
+        - previous_metrics["health_score"]
     )
 
 
 def build_insights(metrics):
+
     insights = []
 
     if metrics["programme_drift"] > 0:
@@ -74,12 +77,11 @@ def build_insights(metrics):
 
 
 def build_gauge(score):
+
     if score >= 80:
         colour = "#22C55E"
-
     elif score >= 60:
         colour = "#F59E0B"
-
     else:
         colour = "#FF3131"
 
@@ -136,6 +138,7 @@ def build_gauge(score):
 
 
 def render(cl32):
+
     current_df, _ = get_current_snapshot(
         cl32
     )
@@ -158,6 +161,10 @@ def render(cl32):
 
     with st.container(border=True):
 
+        # -------------------------------------
+        # TITLE
+        # -------------------------------------
+
         st.markdown(
             """
             <div style="
@@ -172,6 +179,10 @@ def render(cl32):
             """,
             unsafe_allow_html=True
         )
+
+        # -------------------------------------
+        # STATUS
+        # -------------------------------------
 
         if status == "AT RISK":
             badge_colour = "#7A003C"
@@ -192,7 +203,7 @@ def render(cl32):
                 border-radius:10px;
                 font-size:13px;
                 font-weight:700;
-                margin-bottom:15px;
+                margin-bottom:18px;
             ">
                 {status}
             </div>
@@ -200,8 +211,12 @@ def render(cl32):
             unsafe_allow_html=True
         )
 
+        # -------------------------------------
+        # GAUGE + INSIGHTS
+        # -------------------------------------
+
         gauge_col, insight_col = st.columns(
-            [1.6, 2.4]
+            [1.5, 2.5]
         )
 
         with gauge_col:
@@ -216,16 +231,20 @@ def render(cl32):
 
         with insight_col:
 
-            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown(
+                "<br>",
+                unsafe_allow_html=True
+            )
 
             for insight in insights:
+
                 st.markdown(
                     f"""
                     <div style="
                         color:white;
-                        font-size:18px;
+                        font-size:17px;
                         font-weight:700;
-                        margin-bottom:20px;
+                        margin-bottom:18px;
                         line-height:1.4;
                     ">
                         ✅ {insight}
@@ -233,6 +252,10 @@ def render(cl32):
                     """,
                     unsafe_allow_html=True
                 )
+
+        # -------------------------------------
+        # READINESS
+        # -------------------------------------
 
         st.markdown(
             """
@@ -244,3 +267,53 @@ def render(cl32):
                 Design Readiness Index
             </div>
             """,
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            f"""
+            <div style="
+                color:white;
+                font-size:48px;
+                font-weight:700;
+                line-height:1;
+                margin-top:4px;
+            ">
+                {readiness}%
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        trend_arrow = (
+            "↑"
+            if trend >= 0
+            else "↓"
+        )
+
+        trend_colour = (
+            "#22C55E"
+            if trend >= 0
+            else "#EF4444"
+        )
+
+        st.markdown(
+            f"""
+            <div style="
+                display:inline-block;
+                margin-top:8px;
+                background:#063B52;
+                padding:6px 12px;
+                border-radius:20px;
+                color:white;
+                font-weight:600;
+                font-size:13px;
+            ">
+                <span style="color:{trend_colour};">
+                    {trend_arrow}
+                </span>
+                {abs(trend)} vs last snapshot
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
