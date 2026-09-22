@@ -80,8 +80,10 @@ def build_gauge(score):
 
     if score >= 80:
         colour = "#22C55E"
+
     elif score >= 60:
         colour = "#F59E0B"
+
     else:
         colour = "#FF3131"
 
@@ -110,7 +112,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=220,
+        height=180,
         margin=dict(
             l=0,
             r=0,
@@ -127,7 +129,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=44,
+                    size=40,
                     color="white"
                 )
             )
@@ -159,11 +161,23 @@ def render(cl32):
 
     insights = build_insights(metrics)
 
-    with st.container(border=True):
+    st.markdown(
+        """
+        <style>
 
-        # -------------------------------------
-        # TITLE
-        # -------------------------------------
+        div[data-testid="stVerticalBlockBorderWrapper"]{
+            background:#103766 !important;
+            border:2px solid #5F9DF7 !important;
+            border-radius:16px !important;
+            box-shadow:0 8px 20px rgba(0,0,0,0.35);
+        }
+
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    with st.container(border=True):
 
         st.markdown(
             """
@@ -172,7 +186,7 @@ def render(cl32):
                 font-size:12px;
                 font-weight:600;
                 letter-spacing:0.5px;
-                margin-bottom:10px;
+                margin-bottom:8px;
             ">
                 EXECUTIVE SUMMARY (AI GENERATED)
             </div>
@@ -180,18 +194,14 @@ def render(cl32):
             unsafe_allow_html=True
         )
 
-        # -------------------------------------
-        # STATUS
-        # -------------------------------------
-
         if status == "AT RISK":
-            badge_colour = "#7A003C"
+            badge_colour = "#A00046"
 
         elif status == "WATCHLIST":
-            badge_colour = "#8A6200"
+            badge_colour = "#B07A00"
 
         else:
-            badge_colour = "#0F7B3E"
+            badge_colour = "#008A42"
 
         st.markdown(
             f"""
@@ -199,11 +209,11 @@ def render(cl32):
                 display:inline-block;
                 background:{badge_colour};
                 color:white;
-                padding:8px 14px;
-                border-radius:10px;
-                font-size:13px;
+                padding:6px 12px;
+                border-radius:8px;
+                font-size:12px;
                 font-weight:700;
-                margin-bottom:18px;
+                margin-bottom:14px;
             ">
                 {status}
             </div>
@@ -211,12 +221,8 @@ def render(cl32):
             unsafe_allow_html=True
         )
 
-        # -------------------------------------
-        # GAUGE + INSIGHTS
-        # -------------------------------------
-
         gauge_col, insight_col = st.columns(
-            [1.5, 2.5]
+            [1.4, 2.6]
         )
 
         with gauge_col:
@@ -242,10 +248,10 @@ def render(cl32):
                     f"""
                     <div style="
                         color:white;
-                        font-size:17px;
+                        font-size:16px;
                         font-weight:700;
-                        margin-bottom:18px;
-                        line-height:1.4;
+                        margin-bottom:16px;
+                        line-height:1.3;
                     ">
                         ✅ {insight}
                     </div>
@@ -253,16 +259,12 @@ def render(cl32):
                     unsafe_allow_html=True
                 )
 
-        # -------------------------------------
-        # READINESS
-        # -------------------------------------
-
         st.markdown(
             """
             <div style="
                 color:#B5C4D8;
                 font-size:13px;
-                margin-top:-5px;
+                margin-top:-8px;
             ">
                 Design Readiness Index
             </div>
@@ -274,7 +276,7 @@ def render(cl32):
             f"""
             <div style="
                 color:white;
-                font-size:48px;
+                font-size:42px;
                 font-weight:700;
                 line-height:1;
                 margin-top:4px;
@@ -302,12 +304,12 @@ def render(cl32):
             <div style="
                 display:inline-block;
                 margin-top:8px;
-                background:#063B52;
+                background:#0A4966;
                 padding:6px 12px;
-                border-radius:20px;
+                border-radius:16px;
                 color:white;
                 font-weight:600;
-                font-size:13px;
+                font-size:12px;
             ">
                 <span style="color:{trend_colour};">
                     {trend_arrow}
