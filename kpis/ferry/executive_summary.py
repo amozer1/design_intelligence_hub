@@ -10,12 +10,43 @@ from utils.project_metrics import (
 def get_status(score):
 
     if score >= 80:
-        return "ON TRACK"
+        return "🟢 ON TRACK"
 
     if score >= 60:
-        return "WATCHLIST"
+        return "🟡 WATCHLIST"
 
-    return "AT RISK"
+    return "🔴 AT RISK"
+
+
+def get_trend(cl32):
+
+    snapshots = sorted(
+        cl32["SnapshotDate"].dropna().unique()
+    )
+
+    if len(snapshots) < 2:
+        return 0
+
+    current_df = cl32[
+        cl32["SnapshotDate"] == snapshots[-1]
+    ]
+
+    previous_df = cl32[
+        cl32["SnapshotDate"] == snapshots[-2]
+    ]
+
+    current_metrics = get_project_metrics(
+        current_df
+    )
+
+    previous_metrics = get_project_metrics(
+        previous_df
+    )
+
+    return (
+        current_metrics["health_score"]
+        - previous_metrics["health_score"]
+    )
 
 
 def build_insights(metrics):
@@ -24,18 +55,18 @@ def build_insights(metrics):
 
     if metrics["programme_drift"] > 0:
         insights.append(
-            f"Programme is behind baseline by "
+            f"Forecast finish exceeds baseline by "
             f"{metrics['programme_drift']} days."
         )
 
     if metrics["high_risk"] > 0:
         insights.append(
-            f"{metrics['high_risk']} high-risk deliverables require attention."
+            f"{metrics['high_risk']} activities have negative float exposure."
         )
 
     if metrics["critical_deliverables"] > 0:
         insights.append(
-            f"{metrics['critical_deliverables']} critical deliverables have low float."
+            f"{metrics['critical_deliverables']} deliverables have ≤5 days float."
         )
 
     if metrics["upcoming_submissions"] > 0:
@@ -64,13 +95,13 @@ def build_gauge(score):
             ],
             hole=0.82,
             rotation=180,
-            sort=False,
             direction="clockwise",
+            sort=False,
             textinfo="none",
             marker=dict(
                 colors=[
                     "#FF6A00",
-                    "#324760",
+                    "#34495E",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -78,21 +109,21 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=130,
+        height=120,
         margin=dict(
             l=0,
             r=0,
             t=0,
-            b=0,
+            b=0
         ),
         showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         annotations=[
             dict(
-                text=f"<b>{score}%</b>",
+                text=f"{score}%",
                 x=0.5,
-                y=0.40,
+                y=0.42,
                 showarrow=False,
                 font=dict(
                     size=24,
@@ -107,50 +138,73 @@ def build_gauge(score):
 
 def render(cl32):
 
-    current_df, _ = get_current_snapshot(cl32)
+    current_df, _ = get_current_snapshot(
+        cl32
+    )
 
-    metrics = get_project_metrics(current_df)
+    metrics = get_project_metrics(
+        current_df
+    )
 
     health_score = metrics["health_score"]
 
-    design_readiness = metrics["design_readiness"]
+    design_readiness = metrics[
+        "design_readiness"
+    ]
 
-    status = get_status(health_score)
+    trend = get_trend(cl32)
 
-    insights = build_insights(metrics)
+    status = get_status(
+        health_score
+    )
+
+    insights = build_insights(
+        metrics
+    )
 
     with st.container(border=True):
 
-        title_col, status_col = st.columns([4, 1])
-
-        with title_col:
-            st.subheader("Executive Summary")
-
-        with status_col:
-
-            if status == "AT RISK":
-                st.error(status)
-
-            elif status == "WATCHLIST":
-                st.warning(status)
-
-            else:
-                st.success(status)
-
-        st.plotly_chart(
-            build_gauge(health_score),
-            use_container_width=True,
-            config={
-                "displayModeBar": False
-            },
+        left_header, right_header = st.columns(
+            [4, 1]
         )
 
-        st.metric(
-            "Design Readiness Index",
-            f"{design_readiness}%"
+        with left_header:
+            st.caption(
+                "EXECUTIVE SUMMARY (AI GENERATED)"
+            )
+
+        with right_header:
+            st.write(status)
+
+        gauge_col, insight_col = st.columns(
+            [2, 3]
         )
 
-        st.divider()
+        with gauge_col:
 
-        for insight in insights:
-            st.write(f"✅ {insight}")
+            st.plotly_chart(
+                build_gauge(
+                    health_score
+                ),
+                use_container_width=True,
+                config={
+                    "displayModeBar": False
+                }
+            )
+
+            st.caption(
+                "Design Readiness Index"
+            )
+
+            st.metric(
+                label="",
+                value=f"{design_readiness}%",
+                delta=f"{trend:+.0f}% vs last snapshot"
+            )
+
+        with insight_col:
+
+            for insight in insights:
+                st.write(
+                    f"✅ {insight}"
+                )
