@@ -1,14 +1,22 @@
 import streamlit as st
 import plotly.graph_objects as go
 
+from utils.project_metrics import (
+    get_current_snapshot,
+    get_project_metrics,
+)
+
 
 def build_gauge(score):
-
     fig = go.Figure()
 
     fig.add_trace(
         go.Pie(
-            values=[score, 100 - score, 100],
+            values=[
+                score,
+                100 - score,
+                100
+            ],
             hole=0.78,
             rotation=180,
             sort=False,
@@ -38,7 +46,7 @@ def build_gauge(score):
         annotations=[
             dict(
                 text=f"{score}%",
-                x=0.5,
+                x=0.50,
                 y=0.42,
                 showarrow=False,
                 font=dict(
@@ -52,10 +60,44 @@ def build_gauge(score):
     return fig
 
 
-def render(cl32):
+def get_status(score):
+    if score >= 80:
+        return "ON TRACK"
 
-    score = 55
-    readiness = 37
+    if score >= 60:
+        return "WATCHLIST"
+
+    return "AT RISK"
+
+
+def render(cl32):
+    current_df, _ = get_current_snapshot(
+        cl32
+    )
+
+    metrics = get_project_metrics(
+        current_df
+    )
+
+    score = metrics["health_score"]
+
+    readiness = metrics[
+        "design_readiness"
+    ]
+
+    programme_drift = metrics[
+        "programme_drift"
+    ]
+
+    high_risk = metrics[
+        "high_risk"
+    ]
+
+    critical_deliverables = metrics[
+        "critical_deliverables"
+    ]
+
+    status = get_status(score)
 
     with st.container(border=True):
 
@@ -63,7 +105,17 @@ def render(cl32):
             "EXECUTIVE SUMMARY (AI GENERATED)"
         )
 
-        st.error("AT RISK")
+        if status == "ON TRACK":
+
+            st.success(status)
+
+        elif status == "WATCHLIST":
+
+            st.warning(status)
+
+        else:
+
+            st.error(status)
 
         gauge_col, insight_col = st.columns(
             [1.4, 2.6]
@@ -83,26 +135,15 @@ def render(cl32):
 
             st.write("")
 
-            st.write(
-                "✅ 26 days behind baseline"
-            )
+            if programme_drift > 0:
+                st.write(
+                    f"✅ {programme_drift} days behind baseline"
+                )
 
-            st.write(
-                "✅ 31 activities with negative float"
-            )
+            if high_risk > 0:
+                st.write(
+                    f"✅ {high_risk} activities with negative float"
+                )
 
-            st.write(
-                "✅ 43 deliverables ≤5d float"
-            )
+            if critical_deliverables > 0:
 
-        st.caption(
-            "Design Readiness Index"
-        )
-
-        st.write(
-            f"## {readiness}%"
-        )
-
-        st.info(
-            "↓ 7 vs last snapshot"
-        )
