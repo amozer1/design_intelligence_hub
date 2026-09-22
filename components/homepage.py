@@ -7,8 +7,6 @@ from kpis.ferry.executive_summary import (
 )
 
 PAGE_BG = "#051A33"
-CARD_BG = "#103766"
-CARD_BORDER = "#4B80C7"
 
 
 def card_placeholder(title, height=250):
@@ -16,18 +14,16 @@ def card_placeholder(title, height=250):
     st.markdown(
         f"""
         <div style="
-            background:{CARD_BG};
-            border:2px solid {CARD_BORDER};
-            border-radius:14px;
-            padding:16px;
+            background:#103766;
+            border:1px solid #4B80C7;
+            border-radius:12px;
+            padding:12px;
             height:{height}px;
-            box-shadow:0 4px 12px rgba(0,0,0,0.35);
         ">
             <div style="
-                color:#FFFFFF;
-                font-size:16px;
+                color:white;
+                font-size:14px;
                 font-weight:700;
-                margin-bottom:10px;
             ">
                 {title}
             </div>
@@ -74,7 +70,7 @@ def render_homepage(
             max-width:100%;
         }}
 
-        h1, h2, h3, h4, h5, h6 {{
+        h1,h2,h3,h4,h5,h6 {{
             color:white !important;
         }}
 
@@ -251,36 +247,4 @@ def render_homepage(
 
     # ==================================================
     # FOOTER
-    # ==================================================
-
-    f1, f2, f3, f4, f5 = st.columns(5)
-
-    with f1:
-        card_placeholder(
-            "Data Status",
-            70
-        )
-
-    with f2:
-        card_placeholder(
-            "Last Data Refresh",
-            70
-        )
-
-    with f3:
-        card_placeholder(
-            "Snapshots Loaded",
-            70
-        )
-
-    with f4:
-        card_placeholder(
-            "Total Activities Tracked",
-            70
-        )
-
-    with f5:
-        card_placeholder(
-            "Powered By",
-            70
-        )
+    # ===========================================
