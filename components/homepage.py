@@ -9,30 +9,6 @@ from kpis.ferry.executive_summary import (
 PAGE_BG = "#051A33"
 
 
-def card_placeholder(title, height=250):
-
-    st.markdown(
-        f"""
-        <div style="
-            background:#103766;
-            border:1px solid #4B80C7;
-            border-radius:12px;
-            padding:12px;
-            height:{height}px;
-        ">
-            <div style="
-                color:white;
-                font-size:14px;
-                font-weight:700;
-            ">
-                {title}
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-
 def render_homepage(
     project,
     snapshot,
@@ -106,40 +82,22 @@ def render_homepage(
         render_executive_summary(cl32)
 
     with k2:
-        card_placeholder(
-            "Programme Finish",
-            120
-        )
+        st.empty()
 
     with k3:
-        card_placeholder(
-            "Contract Completion",
-            120
-        )
+        st.empty()
 
     with k4:
-        card_placeholder(
-            "Total Deliverables",
-            120
-        )
+        st.empty()
 
     with k5:
-        card_placeholder(
-            "Critical Deliverables",
-            120
-        )
+        st.empty()
 
     with k6:
-        card_placeholder(
-            "Average Float",
-            120
-        )
+        st.empty()
 
     with k7:
-        card_placeholder(
-            "Average Variance (BL1)",
-            120
-        )
+        st.empty()
 
     st.write("")
 
@@ -150,28 +108,16 @@ def render_homepage(
     r1c1, r1c2, r1c3, r1c4 = st.columns(4)
 
     with r1c1:
-        card_placeholder(
-            "Deliverables by Status",
-            320
-        )
+        st.empty()
 
     with r1c2:
-        card_placeholder(
-            "Deliverables by Discipline",
-            320
-        )
+        st.empty()
 
     with r1c3:
-        card_placeholder(
-            "Deliverables by Design Stage",
-            320
-        )
+        st.empty()
 
     with r1c4:
-        card_placeholder(
-            "Upcoming Submissions",
-            320
-        )
+        st.empty()
 
     st.write("")
 
@@ -182,28 +128,16 @@ def render_homepage(
     r2c1, r2c2, r2c3, r2c4 = st.columns(4)
 
     with r2c1:
-        card_placeholder(
-            "Critical Deliverables",
-            260
-        )
+        st.empty()
 
     with r2c2:
-        card_placeholder(
-            "What's Changed",
-            260
-        )
+        st.empty()
 
     with r2c3:
-        card_placeholder(
-            "Top 5 Biggest Slippers",
-            260
-        )
+        st.empty()
 
     with r2c4:
-        card_placeholder(
-            "Discipline Health",
-            260
-        )
+        st.empty()
 
     st.write("")
 
@@ -214,37 +148,39 @@ def render_homepage(
     r3c1, r3c2, r3c3, r3c4, r3c5 = st.columns(5)
 
     with r3c1:
-        card_placeholder(
-            "AI Risk Forecast",
-            240
-        )
+        st.empty()
 
     with r3c2:
-        card_placeholder(
-            "Design Dependencies",
-            240
-        )
+        st.empty()
 
     with r3c3:
-        card_placeholder(
-            "Queries & TQs Overview",
-            240
-        )
+        st.empty()
 
     with r3c4:
-        card_placeholder(
-            "AI Insights",
-            240
-        )
+        st.empty()
 
     with r3c5:
-        card_placeholder(
-            "Quick Actions",
-            240
-        )
+        st.empty()
 
     st.write("")
 
     # ==================================================
     # FOOTER
-    # ===========================================
+    # ==================================================
+
+    f1, f2, f3, f4, f5 = st.columns(5)
+
+    with f1:
+        st.empty()
+
+    with f2:
+        st.empty()
+
+    with f3:
+        st.empty()
+
+    with f4:
+        st.empty()
+
+    with f5:
+        st.empty()
