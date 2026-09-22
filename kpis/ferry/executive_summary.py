@@ -35,9 +35,13 @@ def get_trend(cl32):
         cl32["SnapshotDate"] == snapshots[-2]
     ]
 
-    current_metrics = get_project_metrics(current_df)
+    current_metrics = get_project_metrics(
+        current_df
+    )
 
-    previous_metrics = get_project_metrics(previous_df)
+    previous_metrics = get_project_metrics(
+        previous_df
+    )
 
     return (
         current_metrics["health_score"]
@@ -76,8 +80,10 @@ def build_gauge(score):
 
     if score >= 80:
         colour = "#22C55E"
+
     elif score >= 60:
         colour = "#F59E0B"
+
     else:
         colour = "#FF3131"
 
@@ -153,6 +159,24 @@ def render(cl32):
 
     insights = build_insights(metrics)
 
+    st.markdown(
+        """
+        <style>
+
+        div[data-testid="stVerticalBlockBorderWrapper"]{
+            border:3px solid #D6E8FF !important;
+            border-radius:18px !important;
+            box-shadow:
+                0 0 0 1px rgba(214,232,255,0.35),
+                0 0 14px rgba(214,232,255,0.15),
+                0 12px 24px rgba(0,0,0,0.35);
+        }
+
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     with st.container(border=True):
 
         st.markdown(
@@ -172,8 +196,10 @@ def render(cl32):
 
         if status == "AT RISK":
             badge_colour = "#E0005A"
+
         elif status == "WATCHLIST":
             badge_colour = "#D89A00"
+
         else:
             badge_colour = "#00B15D"
 
@@ -211,7 +237,10 @@ def render(cl32):
 
         with insight_col:
 
-            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown(
+                "<br>",
+                unsafe_allow_html=True
+            )
 
             for insight in insights:
 
