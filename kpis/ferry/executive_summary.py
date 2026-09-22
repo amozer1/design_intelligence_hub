@@ -7,6 +7,10 @@ from utils.project_metrics import (
 )
 
 
+CARD_BG = "#08244D"
+CARD_BORDER = "#1F4E8C"
+
+
 def get_status(score):
 
     if score >= 80:
@@ -35,9 +39,13 @@ def get_trend(cl32):
         cl32["SnapshotDate"] == snapshots[-2]
     ]
 
-    current_metrics = get_project_metrics(current_df)
+    current_metrics = get_project_metrics(
+        current_df
+    )
 
-    previous_metrics = get_project_metrics(previous_df)
+    previous_metrics = get_project_metrics(
+        previous_df
+    )
 
     return (
         current_metrics["health_score"]
@@ -51,28 +59,35 @@ def build_insights(metrics):
 
     if metrics["programme_drift"] > 0:
         insights.append(
-            f"Programme is behind baseline by {metrics['programme_drift']} days."
+            f"{metrics['programme_drift']} days behind baseline"
         )
 
     if metrics["high_risk"] > 0:
         insights.append(
-            f"{metrics['high_risk']} activities have negative float."
+            f"{metrics['high_risk']} activities with negative float"
         )
 
     if metrics["critical_deliverables"] > 0:
         insights.append(
-            f"{metrics['critical_deliverables']} deliverables have ≤5d float."
+            f"{metrics['critical_deliverables']} deliverables ≤5d float"
         )
 
     if not insights:
         insights.append(
-            "No significant delivery risks identified."
+            "No material delivery risks identified"
         )
 
     return insights[:3]
 
 
 def build_gauge(score):
+
+    if score >= 80:
+        score_colour = "#22C55E"
+    elif score >= 60:
+        score_colour = "#FFC107"
+    else:
+        score_colour = "#FF2D2D"
 
     fig = go.Figure()
 
@@ -90,8 +105,8 @@ def build_gauge(score):
             textinfo="none",
             marker=dict(
                 colors=[
-                    "#FF5A1F",
-                    "#4A5870",
+                    score_colour,
+                    "#65748B",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -99,16 +114,16 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=160,
+        height=260,
         margin=dict(
             l=0,
             r=0,
             t=0,
             b=0
         ),
-        showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=False,
         annotations=[
             dict(
                 text=f"{score}%",
@@ -116,7 +131,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=32,
+                    size=52,
                     color="white"
                 )
             )
@@ -128,7 +143,9 @@ def build_gauge(score):
 
 def render(cl32):
 
-    current_df, _ = get_current_snapshot(cl32)
+    current_df, _ = get_current_snapshot(
+        cl32
+    )
 
     metrics = get_project_metrics(
         current_df
@@ -144,58 +161,151 @@ def render(cl32):
 
     insights = build_insights(metrics)
 
-    with st.container(border=True):
+    status_colour = {
+        "AT RISK": "#5B1833",
+        "WATCHLIST": "#6B4F00",
+        "ON TRACK": "#14532D"
+    }
 
-        header_left, header_right = st.columns(
-            [4, 1]
+    st.markdown(
+        f"""
+        <div style="
+            background:{CARD_BG};
+            border:1px solid {CARD_BORDER};
+            border-radius:14px;
+            padding:20px;
+            min-height:520px;
+        ">
+        """,
+        unsafe_allow_html=True
+    )
+
+    header_left, header_right = st.columns(
+        [4, 2]
+    )
+
+    with header_left:
+
+        st.markdown(
+            """
+            <div style="
+                color:#AEBBD0;
+                font-size:14px;
+                font-weight:600;
+                letter-spacing:0.5px;
+            ">
+                EXECUTIVE SUMMARY (AI GENERATED)
+            </div>
+            """,
+            unsafe_allow_html=True
         )
 
-        with header_left:
+    with header_right:
 
-            st.caption(
-                "EXECUTIVE SUMMARY (AI GENERATED)"
+        st.markdown(
+            f"""
+            <div style="
+                background:{status_colour[status]};
+                color:white;
+                border-radius:10px;
+                padding:10px;
+                text-align:center;
+                font-weight:700;
+                white-space:nowrap;
+            ">
+                {status}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.write("")
+
+    gauge_col, insight_col = st.columns(
+        [2, 3]
+    )
+
+    with gauge_col:
+
+        st.plotly_chart(
+            build_gauge(score),
+            use_container_width=True,
+            config={"displayModeBar": False}
+        )
+
+    with insight_col:
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        for insight in insights:
+
+            st.markdown(
+                f"""
+                <div style="
+                    color:white;
+                    font-size:18px;
+                    font-weight:600;
+                    margin-bottom:24px;
+                    line-height:1.5;
+                ">
+                    ✅ {insight}
+                </div>
+                """,
+                unsafe_allow_html=True
             )
 
-        with header_right:
+    st.markdown(
+        """
+        <div style="
+            color:#B8C3D6;
+            font-size:14px;
+            margin-top:10px;
+        ">
+            Design Readiness Index
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-            if status == "AT RISK":
-                st.error(status)
+    st.markdown(
+        f"""
+        <div style="
+            font-size:56px;
+            font-weight:700;
+            color:white;
+            line-height:1;
+            margin-top:6px;
+        ">
+            {readiness}%
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-            elif status == "WATCHLIST":
-                st.warning(status)
+    trend_arrow = "↑" if trend >= 0 else "↓"
+    trend_colour = "#22C55E" if trend >= 0 else "#EF4444"
 
-            else:
-                st.success(status)
+    st.markdown(
+        f"""
+        <div style="
+            display:inline-block;
+            margin-top:10px;
+            padding:6px 12px;
+            background:#083344;
+            color:white;
+            border-radius:20px;
+            font-weight:600;
+        ">
+            <span style="color:{trend_colour}">
+                {trend_arrow}
+            </span>
+            {abs(trend)} vs last snapshot
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-        gauge_col, insight_col = st.columns(
-            [2, 3]
-        )
-
-        with gauge_col:
-
-            st.plotly_chart(
-                build_gauge(score),
-                use_container_width=True,
-                config={
-                    "displayModeBar": False
-                }
-            )
-
-        with insight_col:
-
-            st.write("")
-
-            for insight in insights:
-                st.write(f"✅ {insight}")
-
-        st.caption(
-            "Design Readiness Index"
-        )
-
-        arrow = "↑" if trend >= 0 else "↓"
-
-        st.metric(
-            "",
-            f"{readiness}%",
-            delta=f"{arrow} {abs(trend)} vs last snapshot"
-        )
+    st.markdown(
+        "</div>",
+        unsafe_allow_html=True
+    )
