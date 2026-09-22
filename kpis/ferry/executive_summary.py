@@ -3,15 +3,12 @@ import plotly.graph_objects as go
 
 
 def build_gauge(score):
+
     fig = go.Figure()
 
     fig.add_trace(
         go.Pie(
-            values=[
-                score,
-                100 - score,
-                100
-            ],
+            values=[score, 100 - score, 100],
             hole=0.78,
             rotation=180,
             sort=False,
@@ -41,7 +38,7 @@ def build_gauge(score):
         annotations=[
             dict(
                 text=f"{score}%",
-                x=0.50,
+                x=0.5,
                 y=0.42,
                 showarrow=False,
                 font=dict(
@@ -56,23 +53,24 @@ def build_gauge(score):
 
 
 def render(cl32):
+
     score = 55
     readiness = 37
 
     with st.container(border=True):
+
         st.caption(
             "EXECUTIVE SUMMARY (AI GENERATED)"
         )
 
-        st.error(
-            "AT RISK"
-        )
+        st.error("AT RISK")
 
         gauge_col, insight_col = st.columns(
             [1.4, 2.6]
         )
 
         with gauge_col:
+
             st.plotly_chart(
                 build_gauge(score),
                 use_container_width=True,
@@ -82,6 +80,7 @@ def render(cl32):
             )
 
         with insight_col:
+
             st.write("")
 
             st.write(
@@ -100,4 +99,10 @@ def render(cl32):
             "Design Readiness Index"
         )
 
-        st.subheader(
+        st.write(
+            f"## {readiness}%"
+        )
+
+        st.info(
+            "↓ 7 vs last snapshot"
+        )
