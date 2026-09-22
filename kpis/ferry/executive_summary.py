@@ -2,6 +2,10 @@ import streamlit as st
 import plotly.graph_objects as go
 
 
+CARD_BG = "#10203A"
+CARD_BORDER = "#00AEEF"
+
+
 def build_gauge(score):
 
     fig = go.Figure()
@@ -61,6 +65,22 @@ def render(cl32):
     score = 55
     readiness = 37
 
+    st.markdown(
+        f"""
+        <style>
+
+        div[data-testid="stVerticalBlockBorderWrapper"] {{
+            background:{CARD_BG} !important;
+            border:2px solid {CARD_BORDER} !important;
+            border-radius:16px !important;
+            box-shadow:0 8px 20px rgba(0,0,0,0.35) !important;
+        }}
+
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     with st.container(border=True):
 
         st.markdown(
@@ -112,7 +132,10 @@ def render(cl32):
 
         with insight_col:
 
-            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown(
+                "<br>",
+                unsafe_allow_html=True
+            )
 
             st.markdown(
                 "✅ 26 days behind baseline"
