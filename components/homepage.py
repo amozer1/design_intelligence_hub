@@ -6,7 +6,7 @@ from kpis.ferry.executive_summary import (
     render as render_executive_summary
 )
 
-PAGE_BG = "#051A33"
+PAGE_BG = "#000D1F"
 
 
 def render_homepage(
@@ -26,6 +26,10 @@ def render_homepage(
         }}
 
         [data-testid="stAppViewContainer"] {{
+            background:{PAGE_BG};
+        }}
+
+        [data-testid="stMain"] {{
             background:{PAGE_BG};
         }}
 
