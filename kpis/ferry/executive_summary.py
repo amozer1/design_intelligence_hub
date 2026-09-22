@@ -45,8 +45,7 @@ def get_trend(cl32):
 
     return (
         current_metrics["health_score"]
-        -
-        previous_metrics["health_score"]
+        - previous_metrics["health_score"]
     )
 
 
@@ -56,17 +55,23 @@ def build_insights(metrics):
 
     if metrics["programme_drift"] > 0:
         insights.append(
-            f"{metrics['programme_drift']} days behind baseline"
+            f"Programme is behind baseline by "
+            f"{metrics['programme_drift']} days."
         )
 
     if metrics["high_risk"] > 0:
         insights.append(
-            f"{metrics['high_risk']} activities with negative float"
+            f"{metrics['high_risk']} activities have negative float."
         )
 
     if metrics["critical_deliverables"] > 0:
         insights.append(
-            f"{metrics['critical_deliverables']} deliverables ≤5d float"
+            f"{metrics['critical_deliverables']} deliverables have ≤5d float."
+        )
+
+    if not insights:
+        insights.append(
+            "No significant delivery risks identified."
         )
 
     return insights[:3]
@@ -83,14 +88,15 @@ def build_gauge(score):
                 100 - score,
                 100
             ],
-            hole=0.80,
+            hole=0.78,
             rotation=180,
             sort=False,
+            direction="clockwise",
             textinfo="none",
             marker=dict(
                 colors=[
-                    "#ff5a1f",
-                    "#3a4c64",
+                    "#FF5A1F",
+                    "#50627D",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -98,7 +104,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=220,
+        height=180,
         margin=dict(
             l=0,
             r=0,
@@ -112,10 +118,10 @@ def build_gauge(score):
             dict(
                 text=f"{score}%",
                 x=0.5,
-                y=0.43,
+                y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=42,
+                    size=34,
                     color="white"
                 )
             )
@@ -127,26 +133,22 @@ def build_gauge(score):
 
 def render(cl32):
 
-    current_df, _ = get_current_snapshot(
-        cl32
-    )
+    current_df, _ = get_current_snapshot(cl32)
 
-    metrics = get_project_metrics(
-        current_df
-    )
+    metrics = get_project_metrics(current_df)
 
-    score = metrics["health_score"]
+    health_score = metrics["health_score"]
 
-    readiness = metrics["design_readiness"]
+    design_readiness = metrics["design_readiness"]
 
     trend = get_trend(cl32)
 
-    status = get_status(score)
+    status = get_status(health_score)
 
     insights = build_insights(metrics)
 
     header_left, header_right = st.columns(
-        [3, 1]
+        [4, 1]
     )
 
     with header_left:
@@ -157,17 +159,14 @@ def render(cl32):
 
     with header_right:
 
-        colour = (
-            "🟢"
-            if status == "ON TRACK"
-            else "🟡"
-            if status == "WATCHLIST"
-            else "🔴"
-        )
+        if status == "AT RISK":
+            st.error(status)
 
-        st.caption(
-            f"{colour} {status}"
-        )
+        elif status == "WATCHLIST":
+            st.warning(status)
+
+        else:
+            st.success(status)
 
     gauge_col, insight_col = st.columns(
         [2, 3]
@@ -176,11 +175,26 @@ def render(cl32):
     with gauge_col:
 
         st.plotly_chart(
-            build_gauge(score),
+            build_gauge(health_score),
             use_container_width=True,
             config={
                 "displayModeBar": False
             }
+        )
+
+        st.caption(
+            "Design Readiness Index"
+        )
+
+        arrow = "↑" if trend >= 0 else "↓"
+
+        colour = "normal" if trend >= 0 else "inverse"
+
+        st.metric(
+            label="",
+            value=f"{design_readiness}%",
+            delta=f"{arrow} {abs(trend)} vs last snapshot",
+            delta_color=colour
         )
 
     with insight_col:
@@ -188,14 +202,6 @@ def render(cl32):
         st.write("")
 
         for insight in insights:
-            st.write(f"✅ {insight}")
-
-    st.caption(
-        "Design Readiness Index"
-    )
-
-    st.metric(
-        "",
-        f"{readiness}%",
-        delta=f"{trend:+.0f} vs last snapshot"
-    )
+            st.write(
+                f"✅ {insight}"
+            )
