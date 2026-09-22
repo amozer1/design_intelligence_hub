@@ -7,12 +7,7 @@ from utils.project_metrics import (
 )
 
 
-CARD_BG = "#062B5B"
-CARD_BORDER = "#0EA5E9"
-
-
 def get_status(score):
-
     if score >= 80:
         return "ON TRACK"
 
@@ -23,7 +18,6 @@ def get_status(score):
 
 
 def get_trend(cl32):
-
     snapshots = sorted(
         cl32["SnapshotDate"].dropna().unique()
     )
@@ -33,11 +27,11 @@ def get_trend(cl32):
 
     current_df = cl32[
         cl32["SnapshotDate"] == snapshots[-1]
-    ]
+        ]
 
     previous_df = cl32[
         cl32["SnapshotDate"] == snapshots[-2]
-    ]
+        ]
 
     current_metrics = get_project_metrics(
         current_df
@@ -48,13 +42,12 @@ def get_trend(cl32):
     )
 
     return (
-        current_metrics["health_score"]
-        - previous_metrics["health_score"]
+            current_metrics["health_score"]
+            - previous_metrics["health_score"]
     )
 
 
 def build_insights(metrics):
-
     insights = []
 
     if metrics["programme_drift"] > 0:
@@ -81,7 +74,6 @@ def build_insights(metrics):
 
 
 def build_gauge(score):
-
     if score >= 80:
         colour = "#22C55E"
 
@@ -116,7 +108,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=190,
+        height=180,
         margin=dict(
             l=0,
             r=0,
@@ -129,7 +121,7 @@ def build_gauge(score):
         annotations=[
             dict(
                 text=f"{score}%",
-                x=0.5,
+                x=0.50,
                 y=0.42,
                 showarrow=False,
                 font=dict(
@@ -144,8 +136,9 @@ def build_gauge(score):
 
 
 def render(cl32):
-
-    current_df, _ = get_current_snapshot(cl32)
+    current_df, _ = get_current_snapshot(
+        cl32
+    )
 
     metrics = get_project_metrics(
         current_df
@@ -161,31 +154,22 @@ def render(cl32):
 
     insights = build_insights(metrics)
 
-    # CARD HEADER
-    st.markdown(
-        f"""
-        <div style="
-            background:{CARD_BG};
-            border:2px solid {CARD_BORDER};
-            border-bottom:none;
-            border-radius:18px 18px 0 0;
-            padding:18px 18px 8px 18px;
-        ">
+    with st.container(border=True):
+
+        st.markdown(
+            """
             <div style="
                 color:#DDEAFF;
                 font-size:12px;
                 font-weight:600;
                 letter-spacing:0.5px;
+                margin-bottom:8px;
             ">
                 EXECUTIVE SUMMARY (AI GENERATED)
             </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # BODY
-    with st.container(border=True):
+            """,
+            unsafe_allow_html=True
+        )
 
         if status == "AT RISK":
             badge_colour = "#E0005A"
@@ -206,7 +190,7 @@ def render(cl32):
                 border-radius:8px;
                 font-size:12px;
                 font-weight:700;
-                margin-bottom:12px;
+                margin-bottom:14px;
             ">
                 {status}
             </div>
@@ -236,7 +220,6 @@ def render(cl32):
             )
 
             for insight in insights:
-
                 st.markdown(
                     f"""
                     <div style="
@@ -244,4 +227,17 @@ def render(cl32):
                         font-size:16px;
                         font-weight:700;
                         margin-bottom:16px;
+                        line-height:1.3;
                     ">
+                        ✅ {insight}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+        st.markdown(
+            """
+            <div style="
+                color:#DDEAFF;
+                font-size:13px;
+                margin-top:-8px;
