@@ -150,32 +150,12 @@ def render(cl32):
     )
 
     score = metrics["health_score"]
-
     readiness = metrics["design_readiness"]
-
     trend = get_trend(cl32)
 
     status = get_status(score)
 
     insights = build_insights(metrics)
-
-    st.markdown(
-        """
-        <style>
-
-        div[data-testid="stVerticalBlockBorderWrapper"]{
-            border:3px solid #D6E8FF !important;
-            border-radius:18px !important;
-            box-shadow:
-                0 0 0 1px rgba(214,232,255,0.35),
-                0 0 14px rgba(214,232,255,0.15),
-                0 12px 24px rgba(0,0,0,0.35);
-        }
-
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
 
     with st.container(border=True):
 
