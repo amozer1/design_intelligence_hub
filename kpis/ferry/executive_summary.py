@@ -7,10 +7,6 @@ from utils.project_metrics import (
 )
 
 
-CARD_BG = "#08244D"
-CARD_BORDER = "#1F4E8C"
-
-
 def get_status(score):
 
     if score >= 80:
@@ -83,11 +79,13 @@ def build_insights(metrics):
 def build_gauge(score):
 
     if score >= 80:
-        score_colour = "#22C55E"
+        colour = "#22C55E"
+
     elif score >= 60:
-        score_colour = "#FFC107"
+        colour = "#F59E0B"
+
     else:
-        score_colour = "#FF2D2D"
+        colour = "#FF3131"
 
     fig = go.Figure()
 
@@ -98,15 +96,15 @@ def build_gauge(score):
                 100 - score,
                 100
             ],
-            hole=0.80,
+            hole=0.78,
             rotation=180,
             sort=False,
             direction="clockwise",
             textinfo="none",
             marker=dict(
                 colors=[
-                    score_colour,
-                    "#65748B",
+                    colour,
+                    "#667085",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -127,11 +125,11 @@ def build_gauge(score):
         annotations=[
             dict(
                 text=f"{score}%",
-                x=0.5,
+                x=0.50,
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=52,
+                    size=48,
                     color="white"
                 )
             )
@@ -161,151 +159,159 @@ def render(cl32):
 
     insights = build_insights(metrics)
 
-    status_colour = {
-        "AT RISK": "#5B1833",
-        "WATCHLIST": "#6B4F00",
-        "ON TRACK": "#14532D"
-    }
+    with st.container(border=True):
 
-    st.markdown(
-        f"""
-        <div style="
-            background:{CARD_BG};
-            border:1px solid {CARD_BORDER};
-            border-radius:14px;
-            padding:20px;
-            min-height:520px;
-        ">
-        """,
-        unsafe_allow_html=True
-    )
+        header_left, header_right = st.columns(
+            [4, 1.4]
+        )
 
-    header_left, header_right = st.columns(
-        [4, 2]
-    )
+        with header_left:
 
-    with header_left:
+            st.caption(
+                "EXECUTIVE SUMMARY (AI GENERATED)"
+            )
+
+        with header_right:
+
+            if status == "AT RISK":
+                st.markdown(
+                    """
+                    <div style="
+                        background:#7A003C;
+                        color:white;
+                        padding:10px 14px;
+                        border-radius:10px;
+                        text-align:center;
+                        font-weight:700;
+                    ">
+                        AT RISK
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+            elif status == "WATCHLIST":
+                st.markdown(
+                    """
+                    <div style="
+                        background:#8A6200;
+                        color:white;
+                        padding:10px 14px;
+                        border-radius:10px;
+                        text-align:center;
+                        font-weight:700;
+                    ">
+                        WATCHLIST
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+            else:
+                st.markdown(
+                    """
+                    <div style="
+                        background:#0F7B3E;
+                        color:white;
+                        padding:10px 14px;
+                        border-radius:10px;
+                        text-align:center;
+                        font-weight:700;
+                    ">
+                        ON TRACK
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+        gauge_col, insight_col = st.columns(
+            [2, 3]
+        )
+
+        with gauge_col:
+
+            st.plotly_chart(
+                build_gauge(score),
+                use_container_width=True,
+                config={
+                    "displayModeBar": False
+                }
+            )
+
+        with insight_col:
+
+            st.write("")
+
+            for insight in insights:
+
+                st.markdown(
+                    f"""
+                    <div style="
+                        font-size:18px;
+                        font-weight:600;
+                        margin-bottom:22px;
+                        color:white;
+                    ">
+                        ✅ {insight}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
         st.markdown(
             """
             <div style="
                 color:#AEBBD0;
                 font-size:14px;
-                font-weight:600;
-                letter-spacing:0.5px;
+                margin-top:-10px;
             ">
-                EXECUTIVE SUMMARY (AI GENERATED)
+                Design Readiness Index
             </div>
             """,
             unsafe_allow_html=True
         )
-
-    with header_right:
 
         st.markdown(
             f"""
             <div style="
-                background:{status_colour[status]};
-                color:white;
-                border-radius:10px;
-                padding:10px;
-                text-align:center;
+                font-size:52px;
                 font-weight:700;
-                white-space:nowrap;
+                color:white;
+                line-height:1;
+                margin-top:5px;
             ">
-                {status}
+                {readiness}%
             </div>
             """,
             unsafe_allow_html=True
         )
 
-    st.write("")
+        trend_arrow = "↑" if trend >= 0 else "↓"
 
-    gauge_col, insight_col = st.columns(
-        [2, 3]
-    )
-
-    with gauge_col:
-
-        st.plotly_chart(
-            build_gauge(score),
-            use_container_width=True,
-            config={"displayModeBar": False}
+        trend_colour = (
+            "#22C55E"
+            if trend >= 0
+            else "#EF4444"
         )
 
-    with insight_col:
-
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        for insight in insights:
-
-            st.markdown(
-                f"""
-                <div style="
-                    color:white;
-                    font-size:18px;
-                    font-weight:600;
-                    margin-bottom:24px;
-                    line-height:1.5;
+        st.markdown(
+            f"""
+            <div style="
+                display:inline-block;
+                margin-top:8px;
+                background:#063B52;
+                padding:6px 12px;
+                border-radius:20px;
+                color:white;
+                font-weight:600;
+            ">
+                <span style="
+                    color:{trend_colour};
                 ">
-                    ✅ {insight}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-    st.markdown(
-        """
-        <div style="
-            color:#B8C3D6;
-            font-size:14px;
-            margin-top:10px;
-        ">
-            Design Readiness Index
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        f"""
-        <div style="
-            font-size:56px;
-            font-weight:700;
-            color:white;
-            line-height:1;
-            margin-top:6px;
-        ">
-            {readiness}%
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    trend_arrow = "↑" if trend >= 0 else "↓"
-    trend_colour = "#22C55E" if trend >= 0 else "#EF4444"
-
-    st.markdown(
-        f"""
-        <div style="
-            display:inline-block;
-            margin-top:10px;
-            padding:6px 12px;
-            background:#083344;
-            color:white;
-            border-radius:20px;
-            font-weight:600;
-        ">
-            <span style="color:{trend_colour}">
-                {trend_arrow}
-            </span>
-            {abs(trend)} vs last snapshot
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        "</div>",
-        unsafe_allow_html=True
-    )
+                    {trend_arrow}
+                </span>
+                {abs(trend)} vs last snapshot
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
