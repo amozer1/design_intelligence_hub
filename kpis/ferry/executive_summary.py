@@ -35,13 +35,9 @@ def get_trend(cl32):
         cl32["SnapshotDate"] == snapshots[-2]
     ]
 
-    current_metrics = get_project_metrics(
-        current_df
-    )
+    current_metrics = get_project_metrics(current_df)
 
-    previous_metrics = get_project_metrics(
-        previous_df
-    )
+    previous_metrics = get_project_metrics(previous_df)
 
     return (
         current_metrics["health_score"]
@@ -102,7 +98,7 @@ def build_gauge(score):
             marker=dict(
                 colors=[
                     colour,
-                    "#64748B",
+                    "#94A3B8",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -149,9 +145,7 @@ def render(cl32):
 
     score = metrics["health_score"]
 
-    readiness = metrics[
-        "design_readiness"
-    ]
+    readiness = metrics["design_readiness"]
 
     trend = get_trend(cl32)
 
@@ -159,28 +153,12 @@ def render(cl32):
 
     insights = build_insights(metrics)
 
-    st.markdown(
-        """
-        <style>
-
-        div[data-testid="stVerticalBlockBorderWrapper"]{
-            background:#1E4E8C !important;
-            border:2px solid #7DB3FF !important;
-            border-radius:16px !important;
-            box-shadow:0 10px 30px rgba(0,0,0,0.45);
-        }
-
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
     with st.container(border=True):
 
         st.markdown(
             """
             <div style="
-                color:#D6E5FF;
+                color:#DDEAFF;
                 font-size:12px;
                 font-weight:600;
                 letter-spacing:0.5px;
@@ -193,13 +171,11 @@ def render(cl32):
         )
 
         if status == "AT RISK":
-            badge_colour = "#B00052"
-
+            badge_colour = "#E0005A"
         elif status == "WATCHLIST":
-            badge_colour = "#C68C00"
-
+            badge_colour = "#D89A00"
         else:
-            badge_colour = "#00A651"
+            badge_colour = "#00B15D"
 
         st.markdown(
             f"""
@@ -235,10 +211,7 @@ def render(cl32):
 
         with insight_col:
 
-            st.markdown(
-                "<br>",
-                unsafe_allow_html=True
-            )
+            st.markdown("<br>", unsafe_allow_html=True)
 
             for insight in insights:
 
@@ -260,7 +233,7 @@ def render(cl32):
         st.markdown(
             """
             <div style="
-                color:#D6E5FF;
+                color:#DDEAFF;
                 font-size:13px;
                 margin-top:-8px;
             ">
@@ -302,7 +275,7 @@ def render(cl32):
             <div style="
                 display:inline-block;
                 margin-top:8px;
-                background:#0D5E82;
+                background:#0D6E95;
                 padding:6px 12px;
                 border-radius:16px;
                 color:white;
