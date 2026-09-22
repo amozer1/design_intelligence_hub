@@ -1,9 +1,8 @@
 import streamlit as st
 
 from components.header import render_header
-
 from kpis.ferry.executive_summary import (
-    render as render_executive_summary,
+    render as render_executive_summary
 )
 
 PAGE_BG = "#051A33"
@@ -27,7 +26,6 @@ def card_placeholder(title, height=250):
                 color:#FFFFFF;
                 font-size:16px;
                 font-weight:700;
-                margin-bottom:10px;
             ">
                 {title}
             </div>
@@ -65,21 +63,9 @@ def render_homepage(
             display:none;
         }}
 
-        [data-testid="stToolbar"] {{
-            display:none;
-        }}
-
         .block-container {{
             padding-top:0rem !important;
             max-width:100%;
-        }}
-
-        h1, h2, h3, h4, h5, h6 {{
-            color:white !important;
-        }}
-
-        p {{
-            color:white !important;
         }}
 
         </style>
@@ -87,20 +73,14 @@ def render_homepage(
         unsafe_allow_html=True,
     )
 
-    # ==================================================
-    # HEADER
-    # ==================================================
-
     render_header(
         project=project,
-        snapshot=snapshot,
+        snapshot=snapshot
     )
 
     st.write("")
 
-    # ==================================================
     # KPI STRIP
-    # ==================================================
 
     k1, k2, k3, k4, k5, k6, k7 = st.columns(7)
 
@@ -130,16 +110,14 @@ def render_homepage(
 
     st.write("")
 
-    # ==================================================
     # ROW 1
-    # ==================================================
 
-    r1c1, r1c2 = st.columns([2, 3])
+    left, right = st.columns([2, 5])
 
-    with r1c1:
+    with left:
         render_executive_summary(cl32)
 
-    with r1c2:
+    with right:
         card_placeholder(
             "Deliverables by Status",
             320
@@ -147,9 +125,7 @@ def render_homepage(
 
     st.write("")
 
-    # ==================================================
     # ROW 2
-    # ==================================================
 
     r2c1, r2c2 = st.columns(2)
 
@@ -167,9 +143,7 @@ def render_homepage(
 
     st.write("")
 
-    # ==================================================
     # ROW 3
-    # ==================================================
 
     r3c1, r3c2, r3c3, r3c4 = st.columns(4)
 
@@ -195,80 +169,4 @@ def render_homepage(
         card_placeholder(
             "Discipline Health",
             260
-        )
-
-    st.write("")
-
-    # ==================================================
-    # ROW 4
-    # ==================================================
-
-    r4c1, r4c2, r4c3, r4c4, r4c5 = st.columns(5)
-
-    with r4c1:
-        card_placeholder(
-            "AI Risk Forecast",
-            240
-        )
-
-    with r4c2:
-        card_placeholder(
-            "Design Dependencies",
-            240
-        )
-
-    with r4c3:
-        card_placeholder(
-            "Queries & TQs",
-            240
-        )
-
-    with r4c4:
-        card_placeholder(
-            "AI Insights",
-            240
-        )
-
-    with r4c5:
-        card_placeholder(
-            "Quick Actions",
-            240
-        )
-
-    st.write("")
-
-    # ==================================================
-    # FOOTER
-    # ==================================================
-
-    f1, f2, f3, f4, f5 = st.columns(5)
-
-    with f1:
-        card_placeholder(
-            "Data Status",
-            70
-        )
-
-    with f2:
-        card_placeholder(
-            "Last Refresh",
-            70
-        )
-
-    with f3:
-        card_placeholder(
-            "Snapshots Loaded",
-            70
-        )
-
-    with f4:
-        card_placeholder(
-            "Activities Tracked",
-            70
-        )
-
-    with f5:
-        card_placeholder(
-            "Powered By",
-            70
         )
