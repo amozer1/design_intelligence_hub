@@ -1,6 +1,7 @@
 import streamlit as st
 
 from components.header import render_header
+
 from kpis.ferry.executive_summary import (
     render as render_executive_summary
 )
@@ -26,6 +27,7 @@ def card_placeholder(title, height=250):
                 color:#FFFFFF;
                 font-size:16px;
                 font-weight:700;
+                margin-bottom:10px;
             ">
                 {title}
             </div>
@@ -63,15 +65,31 @@ def render_homepage(
             display:none;
         }}
 
+        [data-testid="stToolbar"] {{
+            display:none;
+        }}
+
         .block-container {{
             padding-top:0rem !important;
             max-width:100%;
         }}
 
+        h1, h2, h3, h4, h5, h6 {{
+            color:white !important;
+        }}
+
+        p {{
+            color:white !important;
+        }}
+
         </style>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
     )
+
+    # ==================================================
+    # HEADER
+    # ==================================================
 
     render_header(
         project=project,
@@ -80,62 +98,80 @@ def render_homepage(
 
     st.write("")
 
-    # KPI STRIP
+    # ==================================================
+    # KPI RIBBON
+    # ==================================================
 
-    k1, k2, k3, k4, k5, k6, k7 = st.columns(7)
+    k1, k2, k3, k4, k5, k6, k7 = st.columns(
+        [3.5, 1.8, 1.8, 1.4, 1.4, 1.2, 1.4]
+    )
 
     with k1:
-        st.metric(
-            "Executive Summary",
-            f"{metrics['health_score']}%"
-        )
+        render_executive_summary(cl32)
 
     with k2:
-        card_placeholder("Programme Finish", 90)
+        card_placeholder(
+            "Programme Finish",
+            120
+        )
 
     with k3:
-        card_placeholder("Contract Completion", 90)
+        card_placeholder(
+            "Contract Completion",
+            120
+        )
 
     with k4:
-        card_placeholder("Total Deliverables", 90)
+        card_placeholder(
+            "Total Deliverables",
+            120
+        )
 
     with k5:
-        card_placeholder("Critical Deliverables", 90)
+        card_placeholder(
+            "Critical Deliverables",
+            120
+        )
 
     with k6:
-        card_placeholder("Average Float", 90)
+        card_placeholder(
+            "Average Float",
+            120
+        )
 
     with k7:
-        card_placeholder("Average Variance", 90)
+        card_placeholder(
+            "Average Variance (BL1)",
+            120
+        )
 
     st.write("")
 
+    # ==================================================
     # ROW 1
+    # ==================================================
 
-    left, right = st.columns([2, 5])
+    r1c1, r1c2, r1c3, r1c4 = st.columns(4)
 
-    with left:
-        render_executive_summary(cl32)
-
-    with right:
+    with r1c1:
         card_placeholder(
             "Deliverables by Status",
             320
         )
 
-    st.write("")
-
-    # ROW 2
-
-    r2c1, r2c2 = st.columns(2)
-
-    with r2c1:
+    with r1c2:
         card_placeholder(
             "Deliverables by Discipline",
             320
         )
 
-    with r2c2:
+    with r1c3:
+        card_placeholder(
+            "Deliverables by Design Stage",
+            320
+        )
+
+    with r1c4:
         card_placeholder(
             "Upcoming Submissions",
             320
@@ -143,30 +179,108 @@ def render_homepage(
 
     st.write("")
 
-    # ROW 3
+    # ==================================================
+    # ROW 2
+    # ==================================================
 
-    r3c1, r3c2, r3c3, r3c4 = st.columns(4)
+    r2c1, r2c2, r2c3, r2c4 = st.columns(4)
 
-    with r3c1:
+    with r2c1:
         card_placeholder(
             "Critical Deliverables",
             260
         )
 
-    with r3c2:
+    with r2c2:
         card_placeholder(
             "What's Changed",
             260
         )
 
-    with r3c3:
+    with r2c3:
         card_placeholder(
             "Top 5 Biggest Slippers",
             260
         )
 
-    with r3c4:
+    with r2c4:
         card_placeholder(
             "Discipline Health",
             260
+        )
+
+    st.write("")
+
+    # ==================================================
+    # ROW 3
+    # ==================================================
+
+    r3c1, r3c2, r3c3, r3c4, r3c5 = st.columns(5)
+
+    with r3c1:
+        card_placeholder(
+            "AI Risk Forecast",
+            240
+        )
+
+    with r3c2:
+        card_placeholder(
+            "Design Dependencies",
+            240
+        )
+
+    with r3c3:
+        card_placeholder(
+            "Queries & TQs Overview",
+            240
+        )
+
+    with r3c4:
+        card_placeholder(
+            "AI Insights",
+            240
+        )
+
+    with r3c5:
+        card_placeholder(
+            "Quick Actions",
+            240
+        )
+
+    st.write("")
+
+    # ==================================================
+    # FOOTER
+    # ==================================================
+
+    f1, f2, f3, f4, f5 = st.columns(5)
+
+    with f1:
+        card_placeholder(
+            "Data Status",
+            70
+        )
+
+    with f2:
+        card_placeholder(
+            "Last Data Refresh",
+            70
+        )
+
+    with f3:
+        card_placeholder(
+            "Snapshots Loaded",
+            70
+        )
+
+    with f4:
+        card_placeholder(
+            "Total Activities Tracked",
+            70
+        )
+
+    with f5:
+        card_placeholder(
+            "Powered By",
+            70
         )
