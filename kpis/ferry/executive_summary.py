@@ -80,10 +80,8 @@ def build_gauge(score):
 
     if score >= 80:
         colour = "#22C55E"
-
     elif score >= 60:
         colour = "#F59E0B"
-
     else:
         colour = "#FF3131"
 
@@ -166,10 +164,10 @@ def render(cl32):
         <style>
 
         div[data-testid="stVerticalBlockBorderWrapper"]{
-            background:#103766 !important;
-            border:2px solid #5F9DF7 !important;
+            background:#1E4E8C !important;
+            border:2px solid #7DB3FF !important;
             border-radius:16px !important;
-            box-shadow:0 8px 20px rgba(0,0,0,0.35);
+            box-shadow:0 10px 30px rgba(0,0,0,0.45);
         }
 
         </style>
@@ -182,7 +180,7 @@ def render(cl32):
         st.markdown(
             """
             <div style="
-                color:#B5C4D8;
+                color:#D6E5FF;
                 font-size:12px;
                 font-weight:600;
                 letter-spacing:0.5px;
@@ -195,13 +193,13 @@ def render(cl32):
         )
 
         if status == "AT RISK":
-            badge_colour = "#A00046"
+            badge_colour = "#B00052"
 
         elif status == "WATCHLIST":
-            badge_colour = "#B07A00"
+            badge_colour = "#C68C00"
 
         else:
-            badge_colour = "#008A42"
+            badge_colour = "#00A651"
 
         st.markdown(
             f"""
@@ -262,7 +260,7 @@ def render(cl32):
         st.markdown(
             """
             <div style="
-                color:#B5C4D8;
+                color:#D6E5FF;
                 font-size:13px;
                 margin-top:-8px;
             ">
@@ -296,7 +294,7 @@ def render(cl32):
         trend_colour = (
             "#22C55E"
             if trend >= 0
-            else "#EF4444"
+            else "#FF5A5A"
         )
 
         st.markdown(
@@ -304,7 +302,7 @@ def render(cl32):
             <div style="
                 display:inline-block;
                 margin-top:8px;
-                background:#0A4966;
+                background:#0D5E82;
                 padding:6px 12px;
                 border-radius:16px;
                 color:white;
