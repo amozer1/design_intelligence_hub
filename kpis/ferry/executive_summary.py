@@ -2,12 +2,7 @@ import streamlit as st
 import plotly.graph_objects as go
 
 
-CARD_BG = "#10203A"
-CARD_BORDER = "#00AEEF"
-
-
 def build_gauge(score):
-
     fig = go.Figure()
 
     fig.add_trace(
@@ -61,114 +56,48 @@ def build_gauge(score):
 
 
 def render(cl32):
-
     score = 55
     readiness = 37
 
-    st.markdown(
-        f"""
-        <div style="
-            background:{CARD_BG};
-            border:2px solid {CARD_BORDER};
-            border-radius:18px;
-            padding:20px;
-            margin-bottom:10px;
-        ">
-            <div style="
-                color:#DDEAFF;
-                font-size:12px;
-                font-weight:600;
-                letter-spacing:0.5px;
-                margin-bottom:8px;
-            ">
-                EXECUTIVE SUMMARY (AI GENERATED)
-            </div>
-
-            <div style="
-                display:inline-block;
-                background:#E0005A;
-                color:white;
-                padding:6px 12px;
-                border-radius:8px;
-                font-size:12px;
-                font-weight:700;
-                margin-bottom:12px;
-            ">
-                AT RISK
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    gauge_col, insight_col = st.columns(
-        [1.4, 2.6]
-    )
-
-    with gauge_col:
-
-        st.plotly_chart(
-            build_gauge(score),
-            use_container_width=True,
-            config={
-                "displayModeBar": False
-            }
+    with st.container(border=True):
+        st.caption(
+            "EXECUTIVE SUMMARY (AI GENERATED)"
         )
 
-    with insight_col:
-
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        st.markdown(
-            "✅ 26 days behind baseline"
+        st.error(
+            "AT RISK"
         )
 
-        st.markdown(
-            "✅ 31 activities with negative float"
+        gauge_col, insight_col = st.columns(
+            [1.4, 2.6]
         )
 
-        st.markdown(
-            "✅ 43 deliverables ≤5d float"
+        with gauge_col:
+            st.plotly_chart(
+                build_gauge(score),
+                use_container_width=True,
+                config={
+                    "displayModeBar": False
+                }
+            )
+
+        with insight_col:
+            st.write("")
+
+            st.write(
+                "✅ 26 days behind baseline"
+            )
+
+            st.write(
+                "✅ 31 activities with negative float"
+            )
+
+            st.write(
+                "✅ 43 deliverables ≤5d float"
+            )
+
+        st.caption(
+            "Design Readiness Index"
         )
 
-    st.markdown(
-        """
-        <div style="
-            color:#DDEAFF;
-            font-size:13px;
-        ">
-            Design Readiness Index
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        f"""
-        <div style="
-            color:white;
-            font-size:42px;
-            font-weight:700;
-        ">
-            {readiness}%
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        """
-        <div style="
-            display:inline-block;
-            background:#0D6E95;
-            padding:6px 12px;
-            border-radius:16px;
-            color:white;
-            font-weight:600;
-            font-size:12px;
-        ">
-            ↓ 7 vs last snapshot
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+        st.subheader(
