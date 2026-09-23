@@ -42,12 +42,12 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=180,
+        height=220,
         margin=dict(
-            l=5,
-            r=5,
-            t=5,
-            b=5
+            l=10,
+            r=10,
+            t=10,
+            b=10
         ),
         showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
@@ -59,7 +59,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=24,
+                    size=28,
                     color="white"
                 )
             )
@@ -87,27 +87,21 @@ def render(cl32):
 
     status = get_status(score)
 
-    # =========================
-    # HEADER
-    # =========================
-
     st.markdown(
-        "### 📊 Executive Summary"
+        "## Executive Summary"
     )
 
     st.caption(
         "AI Generated"
     )
 
-    # =========================
-    # MAIN CONTENT
-    # =========================
+    st.write("")
 
-    gauge_col, insight_col = st.columns(
-        [1, 2]
+    left, right = st.columns(
+        [1.2, 2.8]
     )
 
-    with gauge_col:
+    with left:
 
         st.plotly_chart(
             build_gauge(score),
@@ -129,28 +123,28 @@ def render(cl32):
             f"Status: {status}"
         )
 
-    with insight_col:
+    with right:
 
         st.markdown(
-            "#### Key Insights"
+            "### Key Insights"
         )
 
         if programme_drift > 0:
 
             st.write(
-                f"🔴 Programme behind baseline by {programme_drift} days."
+                f"🔴 Programme behind baseline by {programme_drift} days"
             )
 
         if high_risk > 0:
 
             st.write(
-                f"🟠 {high_risk} activities with negative float."
+                f"🟠 {high_risk} activities with negative float"
             )
 
         if critical_deliverables > 0:
 
             st.write(
-                f"🔴 {critical_deliverables} critical deliverables require attention."
+                f"🔴 {critical_deliverables} critical deliverables require attention"
             )
 
         if (
@@ -160,5 +154,5 @@ def render(cl32):
         ):
 
             st.write(
-                "🟢 No material delivery risks identified."
+                "🟢 No material delivery risks identified"
             )
