@@ -7,18 +7,17 @@ def load_executive_summary_styles():
         """
         <style>
 
-        .exec-card{
-            padding:12px;
-            border-radius:12px;
-            border:1px solid rgba(255,255,255,.08);
-            background:#081322;
-        }
-
         .exec-title{
             color:#DCE8F5;
             font-size:12px;
             font-weight:700;
-            letter-spacing:.5px;
+            letter-spacing:0.5px;
+        }
+
+        .exec-subtitle{
+            color:#9CA3AF;
+            font-size:11px;
+            font-weight:600;
         }
 
         </style>

@@ -30,5 +30,7 @@ def get_metrics(cl32):
         "readiness": metrics["design_readiness"],
         "programme_drift": metrics["programme_drift"],
         "high_risk": metrics["high_risk"],
-        "critical_deliverables": metrics["critical_deliverables"],
+        "critical_deliverables": metrics[
+            "critical_deliverables"
+        ],
     }
