@@ -6,7 +6,7 @@ from kpis.ferry.executive_summary import (
     render as render_executive_summary
 )
 
-PAGE_BG = "#0000FF"
+PAGE_BG = "#202020"
 
 
 def render_homepage(
@@ -40,9 +40,9 @@ def render_homepage(
         /* Executive Summary Card Styling */
 
         [data-testid="stVerticalBlockBorderWrapper"] {{
-            background:#081322 !important;
+            background:#0000FF !important;
             border:1px solid #1E3A5F !important;
-            border-radius:16px !important;
+            border-radius:25px !important;
         }}
 
         [data-testid="stHeader"] {{
