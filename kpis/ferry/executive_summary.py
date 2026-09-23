@@ -7,13 +7,20 @@ from utils.project_metrics import (
 )
 
 
+CARD_BG = "#081322"
+
+
 def build_gauge(score):
 
     fig = go.Figure()
 
     fig.add_trace(
         go.Pie(
-            values=[score, 100 - score, 100],
+            values=[
+                score,
+                100 - score,
+                100
+            ],
             hole=0.78,
             rotation=180,
             sort=False,
@@ -43,7 +50,7 @@ def build_gauge(score):
         annotations=[
             dict(
                 text=f"{score}%",
-                x=0.5,
+                x=0.50,
                 y=0.42,
                 showarrow=False,
                 font=dict(
@@ -70,18 +77,45 @@ def get_status(score):
 
 def render(cl32):
 
-    current_df, _ = get_current_snapshot(cl32)
+    current_df, _ = get_current_snapshot(
+        cl32
+    )
 
-    metrics = get_project_metrics(current_df)
+    metrics = get_project_metrics(
+        current_df
+    )
 
     score = metrics["health_score"]
-    readiness = metrics["design_readiness"]
 
-    programme_drift = metrics["programme_drift"]
-    high_risk = metrics["high_risk"]
-    critical_deliverables = metrics["critical_deliverables"]
+    readiness = metrics[
+        "design_readiness"
+    ]
+
+    programme_drift = metrics[
+        "programme_drift"
+    ]
+
+    high_risk = metrics[
+        "high_risk"
+    ]
+
+    critical_deliverables = metrics[
+        "critical_deliverables"
+    ]
 
     status = get_status(score)
+
+    st.markdown(
+        f"""
+        <div style="
+            background:{CARD_BG};
+            border-radius:16px;
+            padding:16px;
+        ">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     with st.container(border=True):
 
@@ -91,8 +125,10 @@ def render(cl32):
 
         if status == "ON TRACK":
             st.success(status)
+
         elif status == "WATCHLIST":
             st.warning(status)
+
         else:
             st.error(status)
 
@@ -148,10 +184,12 @@ def render(cl32):
             st.success(
                 "Trending positively"
             )
+
         elif score >= 60:
             st.warning(
                 "Requires monitoring"
             )
+
         else:
             st.error(
                 "Delivery risk increasing"
