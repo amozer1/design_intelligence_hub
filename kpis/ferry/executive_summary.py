@@ -87,16 +87,6 @@ def render(cl32):
 
     status = get_status(score)
 
-    st.markdown(
-        "## Executive Summary"
-    )
-
-    st.caption(
-        "AI Generated"
-    )
-
-    st.write("")
-
     left, right = st.columns(
         [1.2, 2.8]
     )
@@ -111,13 +101,27 @@ def render(cl32):
             }
         )
 
-        st.caption(
-            "Design Readiness Index"
-        )
+        k1, k2 = st.columns(2)
 
-        st.markdown(
-            f"## {readiness}%"
-        )
+        with k1:
+
+            st.caption(
+                "Health"
+            )
+
+            st.markdown(
+                f"### {score}%"
+            )
+
+        with k2:
+
+            st.caption(
+                "Readiness"
+            )
+
+            st.markdown(
+                f"### {readiness}%"
+            )
 
         st.caption(
             f"Status: {status}"
@@ -129,30 +133,31 @@ def render(cl32):
             "### Key Insights"
         )
 
-        if programme_drift > 0:
+        insights = []
 
-            st.write(
-                f"🔴 Programme behind baseline by {programme_drift} days"
+        if programme_drift > 0:
+            insights.append(
+                f"Programme behind baseline by {programme_drift} days."
             )
 
         if high_risk > 0:
-
-            st.write(
-                f"🟠 {high_risk} activities with negative float"
+            insights.append(
+                f"{high_risk} activities with negative float."
             )
 
         if critical_deliverables > 0:
-
-            st.write(
-                f"🔴 {critical_deliverables} critical deliverables require attention"
+            insights.append(
+                f"{critical_deliverables} critical deliverables require attention."
             )
 
-        if (
-            programme_drift <= 0
-            and high_risk <= 0
-            and critical_deliverables <= 0
-        ):
+        if not insights:
+
+            insights.append(
+                "No material delivery risks identified."
+            )
+
+        for item in insights:
 
             st.write(
-                "🟢 No material delivery risks identified"
+                f"• {item}"
             )
