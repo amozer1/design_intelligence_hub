@@ -26,7 +26,7 @@ def build_gauge(score):
                 100 - score,
                 100
             ],
-            hole=0.85,
+            hole=0.82,
             rotation=180,
             sort=False,
             direction="clockwise",
@@ -42,12 +42,12 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=220,
+        height=260,
         margin=dict(
-            l=10,
-            r=10,
-            t=10,
-            b=10
+            l=0,
+            r=0,
+            t=0,
+            b=0
         ),
         showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
@@ -59,7 +59,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=28,
+                    size=34,
                     color="white"
                 )
             )
@@ -101,9 +101,9 @@ def render(cl32):
             }
         )
 
-        k1, k2 = st.columns(2)
+        m1, m2 = st.columns(2)
 
-        with k1:
+        with m1:
 
             st.caption(
                 "Health"
@@ -113,7 +113,7 @@ def render(cl32):
                 f"### {score}%"
             )
 
-        with k2:
+        with m2:
 
             st.caption(
                 "Readiness"
@@ -136,16 +136,19 @@ def render(cl32):
         insights = []
 
         if programme_drift > 0:
+
             insights.append(
                 f"Programme behind baseline by {programme_drift} days."
             )
 
         if high_risk > 0:
+
             insights.append(
                 f"{high_risk} activities with negative float."
             )
 
         if critical_deliverables > 0:
+
             insights.append(
                 f"{critical_deliverables} critical deliverables require attention."
             )
