@@ -21,16 +21,6 @@ def get_metrics(cl32):
         cl32
     )
 
-    metrics = get_project_metrics(
+    return get_project_metrics(
         current_df
     )
-
-    return {
-        "score": metrics["health_score"],
-        "readiness": metrics["design_readiness"],
-        "programme_drift": metrics["programme_drift"],
-        "high_risk": metrics["high_risk"],
-        "critical_deliverables": metrics[
-            "critical_deliverables"
-        ],
-    }
