@@ -146,4 +146,3 @@ def render(cl32):
             st.write(
                 "🟢 No material delivery risks identified."
             )
-`
