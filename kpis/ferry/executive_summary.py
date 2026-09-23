@@ -9,6 +9,14 @@ from utils.project_metrics import (
 
 def build_gauge(score):
 
+    colour = "#FF3131"
+
+    if score >= 80:
+        colour = "#22C55E"
+
+    elif score >= 60:
+        colour = "#F59E0B"
+
     fig = go.Figure()
 
     fig.add_trace(
@@ -25,7 +33,7 @@ def build_gauge(score):
             textinfo="none",
             marker=dict(
                 colors=[
-                    "#FF0028",
+                    colour,
                     "#AAB7CF",
                     "rgba(0,0,0,0)"
                 ]
@@ -84,17 +92,11 @@ def render(cl32):
 
     score = metrics["health_score"]
 
-    readiness = metrics[
-        "design_readiness"
-    ]
+    readiness = metrics["design_readiness"]
 
-    programme_drift = metrics[
-        "programme_drift"
-    ]
+    programme_drift = metrics["programme_drift"]
 
-    high_risk = metrics[
-        "high_risk"
-    ]
+    high_risk = metrics["high_risk"]
 
     critical_deliverables = metrics[
         "critical_deliverables"
