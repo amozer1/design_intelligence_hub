@@ -7,12 +7,15 @@ from kpis.ferry.executive_summary_utils import (
 )
 
 
-CARD_BG = "#FFFFFF"
-HEADER_BG = "#FF0000"
-BORDER = "#00FF00"
-
-
 def build_gauge(score):
+
+    colour = "#FF3B30"
+
+    if score >= 80:
+        colour = "#00C853"
+
+    elif score >= 60:
+        colour = "#FFD700"
 
     fig = go.Figure()
 
@@ -23,15 +26,15 @@ def build_gauge(score):
                 100 - score,
                 100
             ],
-            hole=0.84,
+            hole=0.85,
             rotation=180,
             sort=False,
             direction="clockwise",
             textinfo="none",
             marker=dict(
                 colors=[
-                    "#FF0000",
-                    "#BBBBBB",
+                    colour,
+                    "#64748b",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -39,16 +42,16 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=140,
+        height=180,
         margin=dict(
-            l=0,
-            r=0,
-            t=0,
-            b=0
+            l=5,
+            r=5,
+            t=5,
+            b=5
         ),
-        paper_bgcolor="white",
-        plot_bgcolor="white",
         showlegend=False,
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         annotations=[
             dict(
                 text=f"{score}%",
@@ -56,8 +59,8 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=18,
-                    color="black"
+                    size=22,
+                    color="white"
                 )
             )
         ]
@@ -85,76 +88,62 @@ def render(cl32):
     status = get_status(score)
 
     st.markdown(
-        f"""
-        <style>
-
-        div[data-testid="stVerticalBlockBorderWrapper"] {{
-            background:{CARD_BG} !important;
-            border:4px solid {BORDER} !important;
-            border-radius:12px !important;
-            padding:20px !important;
-        }}
-
-        div[data-testid="stVerticalBlockBorderWrapper"] * {{
-            color:black !important;
-        }}
-
-        </style>
-        """,
-        unsafe_allow_html=True
+        "### 📊 Executive Summary"
     )
 
-    with st.container(border=True):
+    left, right = st.columns(
+        [1, 2]
+    )
 
-        st.markdown(
-            f"""
-            <div style="
-                background:{HEADER_BG};
-                color:white !important;
-                padding:10px;
-                border-radius:8px;
-                font-size:12px;
-                font-weight:700;
-                margin-bottom:15px;
-            ">
-                EXECUTIVE SUMMARY (AI GENERATED)
-            </div>
-            """,
-            unsafe_allow_html=True
+    with left:
+
+        st.plotly_chart(
+            build_gauge(score),
+            use_container_width=True,
+            config={
+                "displayModeBar": False
+            }
+        )
+
+        st.caption(
+            "Design Readiness Index"
         )
 
         st.markdown(
-            f"## {status}"
+            f"## {readiness}%"
         )
 
-        left, right = st.columns([1, 2])
+        st.caption(
+            f"Status: {status}"
+        )
 
-        with left:
+    with right:
 
-            st.plotly_chart(
-                build_gauge(score),
-                use_container_width=True,
-                config={
-                    "displayModeBar": False
-                }
-            )
-
-            st.write("Design Readiness")
-
-            st.markdown(
-                f"### {readiness}%"
-            )
-
-        with right:
+        if programme_drift > 0:
 
             st.write(
-                f"Programme behind baseline by {programme_drift} days."
+                f"🔴 Programme behind baseline by {programme_drift} days."
             )
 
-            st.write(
-                f"{high_risk} activities with negative float."
-            )
+        if high_risk > 0:
 
             st.write(
-                f"{critical_deliverables} critical deliverables."
+                f"🟠 {high_risk} activities with negative float."
             )
+
+        if critical_deliverables > 0:
+
+            st.write(
+                f"🔴 {critical_deliverables} critical deliverables require attention."
+            )
+
+        if (
+            programme_drift <= 0
+            and high_risk <= 0
+            and critical_deliverables <= 0
+        ):
+
+            st.write(
+                "🟢 No material delivery risks identified."
+            )
+`
