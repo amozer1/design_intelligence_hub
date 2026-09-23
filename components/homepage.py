@@ -37,14 +37,6 @@ def render_homepage(
             background:{PAGE_BG};
         }}
 
-        /* Executive Summary Card Styling */
-
-        [data-testid="stVerticalBlockBorderWrapper"] {{
-            background:#081322 !important;
-            border:1px solid #1E3A5F !important;
-            border-radius:16px !important;
-        }}
-
         [data-testid="stHeader"] {{
             display:none;
         }}
