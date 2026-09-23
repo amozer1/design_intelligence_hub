@@ -1,10 +1,6 @@
 import streamlit as st
 import plotly.graph_objects as go
 
-from kpis.ferry.executive_summary_layout import (
-    render_executive_summary_layout
-)
-
 from kpis.ferry.executive_summary_styles import (
     load_executive_summary_styles
 )
@@ -50,7 +46,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=190,
+        height=180,
         margin=dict(
             l=0,
             r=0,
@@ -63,11 +59,11 @@ def build_gauge(score):
         annotations=[
             dict(
                 text=f"{score}%",
-                x=0.50,
+                x=0.5,
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=34,
+                    size=32,
                     color="white"
                 )
             )
@@ -78,8 +74,6 @@ def build_gauge(score):
 
 
 def render(cl32):
-
-    render_executive_summary_layout()
 
     load_executive_summary_styles()
 
@@ -93,72 +87,82 @@ def render(cl32):
 
     high_risk = metrics["high_risk"]
 
-    critical_deliverables = metrics[
-        "critical_deliverables"
-    ]
+    critical_deliverables = (
+        metrics["critical_deliverables"]
+    )
 
     status = get_status(score)
 
-    with st.container(border=True):
+    st.markdown(
+        '<div class="exec-card">',
+        unsafe_allow_html=True
+    )
 
-        st.caption(
-            "EXECUTIVE SUMMARY (AI GENERATED)"
+    st.markdown(
+        '<div class="exec-title">EXECUTIVE SUMMARY (AI GENERATED)</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        f'<div class="exec-status">{status}</div>',
+        unsafe_allow_html=True
+    )
+
+    left, right = st.columns([1.1, 2.1])
+
+    with left:
+
+        st.plotly_chart(
+            build_gauge(score),
+            use_container_width=True,
+            config={
+                "displayModeBar": False
+            }
         )
 
-        st.markdown(
-            f"### {status}"
-        )
+    with right:
 
-        gauge_col, insight_col = st.columns(
-            [1.2, 2.2]
-        )
+        st.write("")
 
-        with gauge_col:
-
-            st.plotly_chart(
-                build_gauge(score),
-                use_container_width=True,
-                config={
-                    "displayModeBar": False
-                }
+        if programme_drift > 0:
+            st.write(
+                f"✅ {programme_drift} days behind baseline"
             )
 
-        with insight_col:
+        if high_risk > 0:
+            st.write(
+                f"✅ {high_risk} activities with negative float"
+            )
 
-            st.write("")
+        if critical_deliverables > 0:
+            st.write(
+                f"✅ {critical_deliverables} deliverables ≤5d float"
+            )
 
-            if programme_drift > 0:
-                st.write(
-                    f"✅ {programme_drift} days behind baseline"
-                )
+        if (
+            programme_drift <= 0
+            and high_risk <= 0
+            and critical_deliverables <= 0
+        ):
+            st.write(
+                "✅ No material delivery risks identified"
+            )
 
-            if high_risk > 0:
-                st.write(
-                    f"✅ {high_risk} activities with negative float"
-                )
+    st.markdown(
+        '<div class="exec-label">DESIGN READINESS INDEX</div>',
+        unsafe_allow_html=True
+    )
 
-            if critical_deliverables > 0:
-                st.write(
-                    f"✅ {critical_deliverables} deliverables ≤5d float"
-                )
+    st.markdown(
+        f'<div class="exec-value">{readiness}%</div>',
+        unsafe_allow_html=True
+    )
 
-            if (
-                programme_drift <= 0
-                and high_risk <= 0
-                and critical_deliverables <= 0
-            ):
-                st.write(
-                    "✅ No material delivery risks identified"
-                )
+    st.caption(
+        f"Status: {status}"
+    )
 
-        st.caption(
-            "DESIGN READINESS INDEX"
-        )
-
-        st.markdown(
-            f"## {readiness}%"
-        )
-
-        st.caption(
-            f"Status: {status}"
-        )
+    st.markdown(
+        "</div>",
+        unsafe_allow_html=True
+    )
