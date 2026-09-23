@@ -21,43 +21,21 @@ def render_homepage(
         f"""
         <style>
 
-        /* PAGE BACKGROUND */
-
         .stApp {{
-            background:{PAGE_BG} !important;
+            background:{PAGE_BG};
         }}
 
         [data-testid="stAppViewContainer"] {{
-            background:{PAGE_BG} !important;
+            background:{PAGE_BG};
         }}
 
         [data-testid="stMain"] {{
-            background:{PAGE_BG} !important;
+            background:{PAGE_BG};
         }}
 
         .main {{
-            background:{PAGE_BG} !important;
+            background:{PAGE_BG};
         }}
-
-        /* TEST 1 */
-
-        [data-testid="stVerticalBlock"] {{
-            border:3px solid lime !important;
-        }}
-
-        /* TEST 2 */
-
-        [data-testid="column"] {{
-            border:3px solid red !important;
-        }}
-
-        /* TEST 3 */
-
-        [data-testid="stElementContainer"] {{
-            border:2px solid yellow !important;
-        }}
-
-        /* PAGE SETTINGS */
 
         [data-testid="stHeader"] {{
             display:none;
@@ -80,10 +58,23 @@ def render_homepage(
             color:white !important;
         }}
 
+        /* EXECUTIVE SUMMARY SECTION */
+
+        div[data-testid="stVerticalBlockBorderWrapper"] {{
+            background:#0f172a !important;
+            border:1px solid #334155 !important;
+            border-radius:12px !important;
+            padding:20px !important;
+        }}
+
         </style>
         """,
         unsafe_allow_html=True
     )
+
+    # ==================================================
+    # HEADER
+    # ==================================================
 
     render_header(
         project=project,
@@ -92,9 +83,25 @@ def render_homepage(
 
     st.write("")
 
-    render_executive_summary(cl32)
+    # ==================================================
+    # EXECUTIVE SUMMARY SECTION
+    # ==================================================
+
+    summary_section = st.container(
+        border=True
+    )
+
+    with summary_section:
+
+        render_executive_summary(
+            cl32
+        )
 
     st.write("")
+
+    # ==================================================
+    # ROW 1
+    # ==================================================
 
     r1c1, r1c2, r1c3, r1c4 = st.columns(4)
 
@@ -108,4 +115,24 @@ def render_homepage(
         st.empty()
 
     with r1c4:
+        st.empty()
+
+    st.write("")
+
+    # ==================================================
+    # ROW 2
+    # ==================================================
+
+    r2c1, r2c2, r2c3, r2c4 = st.columns(4)
+
+    with r2c1:
+        st.empty()
+
+    with r2c2:
+        st.empty()
+
+    with r2c3:
+        st.empty()
+
+    with r2c4:
         st.empty()
