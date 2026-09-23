@@ -46,7 +46,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=180,
+        height=190,
         margin=dict(
             l=0,
             r=0,
@@ -63,7 +63,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=32,
+                    size=34,
                     color="white"
                 )
             )
@@ -80,89 +80,75 @@ def render(cl32):
     metrics = get_metrics(cl32)
 
     score = metrics["health_score"]
-
     readiness = metrics["design_readiness"]
-
     programme_drift = metrics["programme_drift"]
-
     high_risk = metrics["high_risk"]
-
-    critical_deliverables = (
-        metrics["critical_deliverables"]
-    )
+    critical_deliverables = metrics["critical_deliverables"]
 
     status = get_status(score)
 
-    st.markdown(
-        '<div class="exec-card">',
-        unsafe_allow_html=True
-    )
+    card = st.container(border=True)
 
-    st.markdown(
-        '<div class="exec-title">EXECUTIVE SUMMARY (AI GENERATED)</div>',
-        unsafe_allow_html=True
-    )
+    with card:
 
-    st.markdown(
-        f'<div class="exec-status">{status}</div>',
-        unsafe_allow_html=True
-    )
-
-    left, right = st.columns([1.1, 2.1])
-
-    with left:
-
-        st.plotly_chart(
-            build_gauge(score),
-            use_container_width=True,
-            config={
-                "displayModeBar": False
-            }
+        st.caption(
+            "EXECUTIVE SUMMARY (AI GENERATED)"
         )
 
-    with right:
+        st.markdown(
+            f"### {status}"
+        )
 
-        st.write("")
+        left, right = st.columns(
+            [1.1, 2.1]
+        )
 
-        if programme_drift > 0:
-            st.write(
-                f"✅ {programme_drift} days behind baseline"
+        with left:
+
+            st.plotly_chart(
+                build_gauge(score),
+                use_container_width=True,
+                config={
+                    "displayModeBar": False
+                }
             )
 
-        if high_risk > 0:
-            st.write(
-                f"✅ {high_risk} activities with negative float"
-            )
+        with right:
 
-        if critical_deliverables > 0:
-            st.write(
-                f"✅ {critical_deliverables} deliverables ≤5d float"
-            )
+            st.write("")
 
-        if (
-            programme_drift <= 0
-            and high_risk <= 0
-            and critical_deliverables <= 0
-        ):
-            st.write(
-                "✅ No material delivery risks identified"
-            )
+            if programme_drift > 0:
+                st.write(
+                    f"✅ {programme_drift} days behind baseline"
+                )
 
-    st.markdown(
-        '<div class="exec-label">DESIGN READINESS INDEX</div>',
-        unsafe_allow_html=True
-    )
+            if high_risk > 0:
+                st.write(
+                    f"✅ {high_risk} activities with negative float"
+                )
 
-    st.markdown(
-        f'<div class="exec-value">{readiness}%</div>',
-        unsafe_allow_html=True
-    )
+            if critical_deliverables > 0:
+                st.write(
+                    f"✅ {critical_deliverables} deliverables ≤5d float"
+                )
 
-    st.caption(
-        f"Status: {status}"
-    )
+            if (
+                programme_drift <= 0
+                and high_risk <= 0
+                and critical_deliverables <= 0
+            ):
+                st.write(
+                    "✅ No material delivery risks identified"
+                )
 
-    st.markdown(
-        "</div>",
-        unsafe_allow_html=True
-    )
+        st.caption(
+            "DESIGN READINESS INDEX"
+        )
+
+        st.markdown(
+            f"## {readiness}%"
+        )
+
+        st.caption(
+            f"Status: {status}"
+        )
