@@ -6,21 +6,19 @@ from kpis.ferry.executive_summary_utils import (
     get_status,
 )
 
-
-PAGE_PANEL = "#1C2233"
-HEADER_BG = "#2B3A55"
-BORDER = "#3A4A6A"
+HEADER_BG = "#082f49"
+CARD_BG = "#0f172a"
+BORDER = "#334155"
 
 
 def build_gauge(score):
-
-    colour = "#FF1744"
+    colour = "#ff3b30"
 
     if score >= 80:
-        colour = "#22C55E"
+        colour = "#00c853"
 
     elif score >= 60:
-        colour = "#F59E0B"
+        colour = "#ffd700"
 
     fig = go.Figure()
 
@@ -47,7 +45,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=160,
+        height=120,
         margin=dict(
             l=0,
             r=0,
@@ -64,7 +62,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=22,
+                    size=16,
                     color="white"
                 )
             )
@@ -75,7 +73,6 @@ def build_gauge(score):
 
 
 def render(cl32):
-
     metrics = get_metrics(cl32)
 
     score = metrics["health_score"]
@@ -92,86 +89,133 @@ def render(cl32):
 
     status = get_status(score)
 
+    status_colour = "#7f1d1d"
+
+    if status == "ON TRACK":
+        status_colour = "#14532d"
+
+    elif status == "WATCHLIST":
+        status_colour = "#92400e"
+
     st.markdown(
         f"""
-        <div style="
-            background:{HEADER_BG};
-            padding:10px 14px;
-            border:1px solid {BORDER};
-            border-bottom:none;
-            border-radius:12px 12px 0 0;
-            color:white;
-            font-size:11px;
-            font-weight:700;
-            letter-spacing:.5px;
-        ">
-            EXECUTIVE SUMMARY (AI GENERATED)
-        </div>
+        <style>
+
+        div[data-testid="stVerticalBlockBorderWrapper"] {{
+            background:{CARD_BG} !important;
+            border:1px solid {BORDER} !important;
+            border-radius:12px !important;
+        }}
+
+        </style>
         """,
         unsafe_allow_html=True
     )
 
-    st.markdown(
-        f"""
-        <div style="
-            background:{PAGE_PANEL};
-            border:1px solid {BORDER};
-            border-radius:0 0 12px 12px;
-            padding:20px;
-            margin-bottom:12px;
-        ">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    with st.container(border=True):
 
-    left, right = st.columns(
-        [1, 2.2]
-    )
-
-    with left:
-
-        st.markdown(
-            f"### {status}"
+        title_col, pill_col = st.columns(
+            [4, 1]
         )
 
-        st.plotly_chart(
-            build_gauge(score),
-            use_container_width=True,
-            config={
-                "displayModeBar": False
-            }
-        )
+        with title_col:
 
-    with right:
+            st.markdown(
+                """
+                <span style="
+                    color:#dce8f5;
+                    font-size:12px;
+                    font-weight:700;
+                    letter-spacing:.5px;
+                ">
+                EXECUTIVE SUMMARY
+                </span>
+                <span style="
+                    color:#94a3b8;
+                    font-size:11px;
+                ">
+                (AI GENERATED)
+                </span>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with pill_col:
+
+            st.markdown(
+                f"""
+                <div style="
+                    background:{status_colour};
+                    color:white;
+                    border-radius:8px;
+                    text-align:center;
+                    padding:4px;
+                    font-size:11px;
+                    font-weight:700;
+                ">
+                {status}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
         st.write("")
 
-        if programme_drift > 0:
-            st.write(
-                f"✅ {programme_drift} days behind baseline"
+        gauge_col, insight_col = st.columns(
+            [1, 2.3]
+        )
+
+        with gauge_col:
+
+            st.plotly_chart(
+                build_gauge(score),
+                use_container_width=True,
+                config={
+                    "displayModeBar": False
+                }
             )
 
-        if high_risk > 0:
-            st.write(
-                f"✅ {high_risk} activities with negative float"
+            st.caption(
+                "Design Readiness Index"
             )
 
-        if critical_deliverables > 0:
-            st.write(
-                f"✅ {critical_deliverables} deliverables ≤5d float"
+            st.markdown(
+                f"### {readiness}%"
             )
 
-    st.divider()
+            st.markdown(
+                """
+                <span style="
+                    color:#22c55e;
+                    font-size:12px;
+                    font-weight:600;
+                ">
+                ↑ 5%
+                </span>
+                <span style="
+                    color:#94a3b8;
+                    font-size:11px;
+                ">
+                vs last month
+                </span>
+                """,
+                unsafe_allow_html=True
+            )
 
-    st.caption(
-        "DESIGN READINESS INDEX"
-    )
+        with insight_col:
 
-    st.markdown(
-        f"### {readiness}%"
-    )
+            if programme_drift > 0:
+                st.write(
+                    f"✅ Programme is behind baseline by {programme_drift} days."
+                )
 
-    st.caption(
-        f"Status: {status}"
-    )
+            if high_risk > 0:
+                st.write(
+                    f"✅ {high_risk} activities with negative float."
+                )
+
+            if critical_deliverables > 0:
+                st.write(
+                    f"✅ Focus on {critical_deliverables} critical deliverables."
+                )
+
