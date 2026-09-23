@@ -7,6 +7,10 @@ from utils.project_metrics import (
 )
 
 
+CARD_BG = "#081322"
+CARD_BORDER = "rgba(255,255,255,.08)"
+
+
 def build_gauge(score):
 
     colour = "#FF3131"
@@ -55,7 +59,7 @@ def build_gauge(score):
         annotations=[
             dict(
                 text=f"{score}%",
-                x=0.5,
+                x=0.50,
                 y=0.42,
                 showarrow=False,
                 font=dict(
@@ -104,6 +108,21 @@ def render(cl32):
 
     status = get_status(score)
 
+    st.markdown(
+        f"""
+        <style>
+
+        div[data-testid="stVerticalBlockBorderWrapper"] {{
+            background: {CARD_BG} !important;
+            border: 1px solid {CARD_BORDER} !important;
+            border-radius: 12px !important;
+        }}
+
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     with st.container(border=True):
 
         st.caption(
@@ -134,8 +153,6 @@ def render(cl32):
             )
 
         with insight_col:
-
-            st.write("")
 
             if programme_drift > 0:
                 st.write(
