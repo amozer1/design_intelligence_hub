@@ -1,198 +1,196 @@
 import streamlit as st
+import plotly.graph_objects as go
 
-from components.header import render_header
-
-from kpis.ferry.executive_summary import (
-    render as render_executive_summary
+from utils.project_metrics import (
+    get_current_snapshot,
+    get_project_metrics,
 )
 
-PAGE_BG = "#202020"
+
+CARD_BG = "#081322"
 
 
-def render_homepage(
-    project,
-    snapshot,
-    metrics,
-    cl31,
-    cl32,
-):
+def build_gauge(score):
+
+    fig = go.Figure()
+
+    fig.add_trace(
+        go.Pie(
+            values=[
+                score,
+                100 - score,
+                100
+            ],
+            hole=0.78,
+            rotation=180,
+            sort=False,
+            direction="clockwise",
+            textinfo="none",
+            marker=dict(
+                colors=[
+                    "#FF3131",
+                    "#94A3B8",
+                    "rgba(0,0,0,0)"
+                ]
+            )
+        )
+    )
+
+    fig.update_layout(
+        height=180,
+        margin=dict(
+            l=0,
+            r=0,
+            t=0,
+            b=0
+        ),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=False,
+        annotations=[
+            dict(
+                text=f"{score}%",
+                x=0.50,
+                y=0.42,
+                showarrow=False,
+                font=dict(
+                    size=40,
+                    color="white"
+                )
+            )
+        ]
+    )
+
+    return fig
+
+
+def get_status(score):
+
+    if score >= 80:
+        return "ON TRACK"
+
+    if score >= 60:
+        return "WATCHLIST"
+
+    return "AT RISK"
+
+
+def render(cl32):
+
+    current_df, _ = get_current_snapshot(
+        cl32
+    )
+
+    metrics = get_project_metrics(
+        current_df
+    )
+
+    score = metrics["health_score"]
+
+    readiness = metrics[
+        "design_readiness"
+    ]
+
+    programme_drift = metrics[
+        "programme_drift"
+    ]
+
+    high_risk = metrics[
+        "high_risk"
+    ]
+
+    critical_deliverables = metrics[
+        "critical_deliverables"
+    ]
+
+    status = get_status(score)
 
     st.markdown(
         f"""
-        <style>
-
-        .stApp {{
-            background:{PAGE_BG};
-        }}
-
-        [data-testid="stAppViewContainer"] {{
-            background:{PAGE_BG};
-        }}
-
-        [data-testid="stMain"] {{
-            background:{PAGE_BG};
-        }}
-
-        .main {{
-            background:{PAGE_BG};
-        }}
-
-        /* Executive Summary Card Styling */
-
-        [data-testid="stVerticalBlockBorderWrapper"] {{
-            background:#0000FF !important;
-            border:1px solid #1E3A5F !important;
-            border-radius:25px !important;
-        }}
-
-        [data-testid="stHeader"] {{
-            display:none;
-        }}
-
-        [data-testid="stToolbar"] {{
-            display:none;
-        }}
-
-        .block-container {{
-            padding-top:0rem !important;
-            max-width:100%;
-        }}
-
-        h1,h2,h3,h4,h5,h6 {{
-            color:white !important;
-        }}
-
-        p {{
-            color:white !important;
-        }}
-
-        </style>
+        <div style="
+            background:{CARD_BG};
+            border-radius:16px;
+            padding:16px;
+        ">
+        </div>
         """,
         unsafe_allow_html=True
     )
 
-    # ==================================================
-    # HEADER
-    # ==================================================
+    with st.container(border=True):
 
-    render_header(
-        project=project,
-        snapshot=snapshot
-    )
+        st.caption(
+            "EXECUTIVE SUMMARY (AI GENERATED)"
+        )
 
-    st.write("")
+        if status == "ON TRACK":
+            st.success(status)
 
-    # ==================================================
-    # KPI RIBBON
-    # ==================================================
+        elif status == "WATCHLIST":
+            st.warning(status)
 
-    k1, k2, k3, k4, k5, k6, k7 = st.columns(
-        [3.5, 1.8, 1.8, 1.4, 1.4, 1.2, 1.4]
-    )
+        else:
+            st.error(status)
 
-    with k1:
-        render_executive_summary(cl32)
+        gauge_col, insight_col = st.columns(
+            [1.4, 2.6]
+        )
 
-    with k2:
-        st.empty()
+        with gauge_col:
 
-    with k3:
-        st.empty()
+            st.plotly_chart(
+                build_gauge(score),
+                use_container_width=True,
+                config={
+                    "displayModeBar": False
+                }
+            )
 
-    with k4:
-        st.empty()
+        with insight_col:
 
-    with k5:
-        st.empty()
+            if programme_drift > 0:
+                st.write(
+                    f"✅ {programme_drift} days behind baseline"
+                )
 
-    with k6:
-        st.empty()
+            if high_risk > 0:
+                st.write(
+                    f"✅ {high_risk} activities with negative float"
+                )
 
-    with k7:
-        st.empty()
+            if critical_deliverables > 0:
+                st.write(
+                    f"✅ {critical_deliverables} deliverables ≤5d float"
+                )
 
-    st.write("")
+            if (
+                programme_drift <= 0
+                and high_risk <= 0
+                and critical_deliverables <= 0
+            ):
+                st.write(
+                    "✅ No material delivery risks identified"
+                )
 
-    # ==================================================
-    # ROW 1
-    # ==================================================
+        st.caption(
+            "Design Readiness Index"
+        )
 
-    r1c1, r1c2, r1c3, r1c4 = st.columns(4)
+        st.markdown(
+            f"## {readiness}%"
+        )
 
-    with r1c1:
-        st.empty()
+        if score >= 80:
+            st.success(
+                "Trending positively"
+            )
 
-    with r1c2:
-        st.empty()
+        elif score >= 60:
+            st.warning(
+                "Requires monitoring"
+            )
 
-    with r1c3:
-        st.empty()
-
-    with r1c4:
-        st.empty()
-
-    st.write("")
-
-    # ==================================================
-    # ROW 2
-    # ==================================================
-
-    r2c1, r2c2, r2c3, r2c4 = st.columns(4)
-
-    with r2c1:
-        st.empty()
-
-    with r2c2:
-        st.empty()
-
-    with r2c3:
-        st.empty()
-
-    with r2c4:
-        st.empty()
-
-    st.write("")
-
-    # ==================================================
-    # ROW 3
-    # ==================================================
-
-    r3c1, r3c2, r3c3, r3c4, r3c5 = st.columns(5)
-
-    with r3c1:
-        st.empty()
-
-    with r3c2:
-        st.empty()
-
-    with r3c3:
-        st.empty()
-
-    with r3c4:
-        st.empty()
-
-    with r3c5:
-        st.empty()
-
-    st.write("")
-
-    # ==================================================
-    # FOOTER
-    # ==================================================
-
-    f1, f2, f3, f4, f5 = st.columns(5)
-
-    with f1:
-        st.empty()
-
-    with f2:
-        st.empty()
-
-    with f3:
-        st.empty()
-
-    with f4:
-        st.empty()
-
-    with f5:
-        st.empty()
+        else:
+            st.error(
+                "Delivery risk increasing"
+            )
