@@ -7,36 +7,10 @@ def load_executive_summary_styles():
         """
         <style>
 
-        .exec-card{
-            background:#081322;
-            border:1px solid rgba(255,255,255,.20);
-            border-radius:16px;
-            padding:24px;
-        }
-
-        .exec-title{
-            color:#DCE8F5;
-            font-size:11px;
-            font-weight:700;
-            letter-spacing:1px;
-        }
-
-        .exec-status{
-            color:#FFFFFF;
-            font-size:14px;
-            font-weight:700;
-        }
-
-        .exec-label{
-            color:#9CA3AF;
-            font-size:11px;
-            font-weight:600;
-        }
-
-        .exec-value{
-            color:#FFFFFF;
-            font-size:24px;
-            font-weight:700;
+        [data-testid="stVerticalBlockBorderWrapper"] {
+            background: red !important;
+            border: 3px solid yellow !important;
+            border-radius: 16px !important;
         }
 
         </style>
