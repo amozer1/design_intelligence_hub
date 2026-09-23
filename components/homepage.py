@@ -21,21 +21,43 @@ def render_homepage(
         f"""
         <style>
 
+        /* PAGE BACKGROUND */
+
         .stApp {{
-            background:{PAGE_BG};
+            background:{PAGE_BG} !important;
         }}
 
         [data-testid="stAppViewContainer"] {{
-            background:{PAGE_BG};
+            background:{PAGE_BG} !important;
         }}
 
         [data-testid="stMain"] {{
-            background:{PAGE_BG};
+            background:{PAGE_BG} !important;
         }}
 
         .main {{
-            background:{PAGE_BG};
+            background:{PAGE_BG} !important;
         }}
+
+        /* TEST 1 */
+
+        [data-testid="stVerticalBlock"] {{
+            border:3px solid lime !important;
+        }}
+
+        /* TEST 2 */
+
+        [data-testid="column"] {{
+            border:3px solid red !important;
+        }}
+
+        /* TEST 3 */
+
+        [data-testid="stElementContainer"] {{
+            border:2px solid yellow !important;
+        }}
+
+        /* PAGE SETTINGS */
 
         [data-testid="stHeader"] {{
             display:none;
@@ -70,27 +92,20 @@ def render_homepage(
 
     st.write("")
 
-    k1, k2, k3, k4, k5, k6, k7 = st.columns(
-        [3.5, 1.8, 1.8, 1.4, 1.4, 1.2, 1.4]
-    )
+    render_executive_summary(cl32)
 
-    with k1:
-        render_executive_summary(cl32)
+    st.write("")
 
-    with k2:
+    r1c1, r1c2, r1c3, r1c4 = st.columns(4)
+
+    with r1c1:
         st.empty()
 
-    with k3:
+    with r1c2:
         st.empty()
 
-    with k4:
+    with r1c3:
         st.empty()
 
-    with k5:
-        st.empty()
-
-    with k6:
-        st.empty()
-
-    with k7:
+    with r1c4:
         st.empty()
