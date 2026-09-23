@@ -30,7 +30,7 @@ def build_gauge(score):
                 100 - score,
                 100
             ],
-            hole=0.82,
+            hole=0.84,
             rotation=180,
             sort=False,
             direction="clockwise",
@@ -46,7 +46,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=190,
+        height=170,
         margin=dict(
             l=0,
             r=0,
@@ -63,7 +63,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=34,
+                    size=24,
                     color="white"
                 )
             )
@@ -80,27 +80,31 @@ def render(cl32):
     metrics = get_metrics(cl32)
 
     score = metrics["health_score"]
+
     readiness = metrics["design_readiness"]
+
     programme_drift = metrics["programme_drift"]
+
     high_risk = metrics["high_risk"]
-    critical_deliverables = metrics["critical_deliverables"]
+
+    critical_deliverables = metrics[
+        "critical_deliverables"
+    ]
 
     status = get_status(score)
 
-    card = st.container(border=True)
-
-    with card:
+    with st.container(border=True):
 
         st.caption(
             "EXECUTIVE SUMMARY (AI GENERATED)"
         )
 
         st.markdown(
-            f"### {status}"
+            f"## {status}"
         )
 
         left, right = st.columns(
-            [1.1, 2.1]
+            [1, 2.5]
         )
 
         with left:
@@ -132,21 +136,14 @@ def render(cl32):
                     f"✅ {critical_deliverables} deliverables ≤5d float"
                 )
 
-            if (
-                programme_drift <= 0
-                and high_risk <= 0
-                and critical_deliverables <= 0
-            ):
-                st.write(
-                    "✅ No material delivery risks identified"
-                )
+        st.divider()
 
         st.caption(
             "DESIGN READINESS INDEX"
         )
 
         st.markdown(
-            f"## {readiness}%"
+            f"### {readiness}%"
         )
 
         st.caption(
