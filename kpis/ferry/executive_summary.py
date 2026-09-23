@@ -7,9 +7,6 @@ from utils.project_metrics import (
 )
 
 
-CARD_BG = "#081322"
-
-
 def build_gauge(score):
 
     fig = go.Figure()
@@ -28,8 +25,8 @@ def build_gauge(score):
             textinfo="none",
             marker=dict(
                 colors=[
-                    "#FF3131",
-                    "#94A3B8",
+                    "#FF0028",
+                    "#AAB7CF",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -37,7 +34,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=180,
+        height=220,
         margin=dict(
             l=0,
             r=0,
@@ -50,11 +47,11 @@ def build_gauge(score):
         annotations=[
             dict(
                 text=f"{score}%",
-                x=0.50,
+                x=0.5,
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=40,
+                    size=44,
                     color="white"
                 )
             )
@@ -105,18 +102,6 @@ def render(cl32):
 
     status = get_status(score)
 
-    st.markdown(
-        f"""
-        <div style="
-            background:{CARD_BG};
-            border-radius:16px;
-            padding:16px;
-        ">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
     with st.container(border=True):
 
         st.caption(
@@ -133,7 +118,7 @@ def render(cl32):
             st.error(status)
 
         gauge_col, insight_col = st.columns(
-            [1.4, 2.6]
+            [1.2, 2.8]
         )
 
         with gauge_col:
@@ -147,6 +132,8 @@ def render(cl32):
             )
 
         with insight_col:
+
+            st.write("")
 
             if programme_drift > 0:
                 st.write(
@@ -181,16 +168,19 @@ def render(cl32):
         )
 
         if score >= 80:
+
             st.success(
                 "Trending positively"
             )
 
         elif score >= 60:
+
             st.warning(
                 "Requires monitoring"
             )
 
         else:
+
             st.error(
                 "Delivery risk increasing"
             )
