@@ -58,81 +58,42 @@ def render_homepage(
             color:white !important;
         }}
 
-        /* EXECUTIVE SUMMARY SECTION */
-
-        div[data-testid="stVerticalBlockBorderWrapper"] {{
-            background:#0f172a !important;
-            border:1px solid #334155 !important;
-            border-radius:12px !important;
-            padding:20px !important;
-        }}
-
         </style>
         """,
         unsafe_allow_html=True
     )
-
-    # ==================================================
-    # HEADER
-    # ==================================================
 
     render_header(
         project=project,
         snapshot=snapshot
     )
 
-    st.write("")
+    st.markdown("<br>", unsafe_allow_html=True)
 
-    # ==================================================
-    # EXECUTIVE SUMMARY SECTION
-    # ==================================================
-
-    summary_section = st.container(
-        border=True
+    st.markdown(
+        """
+        <div style="
+            background:#1E293B;
+            padding:20px;
+            border-radius:12px;
+            border-left:6px solid #3B82F6;
+            border:1px solid #64748B;
+            box-shadow:0 4px 10px rgba(0,0,0,0.25);
+            margin-bottom:20px;
+        ">
+        <div style="
+            font-size:20px;
+            font-weight:700;
+            color:white;
+            margin-bottom:10px;
+        ">
+            Executive Summary
+        </div>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
-    with summary_section:
+    render_executive_summary(cl32)
 
-        render_executive_summary(
-            cl32
-        )
-
-    st.write("")
-
-    # ==================================================
-    # ROW 1
-    # ==================================================
-
-    r1c1, r1c2, r1c3, r1c4 = st.columns(4)
-
-    with r1c1:
-        st.empty()
-
-    with r1c2:
-        st.empty()
-
-    with r1c3:
-        st.empty()
-
-    with r1c4:
-        st.empty()
-
-    st.write("")
-
-    # ==================================================
-    # ROW 2
-    # ==================================================
-
-    r2c1, r2c2, r2c3, r2c4 = st.columns(4)
-
-    with r2c1:
-        st.empty()
-
-    with r2c2:
-        st.empty()
-
-    with r2c3:
-        st.empty()
-
-    with r2c4:
-        st.empty()
+    st.markdown("<br>", unsafe_allow_html=True)
