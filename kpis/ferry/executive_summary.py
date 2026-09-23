@@ -1,14 +1,15 @@
 import streamlit as st
 import plotly.graph_objects as go
 
-from kpis.ferry.executive_summary_styles import (
-    load_executive_summary_styles
-)
-
 from kpis.ferry.executive_summary_utils import (
     get_metrics,
     get_status,
 )
+
+
+PAGE_PANEL = "#1C2233"
+HEADER_BG = "#2B3A55"
+BORDER = "#3A4A6A"
 
 
 def build_gauge(score):
@@ -46,7 +47,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=170,
+        height=160,
         margin=dict(
             l=0,
             r=0,
@@ -63,7 +64,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=24,
+                    size=22,
                     color="white"
                 )
             )
@@ -74,8 +75,6 @@ def build_gauge(score):
 
 
 def render(cl32):
-
-    load_executive_summary_styles()
 
     metrics = get_metrics(cl32)
 
@@ -93,59 +92,86 @@ def render(cl32):
 
     status = get_status(score)
 
-    with st.container(border=True):
+    st.markdown(
+        f"""
+        <div style="
+            background:{HEADER_BG};
+            padding:10px 14px;
+            border:1px solid {BORDER};
+            border-bottom:none;
+            border-radius:12px 12px 0 0;
+            color:white;
+            font-size:11px;
+            font-weight:700;
+            letter-spacing:.5px;
+        ">
+            EXECUTIVE SUMMARY (AI GENERATED)
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-        st.caption(
-            "EXECUTIVE SUMMARY (AI GENERATED)"
-        )
+    st.markdown(
+        f"""
+        <div style="
+            background:{PAGE_PANEL};
+            border:1px solid {BORDER};
+            border-radius:0 0 12px 12px;
+            padding:20px;
+            margin-bottom:12px;
+        ">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    left, right = st.columns(
+        [1, 2.2]
+    )
+
+    with left:
 
         st.markdown(
-            f"## {status}"
+            f"### {status}"
         )
 
-        left, right = st.columns(
-            [1, 2.5]
+        st.plotly_chart(
+            build_gauge(score),
+            use_container_width=True,
+            config={
+                "displayModeBar": False
+            }
         )
 
-        with left:
+    with right:
 
-            st.plotly_chart(
-                build_gauge(score),
-                use_container_width=True,
-                config={
-                    "displayModeBar": False
-                }
+        st.write("")
+
+        if programme_drift > 0:
+            st.write(
+                f"✅ {programme_drift} days behind baseline"
             )
 
-        with right:
+        if high_risk > 0:
+            st.write(
+                f"✅ {high_risk} activities with negative float"
+            )
 
-            st.write("")
+        if critical_deliverables > 0:
+            st.write(
+                f"✅ {critical_deliverables} deliverables ≤5d float"
+            )
 
-            if programme_drift > 0:
-                st.write(
-                    f"✅ {programme_drift} days behind baseline"
-                )
+    st.divider()
 
-            if high_risk > 0:
-                st.write(
-                    f"✅ {high_risk} activities with negative float"
-                )
+    st.caption(
+        "DESIGN READINESS INDEX"
+    )
 
-            if critical_deliverables > 0:
-                st.write(
-                    f"✅ {critical_deliverables} deliverables ≤5d float"
-                )
+    st.markdown(
+        f"### {readiness}%"
+    )
 
-        st.divider()
-
-        st.caption(
-            "DESIGN READINESS INDEX"
-        )
-
-        st.markdown(
-            f"### {readiness}%"
-        )
-
-        st.caption(
-            f"Status: {status}"
-        )
+    st.caption(
+        f"Status: {status}"
+    )
