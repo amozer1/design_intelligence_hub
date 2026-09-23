@@ -34,7 +34,7 @@ def build_gauge(score):
             marker=dict(
                 colors=[
                     colour,
-                    "#64748b",
+                    "#64748B",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -59,7 +59,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=22,
+                    size=24,
                     color="white"
                 )
             )
@@ -87,15 +87,27 @@ def render(cl32):
 
     status = get_status(score)
 
+    # =========================
+    # HEADER
+    # =========================
+
     st.markdown(
         "### 📊 Executive Summary"
     )
 
-    left, right = st.columns(
+    st.caption(
+        "AI Generated"
+    )
+
+    # =========================
+    # MAIN CONTENT
+    # =========================
+
+    gauge_col, insight_col = st.columns(
         [1, 2]
     )
 
-    with left:
+    with gauge_col:
 
         st.plotly_chart(
             build_gauge(score),
@@ -117,7 +129,11 @@ def render(cl32):
             f"Status: {status}"
         )
 
-    with right:
+    with insight_col:
+
+        st.markdown(
+            "#### Key Insights"
+        )
 
         if programme_drift > 0:
 
