@@ -10,12 +10,8 @@ GREEN = "#16A34A"
 GOLD = "#D4AF37"
 RED = "#DC2626"
 
-TEXT = "#111827"
 BODY = "#374151"
-MUTED = "#6B7280"
-
 ICON_GREEN = "#10B981"
-
 TRACK = "#DCE3EB"
 
 
@@ -53,12 +49,12 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=70,
+        height=65,
         margin=dict(
             l=0,
             r=0,
             t=0,
-            b=-10
+            b=0
         ),
         showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
@@ -92,12 +88,12 @@ def render(cl32):
 
     status = get_status(score)
 
-    status_colour = RED
-
     if score >= 80:
         status_colour = GREEN
     elif score >= 60:
         status_colour = GOLD
+    else:
+        status_colour = RED
 
     with st.container(border=True):
 
@@ -116,7 +112,7 @@ def render(cl32):
                     font-size:18px;
                     font-weight:700;
                     line-height:1;
-                    margin-bottom:2px;
+                    margin-bottom:4px;
                 ">
                     EXECUTIVE SUMMARY
                 </div>
@@ -155,9 +151,7 @@ def render(cl32):
             st.plotly_chart(
                 build_gauge(score),
                 use_container_width=True,
-                config={
-                    "displayModeBar": False
-                }
+                config={"displayModeBar": False}
             )
 
         with insight_col:
