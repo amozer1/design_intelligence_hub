@@ -56,12 +56,12 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=120,
+        height=75,
         margin=dict(
             l=0,
             r=0,
             t=0,
-            b=0
+            b=-10
         ),
         showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
@@ -70,10 +70,10 @@ def build_gauge(score):
             dict(
                 text=f"{score}%",
                 x=0.5,
-                y=0.42,
+                y=0.46,
                 showarrow=False,
                 font=dict(
-                    size=26,
+                    size=18,
                     color=colour
                 )
             )
@@ -119,20 +119,9 @@ def render(cl32):
                     color:#111827;
                     font-size:18px;
                     font-weight:700;
+                    margin-bottom:4px;
                 ">
                     EXECUTIVE SUMMARY
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-            st.markdown(
-                """
-                <div style="
-                    color:#6B7280;
-                    font-size:11px;
-                ">
-                    AI Generated
                 </div>
                 """,
                 unsafe_allow_html=True
@@ -147,8 +136,8 @@ def render(cl32):
                     color:white;
                     text-align:center;
                     border-radius:8px;
-                    padding:4px 8px;
-                    font-size:10px;
+                    padding:2px 8px;
+                    font-size:9px;
                     font-weight:700;
                     margin-top:4px;
                 ">
@@ -176,14 +165,12 @@ def render(cl32):
 
         with insight_col:
 
-            st.write("")
-
             st.markdown(
                 f"""
                 <div style="
                     color:{BODY};
                     font-size:13px;
-                    margin-bottom:12px;
+                    margin-bottom:6px;
                 ">
                     <span style="
                         color:{ICON_GREEN};
@@ -204,7 +191,7 @@ def render(cl32):
                 <div style="
                     color:{BODY};
                     font-size:13px;
-                    margin-bottom:12px;
+                    margin-bottom:6px;
                 ">
                     <span style="
                         color:{ICON_GREEN};
@@ -254,7 +241,7 @@ def render(cl32):
                 """
                 <div style="
                     color:#6B7280;
-                    font-size:12px;
+                    font-size:11px;
                     font-weight:600;
                 ">
                     Design Readiness Index
@@ -269,9 +256,10 @@ def render(cl32):
                 f"""
                 <div style="
                     color:#16A34A;
-                    font-size:26px;
+                    font-size:20px;
                     font-weight:700;
                     text-align:right;
+                    line-height:1;
                 ">
                     {readiness}%
                 </div>
