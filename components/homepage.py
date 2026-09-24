@@ -6,7 +6,7 @@ from kpis.ferry.executive_summary import (
     render as render_executive_summary
 )
 
-PAGE_BG = "#10203A"
+PAGE_BG = "#F5F7FA"
 
 
 def render_homepage(
@@ -22,34 +22,44 @@ def render_homepage(
         <style>
 
         .stApp {{
-            background: {PAGE_BG};
+            background:{PAGE_BG};
         }}
 
         [data-testid="stAppViewContainer"] {{
-            background: {PAGE_BG};
+            background:{PAGE_BG};
         }}
 
         [data-testid="stMain"] {{
-            background: {PAGE_BG};
+            background:{PAGE_BG};
         }}
 
         .main {{
-            background: {PAGE_BG};
+            background:{PAGE_BG};
         }}
 
         [data-testid="stHeader"] {{
-            display: none;
+            display:none;
         }}
 
         [data-testid="stToolbar"] {{
-            display: none;
+            display:none;
         }}
 
         .block-container {{
-            padding-top: 0rem !important;
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
-            max-width: 100%;
+            padding-top:0rem !important;
+            padding-left:1rem !important;
+            padding-right:1rem !important;
+            max-width:100%;
+        }}
+
+        /* Default text */
+
+        body {{
+            color:#111827;
+        }}
+
+        p {{
+            color:#374151;
         }}
 
         </style>
@@ -57,9 +67,9 @@ def render_homepage(
         unsafe_allow_html=True
     )
 
-    # ==================================================
+    # ==========================================
     # HEADER
-    # ==================================================
+    # ==========================================
 
     render_header(
         project=project,
@@ -68,13 +78,11 @@ def render_homepage(
 
     st.write("")
 
-    # ==================================================
-    # KPI ROW
-    # ==================================================
+    # ==========================================
+    # EXECUTIVE SUMMARY
+    # ==========================================
 
-    summary_col, remainder_col = st.columns(
-        [5, 7]
-    )
+    summary_col, spacer_col = st.columns([5, 7])
 
     with summary_col:
 
@@ -82,18 +90,16 @@ def render_homepage(
             cl32
         )
 
-    with remainder_col:
+    with spacer_col:
 
         st.empty()
 
     st.write("")
 
-    # ==================================================
+    # ==========================================
     # FUTURE KPI CARDS
-    # ==================================================
+    # ==========================================
 
-    # Example future layout:
-    #
     # k1, k2, k3, k4 = st.columns(4)
     #
     # with k1:
