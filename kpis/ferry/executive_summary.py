@@ -13,6 +13,7 @@ def build_gauge(score):
 
     if score >= 80:
         colour = "#16A34A"
+
     elif score >= 60:
         colour = "#F59E0B"
 
@@ -41,7 +42,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=140,
+        height=120,
         margin=dict(
             l=0,
             r=0,
@@ -58,7 +59,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=24,
+                    size=22,
                     color="#111827"
                 )
             )
@@ -84,6 +85,7 @@ def render(cl32):
 
     if "TRACK" in str(status).upper():
         status_colour = "#16A34A"
+
     elif "WATCH" in str(status).upper():
         status_colour = "#F59E0B"
 
@@ -101,22 +103,16 @@ def render(cl32):
                 """
                 <div style="
                     color:#111827;
-                    font-size:16px;
+                    font-size:18px;
                     font-weight:700;
                 ">
                     EXECUTIVE SUMMARY
                 </div>
-
-                <div style="
-                    color:#6B7280;
-                    font-size:11px;
-                    margin-top:-2px;
-                ">
-                    AI Generated
-                </div>
                 """,
                 unsafe_allow_html=True
             )
+
+            st.caption("AI Generated")
 
         with status_col:
 
@@ -127,9 +123,10 @@ def render(cl32):
                     color:white;
                     border-radius:8px;
                     text-align:center;
-                    padding:6px;
-                    font-size:11px;
+                    padding:4px 8px;
+                    font-size:10px;
                     font-weight:700;
+                    margin-top:4px;
                 ">
                     {status}
                 </div>
@@ -137,10 +134,8 @@ def render(cl32):
                 unsafe_allow_html=True
             )
 
-        st.write("")
-
         # ====================================
-        # MAIN CONTENT
+        # BODY
         # ====================================
 
         gauge_col, insight_col = st.columns([1, 2])
@@ -157,52 +152,46 @@ def render(cl32):
 
         with insight_col:
 
-            if programme_drift > 0:
+            st.write("")
 
-                st.markdown(
-                    f"""
-                    <div style="
-                        color:#374151;
-                        font-size:13px;
-                        margin-bottom:14px;
-                    ">
-                        📅 Programme behind baseline by
-                        <b>{programme_drift} days</b>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+            st.markdown(
+                f"""
+                <span style="
+                    color:#374151;
+                    font-size:13px;
+                ">
+                ⊕ Programme behind baseline by
+                <b>{programme_drift} days</b>
+                </span>
+                """,
+                unsafe_allow_html=True
+            )
 
-            if high_risk > 0:
+            st.markdown(
+                f"""
+                <span style="
+                    color:#374151;
+                    font-size:13px;
+                ">
+                ⊕ <b>{high_risk}</b> activities currently
+                carry negative float
+                </span>
+                """,
+                unsafe_allow_html=True
+            )
 
-                st.markdown(
-                    f"""
-                    <div style="
-                        color:#374151;
-                        font-size:13px;
-                        margin-bottom:14px;
-                    ">
-                        ⚠️ <b>{high_risk}</b> activities
-                        carry negative float
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-            if critical_deliverables > 0:
-
-                st.markdown(
-                    f"""
-                    <div style="
-                        color:#374151;
-                        font-size:13px;
-                    ">
-                        🎯 <b>{critical_deliverables}</b>
-                        critical deliverables require attention
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+            st.markdown(
+                f"""
+                <span style="
+                    color:#374151;
+                    font-size:13px;
+                ">
+                ⊕ <b>{critical_deliverables}</b> critical
+                deliverables require attention
+                </span>
+                """,
+                unsafe_allow_html=True
+            )
 
         st.divider()
 
@@ -210,7 +199,7 @@ def render(cl32):
         # FOOTER
         # ====================================
 
-        footer_left, footer_right = st.columns([4, 1])
+        footer_left, footer_right = st.columns([5, 1])
 
         with footer_left:
 
@@ -233,7 +222,7 @@ def render(cl32):
                 f"""
                 <div style="
                     color:#16A34A;
-                    font-size:22px;
+                    font-size:24px;
                     font-weight:700;
                     text-align:right;
                 ">
