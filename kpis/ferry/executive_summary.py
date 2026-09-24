@@ -9,13 +9,13 @@ from kpis.ferry.executive_summary_utils import (
 
 def build_gauge(score):
 
-    colour = "#FF3B30"
+    colour = "#ff4d4f"
 
     if score >= 80:
-        colour = "#00C853"
+        colour = "#22c55e"
 
     elif score >= 60:
-        colour = "#FFD700"
+        colour = "#f59e0b"
 
     fig = go.Figure()
 
@@ -42,7 +42,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=260,
+        height=140,
         margin=dict(
             l=0,
             r=0,
@@ -59,7 +59,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=34,
+                    size=18,
                     color="white"
                 )
             )
@@ -87,9 +87,86 @@ def render(cl32):
 
     status = get_status(score)
 
-    left, right = st.columns(
-        [1.2, 2.8]
+    status_colour = "#dc2626"
+
+    if status == "ON TRACK":
+        status_colour = "#16a34a"
+
+    elif status == "WATCHLIST":
+        status_colour = "#ca8a04"
+
+    # ==================================================
+    # PANEL
+    # ==================================================
+
+    st.markdown(
+        f"""
+        <div style="
+            background:#1E293B;
+            border:1px solid #475569;
+            border-radius:10px;
+            padding:12px 16px;
+            margin-bottom:10px;
+        ">
+        """,
+        unsafe_allow_html=True
     )
+
+    # ==================================================
+    # HEADER
+    # ==================================================
+
+    h1, h2 = st.columns([5, 1])
+
+    with h1:
+
+        st.markdown(
+            """
+            <span style="
+                color:white;
+                font-size:14px;
+                font-weight:700;
+            ">
+            EXECUTIVE SUMMARY
+            </span>
+
+            <span style="
+                color:#94a3b8;
+                font-size:11px;
+                margin-left:6px;
+            ">
+            (AI GENERATED)
+            </span>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with h2:
+
+        st.markdown(
+            f"""
+            <div style="
+                background:{status_colour};
+                color:white;
+                text-align:center;
+                padding:4px 8px;
+                border-radius:6px;
+                font-size:11px;
+                font-weight:700;
+            ">
+            {status}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.write("")
+
+    # ==================================================
+    # BODY
+    # ==================================================
+
+    left, right = st.columns([1, 2])
 
     with left:
 
@@ -101,66 +178,52 @@ def render(cl32):
             }
         )
 
-        m1, m2 = st.columns(2)
-
-        with m1:
-
-            st.caption(
-                "Health"
-            )
-
-            st.markdown(
-                f"### {score}%"
-            )
-
-        with m2:
-
-            st.caption(
-                "Readiness"
-            )
-
-            st.markdown(
-                f"### {readiness}%"
-            )
-
         st.caption(
-            f"Status: {status}"
+            "Design Readiness Index"
+        )
+
+        change = readiness - score
+
+        colour = "#22c55e"
+
+        if change < 0:
+            colour = "#ef4444"
+
+        st.markdown(
+            f"""
+            <span style="
+                color:{colour};
+                font-size:14px;
+                font-weight:700;
+            ">
+            {'↑' if change >= 0 else '↓'} {abs(change)}%
+            </span>
+
+            <span style="
+                color:#94a3b8;
+                font-size:11px;
+            ">
+            vs health score
+            </span>
+            """,
+            unsafe_allow_html=True
         )
 
     with right:
 
-        st.markdown(
-            "### Key Insights"
+        st.write(
+            f"🟢 Programme is behind baseline by {programme_drift} days."
         )
 
-        insights = []
+        st.write(
+            f"🟢 {high_risk} activities with negative float."
+        )
 
-        if programme_drift > 0:
+        st.write(
+            f"🟢 Focus on {critical_deliverables} critical deliverables."
+        )
 
-            insights.append(
-                f"Programme behind baseline by {programme_drift} days."
-            )
-
-        if high_risk > 0:
-
-            insights.append(
-                f"{high_risk} activities with negative float."
-            )
-
-        if critical_deliverables > 0:
-
-            insights.append(
-                f"{critical_deliverables} critical deliverables require attention."
-            )
-
-        if not insights:
-
-            insights.append(
-                "No material delivery risks identified."
-            )
-
-        for item in insights:
-
-            st.write(
-                f"• {item}"
-            )
+    st.markdown(
+        "</div>",
+        unsafe_allow_html=True
+    )
