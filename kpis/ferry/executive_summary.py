@@ -56,7 +56,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=90,
+        height=120,
         margin=dict(
             l=0,
             r=0,
@@ -73,7 +73,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=22,
+                    size=26,
                     color=colour
                 )
             )
@@ -105,13 +105,6 @@ def render(cl32):
 
     with st.container(border=True):
 
-        st.markdown(
-            """
-            <div style="min-height:260px;">
-            """,
-            unsafe_allow_html=True
-        )
-
         # ===================================
         # HEADER
         # ===================================
@@ -124,10 +117,22 @@ def render(cl32):
                 """
                 <div style="
                     color:#111827;
-                    font-size:16px;
+                    font-size:18px;
                     font-weight:700;
                 ">
                     EXECUTIVE SUMMARY
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+            st.markdown(
+                """
+                <div style="
+                    color:#6B7280;
+                    font-size:11px;
+                ">
+                    AI Generated
                 </div>
                 """,
                 unsafe_allow_html=True
@@ -145,7 +150,7 @@ def render(cl32):
                     padding:4px 8px;
                     font-size:10px;
                     font-weight:700;
-                    margin-top:2px;
+                    margin-top:4px;
                 ">
                     {status}
                 </div>
@@ -157,7 +162,7 @@ def render(cl32):
         # BODY
         # ===================================
 
-        gauge_col, insight_col = st.columns([1, 1.7])
+        gauge_col, insight_col = st.columns([1, 2])
 
         with gauge_col:
 
@@ -171,12 +176,14 @@ def render(cl32):
 
         with insight_col:
 
+            st.write("")
+
             st.markdown(
                 f"""
                 <div style="
                     color:{BODY};
                     font-size:13px;
-                    margin-bottom:8px;
+                    margin-bottom:12px;
                 ">
                     <span style="
                         color:{ICON_GREEN};
@@ -197,7 +204,7 @@ def render(cl32):
                 <div style="
                     color:{BODY};
                     font-size:13px;
-                    margin-bottom:8px;
+                    margin-bottom:12px;
                 ">
                     <span style="
                         color:{ICON_GREEN};
@@ -247,7 +254,7 @@ def render(cl32):
                 """
                 <div style="
                     color:#6B7280;
-                    font-size:11px;
+                    font-size:12px;
                     font-weight:600;
                 ">
                     Design Readiness Index
@@ -262,7 +269,7 @@ def render(cl32):
                 f"""
                 <div style="
                     color:#16A34A;
-                    font-size:22px;
+                    font-size:26px;
                     font-weight:700;
                     text-align:right;
                 ">
@@ -271,10 +278,3 @@ def render(cl32):
                 """,
                 unsafe_allow_html=True
             )
-
-        st.markdown(
-            """
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
