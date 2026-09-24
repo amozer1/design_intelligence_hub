@@ -7,10 +7,6 @@ from kpis.ferry.executive_summary_utils import (
 )
 
 
-PANEL_BG = "#DBEAFE"
-BORDER = "#3B82F6"
-
-
 def build_gauge(score):
 
     colour = "#EF4444"
@@ -53,9 +49,9 @@ def build_gauge(score):
             t=0,
             b=0
         ),
-        showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=False,
         annotations=[
             dict(
                 text=f"{score}%",
@@ -89,31 +85,28 @@ def render(cl32):
 
     if "TRACK" in status_upper:
         badge_colour = "#16A34A"
-
     elif "WATCH" in status_upper:
         badge_colour = "#CA8A04"
-
     else:
         badge_colour = "#DC2626"
 
     st.markdown(
-        f"""
+        """
         <style>
 
-        div[data-testid="stVerticalBlockBorderWrapper"] {{
-            background:{PANEL_BG} !important;
-            border:3px solid {BORDER} !important;
+        div[data-testid="stVerticalBlock"]{
+            background:#DBEAFE !important;
+            border:4px solid #2563EB !important;
             border-radius:12px !important;
             padding:16px !important;
-            box-shadow:0 4px 12px rgba(59,130,246,.20) !important;
-        }}
+        }
 
         </style>
         """,
         unsafe_allow_html=True
     )
 
-    with st.container(border=True):
+    with st.container():
 
         header_left, header_right = st.columns([6, 1])
 
@@ -122,7 +115,7 @@ def render(cl32):
             st.markdown(
                 """
                 <span style="
-                    color:#1E293B;
+                    color:#0F172A;
                     font-size:13px;
                     font-weight:700;
                 ">
@@ -132,7 +125,6 @@ def render(cl32):
                 <span style="
                     color:#64748B;
                     font-size:11px;
-                    margin-left:6px;
                 ">
                 (AI GENERATED)
                 </span>
@@ -159,8 +151,6 @@ def render(cl32):
                 unsafe_allow_html=True
             )
 
-        st.write("")
-
         left, right = st.columns([1, 2])
 
         with left:
@@ -178,7 +168,7 @@ def render(cl32):
             st.markdown(
                 f"""
                 <span style="
-                    color:#1E293B;
+                    color:#0F172A;
                     font-size:14px;
                     font-weight:700;
                 ">
@@ -190,50 +180,29 @@ def render(cl32):
 
         with right:
 
-            if programme_drift > 0:
+            st.markdown(
+                f"""
+                <div style="color:#0F172A;">
+                🔴 Programme is behind baseline by {programme_drift} days.
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
-                st.markdown(
-                    f"""
-                    <div style="color:#1E293B;">
-                    🔴 Programme is behind baseline by {programme_drift} days.
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+            st.markdown(
+                f"""
+                <div style="color:#0F172A;">
+                🟠 {high_risk} activities with negative float.
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
-            if high_risk > 0:
-
-                st.markdown(
-                    f"""
-                    <div style="color:#1E293B;">
-                    🟠 {high_risk} activities with negative float.
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-            if critical_deliverables > 0:
-
-                st.markdown(
-                    f"""
-                    <div style="color:#1E293B;">
-                    🟡 Focus on {critical_deliverables} critical deliverables.
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-            if (
-                programme_drift <= 0
-                and high_risk <= 0
-                and critical_deliverables <= 0
-            ):
-
-                st.markdown(
-                    """
-                    <div style="color:#1E293B;">
-                    🟢 No material delivery risks identified.
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+            st.markdown(
+                f"""
+                <div style="color:#0F172A;">
+                🟡 Focus on {critical_deliverables} critical deliverables.
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
