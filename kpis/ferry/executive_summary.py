@@ -126,18 +126,6 @@ def render(cl32):
                 unsafe_allow_html=True
             )
 
-            st.markdown(
-                """
-                <div style="
-                    color:#6B7280;
-                    font-size:11px;
-                ">
-                    AI Generated
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
         with status_col:
 
             st.markdown(
