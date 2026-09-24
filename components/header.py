@@ -34,35 +34,24 @@ def render_header(project, snapshot=None):
             100% { opacity: 1; }
         }
 
-        .header-panel {
-            background: #10203A;
-            padding: 20px;
-            border-radius: 14px;
-            border: 1px solid #1E3A5F;
-            box-shadow:
-                0 2px 6px rgba(0,0,0,0.15),
-                0 12px 24px rgba(0,0,0,0.08);
-            margin-bottom: 10px;
-        }
-
-        .dashboard-title {
-            color: white;
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
         .header-label {
-            color: #93C5FD;
+            color: #2563EB;
             font-weight: 600;
         }
 
+        .dashboard-title {
+            color: #111827;
+            font-size: 2.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
         .header-value {
-            color: white;
+            color: #374151;
         }
 
         .live-status {
-            color: #4ADE80;
+            color: #22C55E;
             font-weight: 700;
             animation: pulse 1.5s infinite;
             text-align: right;
@@ -74,59 +63,66 @@ def render_header(project, snapshot=None):
         unsafe_allow_html=True,
     )
 
-    st.markdown(
-        '<div class="header-panel">',
-        unsafe_allow_html=True
-    )
+    # Accent strip
 
     st.markdown(
         """
-        <div class="dashboard-title">
-            Design Performance Dashboard
+        <div style="
+            height:6px;
+            background:#2563EB;
+            border-radius:10px;
+            margin-bottom:12px;
+        ">
         </div>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
-    left, right = st.columns([9, 2])
-
-    with left:
-
-        st.markdown(
-            f"""
-            <span class="header-label">Project:</span>
-            <span class="header-value">{project}</span>
-
-            &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-
-            <span class="header-label">Current CL32 Snapshot:</span>
-            <span class="header-value">{snapshot}</span>
-
-            &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-
-            <span class="header-label">Today:</span>
-            <span class="header-value">{today}</span>
-
-            &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-
-            <span class="header-label">Design Manager:</span>
-            <span class="header-value">{manager}</span>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    with right:
+    with st.container(border=True):
 
         st.markdown(
             """
-            <div class="live-status">
-                ● LIVE
+            <div class="dashboard-title">
+                Design Performance Dashboard
             </div>
             """,
             unsafe_allow_html=True,
         )
 
-    st.markdown(
-        "</div>",
-        unsafe_allow_html=True
-    )
+        left, right = st.columns([9, 2])
+
+        with left:
+
+            st.markdown(
+                f"""
+                <span class="header-label">Project:</span>
+                <span class="header-value">{project}</span>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+
+                <span class="header-label">Current CL32 Snapshot:</span>
+                <span class="header-value">{snapshot}</span>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+
+                <span class="header-label">Today:</span>
+                <span class="header-value">{today}</span>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+
+                <span class="header-label">Design Manager:</span>
+                <span class="header-value">{manager}</span>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        with right:
+
+            st.markdown(
+                """
+                <div class="live-status">
+                    ● LIVE
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
