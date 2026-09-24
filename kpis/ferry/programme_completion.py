@@ -53,6 +53,19 @@ def render(cl32):
         st.markdown(
             """
             <div style="
+                min-height:260px;
+            ">
+            """,
+            unsafe_allow_html=True,
+        )
+
+        # ===================================
+        # HEADER
+        # ===================================
+
+        st.markdown(
+            """
+            <div style="
                 color:#111827;
                 font-size:16px;
                 font-weight:700;
@@ -61,7 +74,7 @@ def render(cl32):
                 PROGRAMME MILESTONES
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
         left_col, right_col = st.columns(2)
@@ -86,7 +99,7 @@ def render(cl32):
                         📅
                     </div>
                     """,
-                    unsafe_allow_html=True
+                    unsafe_allow_html=True,
                 )
 
             with date_col:
@@ -103,7 +116,7 @@ def render(cl32):
                         Programme Finish
                     </div>
                     """,
-                    unsafe_allow_html=True
+                    unsafe_allow_html=True,
                 )
 
                 st.markdown(
@@ -117,10 +130,9 @@ def render(cl32):
                         {programme_finish}
                     </div>
                     """,
-                    unsafe_allow_html=True
+                    unsafe_allow_html=True,
                 )
 
-            st.write("")
             st.write("")
             st.write("")
 
@@ -137,7 +149,7 @@ def render(cl32):
                         Baseline: {programme_baseline}
                     </div>
                     """,
-                    unsafe_allow_html=True
+                    unsafe_allow_html=True,
                 )
 
             with badge_col:
@@ -156,101 +168,11 @@ def render(cl32):
                         {variance_text(programme_variance)}
                     </div>
                     """,
-                    unsafe_allow_html=True
+                    unsafe_allow_html=True,
                 )
 
         # ===================================
         # CONTRACT COMPLETION
         # ===================================
 
-        with right_col:
-
-            icon_col, date_col = st.columns([1, 5])
-
-            with icon_col:
-
-                st.markdown(
-                    f"""
-                    <div style="
-                        color:{ICON_GOLD};
-                        font-size:32px;
-                        margin-top:8px;
-                    ">
-                        🤝
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-            with date_col:
-
-                st.markdown(
-                    """
-                    <div style="
-                        color:#6B7280;
-                        font-size:11px;
-                        font-weight:700;
-                        text-transform:uppercase;
-                        margin-bottom:10px;
-                    ">
-                        Contract Completion
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-                st.markdown(
-                    f"""
-                    <div style="
-                        color:{TITLE};
-                        font-size:32px;
-                        font-weight:700;
-                        line-height:1.1;
-                    ">
-                        {contract_finish}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-            st.write("")
-            st.write("")
-            st.write("")
-
-            baseline_col, badge_col = st.columns([3, 2])
-
-            with baseline_col:
-
-                st.markdown(
-                    f"""
-                    <div style="
-                        color:{MUTED};
-                        font-size:11px;
-                    ">
-                        Baseline: {contract_baseline}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-            with badge_col:
-
-                st.markdown(
-                    f"""
-                    <div style="
-                        background:{variance_colour(contract_variance)};
-                        color:white;
-                        text-align:center;
-                        border-radius:8px;
-                        padding:8px 12px;
-                        font-size:11px;
-                        font-weight:700;
-                    ">
-                        {variance_text(contract_variance)}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-        st.write("")
-        st.write("")
+        with right_col

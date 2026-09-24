@@ -56,7 +56,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=115,
+        height=90,
         margin=dict(
             l=0,
             r=0,
@@ -73,7 +73,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=26,
+                    size=22,
                     color=colour
                 )
             )
@@ -104,6 +104,13 @@ def render(cl32):
         status_colour = GOLD
 
     with st.container(border=True):
+
+        st.markdown(
+            """
+            <div style="min-height:260px;">
+            """,
+            unsafe_allow_html=True
+        )
 
         # ===================================
         # HEADER
@@ -138,7 +145,7 @@ def render(cl32):
                     padding:4px 8px;
                     font-size:10px;
                     font-weight:700;
-                    margin-top:6px;
+                    margin-top:2px;
                 ">
                     {status}
                 </div>
@@ -169,7 +176,7 @@ def render(cl32):
                 <div style="
                     color:{BODY};
                     font-size:13px;
-                    margin-bottom:12px;
+                    margin-bottom:8px;
                 ">
                     <span style="
                         color:{ICON_GREEN};
@@ -190,7 +197,7 @@ def render(cl32):
                 <div style="
                     color:{BODY};
                     font-size:13px;
-                    margin-bottom:12px;
+                    margin-bottom:8px;
                 ">
                     <span style="
                         color:{ICON_GREEN};
@@ -226,11 +233,7 @@ def render(cl32):
                 unsafe_allow_html=True
             )
 
-        st.write("")
-
         st.divider()
-
-        st.write("")
 
         # ===================================
         # FOOTER
@@ -268,3 +271,10 @@ def render(cl32):
                 """,
                 unsafe_allow_html=True
             )
+
+        st.markdown(
+            """
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
