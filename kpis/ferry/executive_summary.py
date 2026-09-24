@@ -6,6 +6,9 @@ from kpis.ferry.executive_summary_utils import (
     get_status,
 )
 
+PANEL_BG = "#475569"
+BORDER = "#FFFFFF"
+
 
 def build_gauge(score):
     colour = "#FF3B30"
@@ -41,11 +44,16 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=140,
-        margin=dict(l=0, r=0, t=0, b=0),
-        showlegend=False,
+        height=150,
+        margin=dict(
+            l=0,
+            r=0,
+            t=0,
+            b=0
+        ),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=False,
         annotations=[
             dict(
                 text=f"{score}%",
@@ -53,7 +61,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=18,
+                    size=20,
                     color="white"
                 )
             )
@@ -82,109 +90,100 @@ def render(cl32):
     elif status == "WATCHLIST":
         status_colour = "#CA8A04"
 
-    # ==================================================
-    # VERY OBVIOUS TEST BOUNDARY
-    # ==================================================
-
     st.markdown(
-        """
-        <div style="
-            background:#FFD700;
-            border:10px solid #FF0000;
-            border-radius:16px;
-            padding:20px;
-            margin-bottom:15px;
-            color:black;
-            font-weight:bold;
-        ">
-            EXECUTIVE SUMMARY BOUNDARY TEST
-        </div>
+        f"""
+        <style>
+
+        div[data-testid="stVerticalBlockBorderWrapper"] {{
+            background:{PANEL_BG} !important;
+            border:4px solid {BORDER} !important;
+            border-radius:16px !important;
+            padding:20px !important;
+        }}
+
+        </style>
         """,
         unsafe_allow_html=True
     )
 
-    header_l, header_r = st.columns([5, 1])
+    with st.container(border=True):
 
-    with header_l:
+        h1, h2 = st.columns([5, 1])
 
-        st.markdown(
-            """
-            **EXECUTIVE SUMMARY**
+        with h1:
+            st.markdown(
+                """
+                **EXECUTIVE SUMMARY**
 
-            <span style="color:#94A3B8;">
-            (AI GENERATED)
-            </span>
-            """,
-            unsafe_allow_html=True
-        )
+                <span style="color:#CBD5E1;font-size:11px;">
+                (AI GENERATED)
+                </span>
+                """,
+                unsafe_allow_html=True
+            )
 
-    with header_r:
-
-        st.markdown(
-            f"""
-            <div style="
-                background:{status_colour};
-                color:white;
-                padding:4px;
-                border-radius:6px;
-                text-align:center;
-                font-size:11px;
-                font-weight:700;
-            ">
+        with h2:
+            st.markdown(
+                f"""
+                <div style="
+                    background:{status_colour};
+                    color:white;
+                    text-align:center;
+                    padding:4px;
+                    border-radius:6px;
+                    font-size:11px;
+                    font-weight:700;
+                ">
                 {status}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
-    left, right = st.columns([1, 2])
+        left, right = st.columns([1, 2])
 
-    with left:
+        with left:
+            st.plotly_chart(
+                build_gauge(score),
+                use_container_width=True,
+                config={
+                    "displayModeBar": False
+                }
+            )
 
-        st.plotly_chart(
-            build_gauge(score),
-            use_container_width=True,
-            config={
-                "displayModeBar": False
-            }
-        )
+            st.caption("Design Readiness Index")
 
-        st.caption(
-            "Design Readiness Index"
-        )
+            delta = readiness - score
 
-        change = readiness - score
+            arrow = "↑" if delta >= 0 else "↓"
 
-        colour = "#22C55E"
+            colour = "#22C55E"
 
-        if change < 0:
-            colour = "#EF4444"
+            if delta < 0:
+                colour = "#EF4444"
 
-        arrow = "↑" if change >= 0 else "↓"
+            st.markdown(
+                f"""
+                <span style="
+                    color:{colour};
+                    font-size:14px;
+                    font-weight:700;
+                ">
+                {arrow} {abs(delta)}%
+                </span>
+                """,
+                unsafe_allow_html=True
+            )
 
-        st.markdown(
-            f"""
-            <span style="
-                color:{colour};
-                font-size:14px;
-                font-weight:700;
-            ">
-                {arrow} {abs(change)}%
-            </span>
-            """,
-            unsafe_allow_html=True
-        )
+        with right:
+            st.write(
+                f"🟢 Programme is behind baseline by {programme_drift} days."
+            )
 
-    with right:
+            st.write(
+                f"🟢 {high_risk} activities with negative float."
+            )
 
-        st.write(
-            f"🟢 Programme is behind baseline by {programme_drift} days."
-        )
-
-        st.write(
-            f"🟢 {high_risk} activities with negative float."
-        )
-
-        st.write(
-            f"🟢 Focus on {critical_deliverables} critical deliverables."
-        )
+            st.write(
+                f"🟢 Focus on {critical_deliverables} critical deliverables."
+            )

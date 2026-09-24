@@ -1,103 +1,190 @@
 import streamlit as st
+import plotly.graph_objects as go
 
-from components.header import render_header
-
-from kpis.ferry.executive_summary import (
-    render as render_executive_summary
+from kpis.ferry.executive_summary_utils import (
+    get_metrics,
+    get_status,
 )
 
-PAGE_BG = "#10203A"
 
+def build_gauge(score):
+    colour = "#FF3B30"
 
-def render_homepage(
-    project,
-    snapshot,
-    metrics,
-    cl31,
-    cl32,
-):
+    if score >= 80:
+        colour = "#22C55E"
 
-    st.markdown(
-        f"""
-        <style>
+    elif score >= 60:
+        colour = "#F59E0B"
 
-        .stApp {{
-            background:{PAGE_BG};
-        }}
+    fig = go.Figure()
 
-        [data-testid="stAppViewContainer"] {{
-            background:{PAGE_BG};
-        }}
-
-        [data-testid="stMain"] {{
-            background:{PAGE_BG};
-        }}
-
-        .main {{
-            background:{PAGE_BG};
-        }}
-
-        [data-testid="stHeader"] {{
-            display:none;
-        }}
-
-        [data-testid="stToolbar"] {{
-            display:none;
-        }}
-
-        .block-container {{
-            padding-top:0rem !important;
-            max-width:100%;
-        }}
-
-        h1,h2,h3,h4,h5,h6 {{
-            color:white !important;
-        }}
-
-        p {{
-            color:white !important;
-        }}
-
-        </style>
-        """,
-        unsafe_allow_html=True
+    fig.add_trace(
+        go.Pie(
+            values=[
+                score,
+                100 - score,
+                100,
+            ],
+            hole=0.82,
+            rotation=180,
+            sort=False,
+            direction="clockwise",
+            textinfo="none",
+            marker=dict(
+                colors=[
+                    colour,
+                    "#64748B",
+                    "rgba(0,0,0,0)",
+                ]
+            ),
+        )
     )
 
-    # =============================================
-    # HEADER
-    # =============================================
-
-    render_header(
-        project=project,
-        snapshot=snapshot
+    fig.update_layout(
+        height=150,
+        margin=dict(l=0, r=0, t=0, b=0),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=False,
+        annotations=[
+            dict(
+                text=f"{score}%",
+                x=0.5,
+                y=0.42,
+                showarrow=False,
+                font=dict(
+                    size=20,
+                    color="white",
+                ),
+            )
+        ],
     )
 
-    st.write("")
+    return fig
 
-    # =============================================
-    # EXECUTIVE SUMMARY
-    # =============================================
 
-    render_executive_summary(
-        cl32
-    )
+def render(cl32):
+    metrics = get_metrics(cl32)
 
-    st.write("")
+    score = metrics["health_score"]
+    readiness = metrics["design_readiness"]
+    programme_drift = metrics["programme_drift"]
+    high_risk = metrics["high_risk"]
+    critical_deliverables = metrics["critical_deliverables"]
 
-    # =============================================
-    # FUTURE KPI ROWS
-    # =============================================
+    status = get_status(score)
 
-    row1_col1, row1_col2, row1_col3, row1_col4 = st.columns(4)
+    status_colour = "#DC2626"
 
-    with row1_col1:
-        st.empty()
+    if status == "ON TRACK":
+        status_colour = "#16A34A"
 
-    with row1_col2:
-        st.empty()
+    elif status == "WATCHLIST":
+        status_colour = "#CA8A04"
 
-    with row1_col3:
-        st.empty()
+    # =====================================================
+    # PANEL
+    # =====================================================
 
-    with row1_col4:
-        st.empty()
+    container = st.container(border=True)
+
+    with container:
+
+        st.markdown(
+            """
+            <style>
+
+            div[data-testid="stVerticalBlockBorderWrapper"]{
+                background:#334155 !important;
+                border:5px solid #FFFFFF !important;
+                border-radius:16px !important;
+                padding:20px !important;
+            }
+
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        header_left, header_right = st.columns([5, 1])
+
+        with header_left:
+            st.markdown(
+                """
+                **EXECUTIVE SUMMARY**
+
+                <span style="
+                    color:#CBD5E1;
+                    font-size:11px;
+                ">
+                (AI GENERATED)
+                </span>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        with header_right:
+            st.markdown(
+                f"""
+                <div style="
+                    background:{status_colour};
+                    color:white;
+                    text-align:center;
+                    padding:5px;
+                    border-radius:6px;
+                    font-size:11px;
+                    font-weight:700;
+                ">
+                    {status}
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        left, right = st.columns([1, 2])
+
+        with left:
+            st.plotly_chart(
+                build_gauge(score),
+                use_container_width=True,
+                config={
+                    "displayModeBar": False,
+                },
+            )
+
+            st.caption("Design Readiness Index")
+
+            delta = readiness - score
+
+            arrow = "↑" if delta >= 0 else "↓"
+
+            delta_colour = "#22C55E"
+
+            if delta < 0:
+                delta_colour = "#EF4444"
+
+            st.markdown(
+                f"""
+                <span style="
+                    color:{delta_colour};
+                    font-size:14px;
+                    font-weight:700;
+                ">
+                    {arrow} {abs(delta)}%
+                </span>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        with right:
+            st.write(
+                f"🟢 Programme is behind baseline by {programme_drift} days."
+            )
+
+            st.write(
+                f"🟢 {high_risk} activities with negative float."
+            )
+
+            st.write(
+                f"🟢 Focus on {critical_deliverables} critical deliverables."
+            )
