@@ -6,7 +6,7 @@ from kpis.ferry.executive_summary import (
     render as render_executive_summary
 )
 
-PAGE_BG = "#F1F5F9"
+PAGE_BG = "#EDF2F7"
 
 
 def render_homepage(
@@ -22,44 +22,42 @@ def render_homepage(
         <style>
 
         .stApp {{
-            background:{PAGE_BG};
+            background: {PAGE_BG};
         }}
 
         [data-testid="stAppViewContainer"] {{
-            background:{PAGE_BG};
+            background: {PAGE_BG};
         }}
 
         [data-testid="stMain"] {{
-            background:{PAGE_BG};
+            background: {PAGE_BG};
         }}
 
         .main {{
-            background:{PAGE_BG};
+            background: {PAGE_BG};
         }}
 
         [data-testid="stHeader"] {{
-            display:none;
+            display: none;
         }}
 
         [data-testid="stToolbar"] {{
-            display:none;
+            display: none;
         }}
 
         .block-container {{
-            padding-top:0rem !important;
-            padding-left:1rem !important;
-            padding-right:1rem !important;
-            max-width:100%;
+            padding-top: 0rem !important;
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+            max-width: 100%;
         }}
 
-        /* Default text */
-
         body {{
-            color:#111827;
+            color: #111827;
         }}
 
         p {{
-            color:#374151;
+            color: #374151;
         }}
 
         </style>
