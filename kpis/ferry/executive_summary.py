@@ -6,9 +6,12 @@ from kpis.ferry.executive_summary_utils import (
     get_status,
 )
 
+PANEL_BG = "#DBEAFE"
+BORDER = "#3B82F6"
+
 
 def build_gauge(score):
-    colour = "#FF3B30"
+    colour = "#EF4444"
 
     if score >= 80:
         colour = "#22C55E"
@@ -23,7 +26,7 @@ def build_gauge(score):
             values=[
                 score,
                 100 - score,
-                100,
+                100
             ],
             hole=0.82,
             rotation=180,
@@ -33,16 +36,21 @@ def build_gauge(score):
             marker=dict(
                 colors=[
                     colour,
-                    "#64748B",
-                    "rgba(0,0,0,0)",
+                    "#94A3B8",
+                    "rgba(0,0,0,0)"
                 ]
-            ),
+            )
         )
     )
 
     fig.update_layout(
-        height=150,
-        margin=dict(l=0, r=0, t=0, b=0),
+        height=140,
+        margin=dict(
+            l=0,
+            r=0,
+            t=0,
+            b=0
+        ),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         showlegend=False,
@@ -53,11 +61,11 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=20,
-                    color="white",
-                ),
+                    size=22,
+                    color="#111827"
+                )
             )
-        ],
+        ]
     )
 
     return fig
@@ -74,71 +82,73 @@ def render(cl32):
 
     status = get_status(score)
 
-    status_colour = "#DC2626"
+    badge_colour = "#DC2626"
 
     if status == "ON TRACK":
-        status_colour = "#16A34A"
+        badge_colour = "#16A34A"
 
     elif status == "WATCHLIST":
-        status_colour = "#CA8A04"
+        badge_colour = "#CA8A04"
 
-    # =====================================================
-    # PANEL
-    # =====================================================
+    st.markdown(
+        f"""
+        <style>
 
-    container = st.container(border=True)
+        div[data-testid="stVerticalBlockBorderWrapper"] {{
+            background:{PANEL_BG} !important;
+            border:3px solid {BORDER} !important;
+            border-radius:12px !important;
+            padding:16px !important;
+            box-shadow:0 4px 12px rgba(59,130,246,.20) !important;
+        }}
 
-    with container:
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
-        st.markdown(
-            """
-            <style>
-
-            div[data-testid="stVerticalBlockBorderWrapper"]{
-                background:#334155 !important;
-                border:5px solid #FFFFFF !important;
-                border-radius:16px !important;
-                padding:20px !important;
-            }
-
-            </style>
-            """,
-            unsafe_allow_html=True,
-        )
+    with st.container(border=True):
 
         header_left, header_right = st.columns([5, 1])
 
         with header_left:
             st.markdown(
                 """
-                **EXECUTIVE SUMMARY**
+                <span style="
+                    color:#1E293B;
+                    font-size:13px;
+                    font-weight:700;
+                ">
+                EXECUTIVE SUMMARY
+                </span>
 
                 <span style="
-                    color:#CBD5E1;
+                    color:#64748B;
                     font-size:11px;
+                    margin-left:6px;
                 ">
                 (AI GENERATED)
                 </span>
                 """,
-                unsafe_allow_html=True,
+                unsafe_allow_html=True
             )
 
         with header_right:
             st.markdown(
                 f"""
                 <div style="
-                    background:{status_colour};
+                    background:{badge_colour};
                     color:white;
                     text-align:center;
-                    padding:5px;
+                    padding:4px 8px;
                     border-radius:6px;
                     font-size:11px;
                     font-weight:700;
                 ">
-                    {status}
+                {status}
                 </div>
                 """,
-                unsafe_allow_html=True,
+                unsafe_allow_html=True
             )
 
         left, right = st.columns([1, 2])
@@ -148,43 +158,52 @@ def render(cl32):
                 build_gauge(score),
                 use_container_width=True,
                 config={
-                    "displayModeBar": False,
-                },
+                    "displayModeBar": False
+                }
             )
 
-            st.caption("Design Readiness Index")
+            st.caption(
+                "Design Readiness Index"
+            )
 
             delta = readiness - score
 
             arrow = "↑" if delta >= 0 else "↓"
 
-            delta_colour = "#22C55E"
+            delta_colour = "#16A34A"
 
             if delta < 0:
-                delta_colour = "#EF4444"
+                delta_colour = "#DC2626"
 
             st.markdown(
                 f"""
                 <span style="
                     color:{delta_colour};
-                    font-size:14px;
+                    font-size:13px;
                     font-weight:700;
                 ">
-                    {arrow} {abs(delta)}%
+                {arrow} {abs(delta)}%
+                </span>
+
+                <span style="
+                    color:#64748B;
+                    font-size:11px;
+                ">
+                vs health score
                 </span>
                 """,
-                unsafe_allow_html=True,
+                unsafe_allow_html=True
             )
 
         with right:
-            st.write(
-                f"🟢 Programme is behind baseline by {programme_drift} days."
+            st.markdown(
+                f"""
+                <div style="color:#1E293B;">
+                🟢 Programme is behind baseline by {programme_drift} days.
+                </div>
+                """,
+                unsafe_allow_html=True
             )
 
-            st.write(
-                f"🟢 {high_risk} activities with negative float."
-            )
-
-            st.write(
-                f"🟢 Focus on {critical_deliverables} critical deliverables."
-            )
+            st.markdown(
+                f"""
