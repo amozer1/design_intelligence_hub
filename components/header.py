@@ -35,23 +35,12 @@ def render_header(project, snapshot=None):
         }
 
         .header-label {
-            color: #2563EB;
+            color: #7FB3FF;
             font-weight: 600;
         }
 
-        .dashboard-title {
-            color: #111827;
-            font-size: 2.3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .header-value {
-            color: #374151;
-        }
-
         .live-status {
-            color: #22C55E;
+            color: #4ADE80;
             font-weight: 700;
             animation: pulse 1.5s infinite;
             text-align: right;
@@ -63,66 +52,33 @@ def render_header(project, snapshot=None):
         unsafe_allow_html=True,
     )
 
-    # Accent strip
-
-    st.markdown(
-        """
-        <div style="
-            height:6px;
-            background:#2563EB;
-            border-radius:10px;
-            margin-bottom:12px;
-        ">
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
     with st.container(border=True):
 
-        st.markdown(
-            """
-            <div class="dashboard-title">
-                Design Performance Dashboard
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        st.title("Design Performance Dashboard")
 
         left, right = st.columns([9, 2])
 
         with left:
-
             st.markdown(
                 f"""
-                <span class="header-label">Project:</span>
-                <span class="header-value">{project}</span>
-
-                &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-
-                <span class="header-label">Current CL32 Snapshot:</span>
-                <span class="header-value">{snapshot}</span>
-
-                &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-
-                <span class="header-label">Today:</span>
-                <span class="header-value">{today}</span>
-
-                &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-
-                <span class="header-label">Design Manager:</span>
-                <span class="header-value">{manager}</span>
+                <span class="header-label">Project:</span> {project}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="header-label">Current CL32 Snapshot:</span> {snapshot}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="header-label">Today:</span> {today}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="header-label">Design Manager:</span> {manager}
                 """,
                 unsafe_allow_html=True,
             )
 
         with right:
-
             st.markdown(
                 """
                 <div class="live-status">
-                    ● LIVE
+                    Status: ● LIVE
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
+
