@@ -6,9 +6,6 @@ from kpis.ferry.executive_summary_utils import (
     get_status,
 )
 
-PANEL_BG = "#475569"
-BORDER = "#FFFFFF"
-
 
 def build_gauge(score):
     colour = "#FF3B30"
@@ -26,7 +23,7 @@ def build_gauge(score):
             values=[
                 score,
                 100 - score,
-                100
+                100,
             ],
             hole=0.82,
             rotation=180,
@@ -37,20 +34,15 @@ def build_gauge(score):
                 colors=[
                     colour,
                     "#64748B",
-                    "rgba(0,0,0,0)"
+                    "rgba(0,0,0,0)",
                 ]
-            )
+            ),
         )
     )
 
     fig.update_layout(
         height=150,
-        margin=dict(
-            l=0,
-            r=0,
-            t=0,
-            b=0
-        ),
+        margin=dict(l=0, r=0, t=0, b=0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         showlegend=False,
@@ -62,10 +54,10 @@ def build_gauge(score):
                 showarrow=False,
                 font=dict(
                     size=20,
-                    color="white"
-                )
+                    color="white",
+                ),
             )
-        ]
+        ],
     )
 
     return fig
@@ -90,54 +82,63 @@ def render(cl32):
     elif status == "WATCHLIST":
         status_colour = "#CA8A04"
 
-    st.markdown(
-        f"""
-        <style>
+    # =====================================================
+    # PANEL
+    # =====================================================
 
-        div[data-testid="stVerticalBlockBorderWrapper"] {{
-            background:{PANEL_BG} !important;
-            border:4px solid {BORDER} !important;
-            border-radius:16px !important;
-            padding:20px !important;
-        }}
+    container = st.container(border=True)
 
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+    with container:
 
-    with st.container(border=True):
+        st.markdown(
+            """
+            <style>
 
-        h1, h2 = st.columns([5, 1])
+            div[data-testid="stVerticalBlockBorderWrapper"]{
+                background:#334155 !important;
+                border:5px solid #FFFFFF !important;
+                border-radius:16px !important;
+                padding:20px !important;
+            }
 
-        with h1:
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        header_left, header_right = st.columns([5, 1])
+
+        with header_left:
             st.markdown(
                 """
                 **EXECUTIVE SUMMARY**
 
-                <span style="color:#CBD5E1;font-size:11px;">
+                <span style="
+                    color:#CBD5E1;
+                    font-size:11px;
+                ">
                 (AI GENERATED)
                 </span>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
 
-        with h2:
+        with header_right:
             st.markdown(
                 f"""
                 <div style="
                     background:{status_colour};
                     color:white;
                     text-align:center;
-                    padding:4px;
+                    padding:5px;
                     border-radius:6px;
                     font-size:11px;
                     font-weight:700;
                 ">
-                {status}
+                    {status}
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
 
         left, right = st.columns([1, 2])
@@ -147,8 +148,8 @@ def render(cl32):
                 build_gauge(score),
                 use_container_width=True,
                 config={
-                    "displayModeBar": False
-                }
+                    "displayModeBar": False,
+                },
             )
 
             st.caption("Design Readiness Index")
@@ -157,22 +158,22 @@ def render(cl32):
 
             arrow = "↑" if delta >= 0 else "↓"
 
-            colour = "#22C55E"
+            delta_colour = "#22C55E"
 
             if delta < 0:
-                colour = "#EF4444"
+                delta_colour = "#EF4444"
 
             st.markdown(
                 f"""
                 <span style="
-                    color:{colour};
+                    color:{delta_colour};
                     font-size:14px;
                     font-weight:700;
                 ">
-                {arrow} {abs(delta)}%
+                    {arrow} {abs(delta)}%
                 </span>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
 
         with right:
