@@ -6,7 +6,6 @@ from kpis.ferry.executive_summary_utils import (
     get_status,
 )
 
-
 GREEN = "#16A34A"
 GOLD = "#D4AF37"
 RED = "#DC2626"
@@ -24,10 +23,8 @@ def build_gauge(score):
 
     if score >= 80:
         colour = GREEN
-
     elif score >= 60:
         colour = GOLD
-
     else:
         colour = RED
 
@@ -40,7 +37,7 @@ def build_gauge(score):
                 100 - score,
                 100
             ],
-            hole=0.75,
+            hole=0.78,
             rotation=180,
             sort=False,
             direction="clockwise",
@@ -56,7 +53,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=75,
+        height=70,
         margin=dict(
             l=0,
             r=0,
@@ -99,7 +96,6 @@ def render(cl32):
 
     if score >= 80:
         status_colour = GREEN
-
     elif score >= 60:
         status_colour = GOLD
 
@@ -119,7 +115,8 @@ def render(cl32):
                     color:#111827;
                     font-size:18px;
                     font-weight:700;
-                    margin-bottom:4px;
+                    line-height:1;
+                    margin-bottom:2px;
                 ">
                     EXECUTIVE SUMMARY
                 </div>
@@ -139,7 +136,7 @@ def render(cl32):
                     padding:2px 8px;
                     font-size:9px;
                     font-weight:700;
-                    margin-top:4px;
+                    margin-top:2px;
                 ">
                     {status}
                 </div>
@@ -169,12 +166,13 @@ def render(cl32):
                 f"""
                 <div style="
                     color:{BODY};
-                    font-size:13px;
-                    margin-bottom:6px;
+                    font-size:12px;
+                    margin-bottom:4px;
+                    line-height:1.2;
                 ">
                     <span style="
                         color:{ICON_GREEN};
-                        font-size:16px;
+                        font-size:14px;
                         font-weight:700;
                     ">
                         ⊕
@@ -190,12 +188,13 @@ def render(cl32):
                 f"""
                 <div style="
                     color:{BODY};
-                    font-size:13px;
-                    margin-bottom:6px;
+                    font-size:12px;
+                    margin-bottom:4px;
+                    line-height:1.2;
                 ">
                     <span style="
                         color:{ICON_GREEN};
-                        font-size:16px;
+                        font-size:14px;
                         font-weight:700;
                     ">
                         ⊕
@@ -211,11 +210,12 @@ def render(cl32):
                 f"""
                 <div style="
                     color:{BODY};
-                    font-size:13px;
+                    font-size:12px;
+                    line-height:1.2;
                 ">
                     <span style="
                         color:{ICON_GREEN};
-                        font-size:16px;
+                        font-size:14px;
                         font-weight:700;
                     ">
                         ⊕
@@ -243,6 +243,7 @@ def render(cl32):
                     color:#6B7280;
                     font-size:11px;
                     font-weight:600;
+                    line-height:1;
                 ">
                     Design Readiness Index
                 </div>
@@ -256,7 +257,7 @@ def render(cl32):
                 f"""
                 <div style="
                     color:#16A34A;
-                    font-size:20px;
+                    font-size:18px;
                     font-weight:700;
                     text-align:right;
                     line-height:1;
