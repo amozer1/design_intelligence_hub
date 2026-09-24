@@ -56,7 +56,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=90,
+        height=115,
         margin=dict(
             l=0,
             r=0,
@@ -73,7 +73,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=22,
+                    size=26,
                     color=colour
                 )
             )
@@ -138,7 +138,7 @@ def render(cl32):
                     padding:4px 8px;
                     font-size:10px;
                     font-weight:700;
-                    margin-top:2px;
+                    margin-top:6px;
                 ">
                     {status}
                 </div>
@@ -169,7 +169,7 @@ def render(cl32):
                 <div style="
                     color:{BODY};
                     font-size:13px;
-                    margin-bottom:8px;
+                    margin-bottom:12px;
                 ">
                     <span style="
                         color:{ICON_GREEN};
@@ -190,7 +190,7 @@ def render(cl32):
                 <div style="
                     color:{BODY};
                     font-size:13px;
-                    margin-bottom:8px;
+                    margin-bottom:12px;
                 ">
                     <span style="
                         color:{ICON_GREEN};
@@ -226,7 +226,11 @@ def render(cl32):
                 unsafe_allow_html=True
             )
 
+        st.write("")
+
         st.divider()
+
+        st.write("")
 
         # ===================================
         # FOOTER
