@@ -9,11 +9,10 @@ from kpis.ferry.executive_summary_utils import (
 
 def build_gauge(score):
 
-    colour = "#EF4444"
+    colour = "#FF3366"
 
     if score >= 80:
         colour = "#22C55E"
-
     elif score >= 60:
         colour = "#F59E0B"
 
@@ -26,7 +25,7 @@ def build_gauge(score):
                 100 - score,
                 100
             ],
-            hole=0.82,
+            hole=0.80,
             rotation=180,
             sort=False,
             direction="clockwise",
@@ -34,7 +33,7 @@ def build_gauge(score):
             marker=dict(
                 colors=[
                     colour,
-                    "#94A3B8",
+                    "#475569",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -49,9 +48,9 @@ def build_gauge(score):
             t=0,
             b=0
         ),
-        showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=False,
         annotations=[
             dict(
                 text=f"{score}%",
@@ -60,7 +59,7 @@ def build_gauge(score):
                 showarrow=False,
                 font=dict(
                     size=16,
-                    color="#111827"
+                    color="white"
                 )
             )
         ]
@@ -81,88 +80,125 @@ def render(cl32):
 
     status = get_status(score)
 
-    status_upper = str(status).upper()
+    badge_colour = "#DC2626"
 
-    if "TRACK" in status_upper:
+    if "TRACK" in str(status).upper():
         badge_colour = "#16A34A"
-    elif "WATCH" in status_upper:
+
+    elif "WATCH" in str(status).upper():
         badge_colour = "#CA8A04"
-    else:
-        badge_colour = "#DC2626"
 
-    with st.container(border=True):
+    st.markdown(
+        """
+        <div style="
+            background:#14213D;
+            border:3px solid #3B82F6;
+            border-radius:12px;
+            padding:12px;
+            min-height:220px;
+        ">
+        """,
+        unsafe_allow_html=True
+    )
 
-        h1, h2 = st.columns([4, 1])
+    header_left, header_right = st.columns([4, 1])
 
-        with h1:
+    with header_left:
 
-            st.markdown(
-                """
-                <div style="
-                    font-size:11px;
-                    font-weight:700;
-                    color:#0F172A;
-                ">
-                    EXECUTIVE SUMMARY
-                </div>
-                <div style="
-                    font-size:9px;
-                    color:#64748B;
-                    margin-top:-4px;
-                ">
-                    (AI GENERATED)
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+        st.markdown(
+            """
+            <div style="
+                color:white;
+                font-size:12px;
+                font-weight:700;
+            ">
+            EXECUTIVE SUMMARY
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-        with h2:
+    with header_right:
 
-            st.markdown(
-                f"""
-                <div style="
-                    background:{badge_colour};
-                    color:white;
-                    text-align:center;
-                    padding:2px 6px;
-                    border-radius:6px;
-                    font-size:9px;
-                    font-weight:700;
-                ">
-                    {status}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+        st.markdown(
+            f"""
+            <div style="
+                background:{badge_colour};
+                color:white;
+                text-align:center;
+                border-radius:6px;
+                padding:3px;
+                font-size:9px;
+                font-weight:700;
+            ">
+            {status}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-        left, right = st.columns([1, 1.4])
+    left, right = st.columns([1, 1.5])
 
-        with left:
+    with left:
 
-            st.plotly_chart(
-                build_gauge(score),
-                use_container_width=True,
-                config={
-                    "displayModeBar": False
-                }
-            )
+        st.plotly_chart(
+            build_gauge(score),
+            use_container_width=True,
+            config={
+                "displayModeBar": False
+            }
+        )
 
-            st.caption("Readiness")
+        st.markdown(
+            f"""
+            <div style="
+                color:#94A3B8;
+                font-size:10px;
+            ">
+            Readiness
+            </div>
 
-            st.markdown(
-                f"**{readiness}%**"
-            )
+            <div style="
+                color:white;
+                font-size:18px;
+                font-weight:700;
+            ">
+            {readiness}%
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-        with right:
+    with right:
 
-            st.markdown(
-                f"🔴 Behind baseline: **{programme_drift}d**"
-            )
+        st.markdown(
+            f"""
+            <div style="color:white;font-size:12px;">
+            🔴 Baseline: <b>{programme_drift}d</b>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-            st.markdown(
-                f"🟠 Negative float: **{high_risk}**"
-            )
+        st.markdown(
+            f"""
+            <div style="color:white;font-size:12px;">
+            🟠 Float: <b>{high_risk}</b>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-            st.markdown(
-                f"🟡 Critical items: **{critical_deliverables}**"
-            )
+        st.markdown(
+            f"""
+            <div style="color:white;font-size:12px;">
+            🟡 Critical: <b>{critical_deliverables}</b>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown(
+        "</div>",
+        unsafe_allow_html=True
+    )

@@ -22,32 +22,34 @@ def render_homepage(
         <style>
 
         .stApp {{
-            background: {PAGE_BG};
+            background:{PAGE_BG};
         }}
 
         [data-testid="stAppViewContainer"] {{
-            background: {PAGE_BG};
+            background:{PAGE_BG};
         }}
 
         [data-testid="stMain"] {{
-            background: {PAGE_BG};
+            background:{PAGE_BG};
         }}
 
         .main {{
-            background: {PAGE_BG};
+            background:{PAGE_BG};
         }}
 
         [data-testid="stHeader"] {{
-            display: none;
+            display:none;
         }}
 
         [data-testid="stToolbar"] {{
-            display: none;
+            display:none;
         }}
 
         .block-container {{
-            padding-top: 0rem !important;
-            max-width: 100%;
+            padding-top:0rem !important;
+            max-width:100%;
+            padding-left:1rem;
+            padding-right:1rem;
         }}
 
         </style>
@@ -55,9 +57,9 @@ def render_homepage(
         unsafe_allow_html=True
     )
 
-    # ==================================================
+    # ==========================================
     # HEADER
-    # ==================================================
+    # ==========================================
 
     render_header(
         project=project,
@@ -66,12 +68,12 @@ def render_homepage(
 
     st.write("")
 
-    # ==================================================
-    # KPI ROW
-    # ==================================================
+    # ==========================================
+    # EXECUTIVE SUMMARY ROW
+    # ==========================================
 
-    summary_col, finish_col, completion_col, deliverables_col, critical_col = st.columns(
-        [3, 2, 2, 2, 2]
+    summary_col, remainder_col = st.columns(
+        [5, 7]
     )
 
     with summary_col:
@@ -80,46 +82,28 @@ def render_homepage(
             cl32
         )
 
-    with finish_col:
+    with remainder_col:
 
-        st.container(
-            border=True
-        )
-
-    with completion_col:
-
-        st.container(
-            border=True
-        )
-
-    with deliverables_col:
-
-        st.container(
-            border=True
-        )
-
-    with critical_col:
-
-        st.container(
-            border=True
-        )
+        st.empty()
 
     st.write("")
 
-    # ==================================================
-    # NEXT ROW PLACEHOLDERS
-    # ==================================================
+    # ==========================================
+    # FUTURE KPI ROWS
+    # ==========================================
 
-    row2_col1, row2_col2, row2_col3, row2_col4 = st.columns(4)
-
-    with row2_col1:
-        st.empty()
-
-    with row2_col2:
-        st.empty()
-
-    with row2_col3:
-        st.empty()
-
-    with row2_col4:
-        st.empty()
+    # Add future KPI tiles here when ready
+    #
+    # k1, k2, k3, k4 = st.columns(4)
+    #
+    # with k1:
+    #     render_programme_finish(...)
+    #
+    # with k2:
+    #     render_contract_completion(...)
+    #
+    # with k3:
+    #     render_deliverables(...)
+    #
+    # with k4:
+    #     render_float(...)
