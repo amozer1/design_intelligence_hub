@@ -8,7 +8,8 @@ from kpis.ferry.executive_summary_utils import (
 
 
 def build_gauge(score):
-    colour = "#FF5A36"
+
+    colour = "#EF4444"
 
     if score >= 80:
         colour = "#22C55E"
@@ -33,7 +34,7 @@ def build_gauge(score):
             marker=dict(
                 colors=[
                     colour,
-                    "#64748B",
+                    "#CBD5E1",
                     "rgba(0,0,0,0)"
                 ]
             )
@@ -41,7 +42,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=140,
+        height=135,
         margin=dict(
             l=0,
             r=0,
@@ -58,8 +59,8 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=28,
-                    color="white"
+                    size=24,
+                    color="#111827"
                 )
             )
         ]
@@ -69,6 +70,7 @@ def build_gauge(score):
 
 
 def render(cl32):
+
     metrics = get_metrics(cl32)
 
     score = metrics["health_score"]
@@ -81,103 +83,181 @@ def render(cl32):
 
     status_colour = "#DC2626"
 
-    if "TRACK" in str(status).upper():
+    status_upper = str(status).upper()
+
+    if "TRACK" in status_upper:
         status_colour = "#16A34A"
 
-    elif "WATCH" in str(status).upper():
+    elif "WATCH" in status_upper:
         status_colour = "#CA8A04"
 
-    with st.container(border=True):
+    st.markdown(
+        """
+        <style>
 
-        # =====================================
-        # HEADER
-        # =====================================
+        .exec-card{
+            background:#FFFFFF;
+            border:1px solid #E5E7EB;
+            border-radius:10px;
+            padding:14px;
+        }
 
-        title_col, status_col = st.columns([5, 1])
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
-        with title_col:
-            st.markdown(
-                """
-                <div style="
-                    color:white;
-                    font-size:18px;
-                    font-weight:700;
-                ">
-                    EXECUTIVE SUMMARY
-                </div>
+    st.markdown(
+        '<div class="exec-card">',
+        unsafe_allow_html=True
+    )
 
-                <div style="
-                    color:#94A3B8;
-                    font-size:11px;
-                    margin-top:-4px;
-                ">
-                    (AI GENERATED)
-                </div>
-                """,
-                unsafe_allow_html=True
+    # =====================================
+    # HEADER
+    # =====================================
+
+    title_col, status_col = st.columns([4, 1])
+
+    with title_col:
+
+        st.markdown(
+            """
+            <div style="
+                color:#111827;
+                font-size:15px;
+                font-weight:700;
+            ">
+            EXECUTIVE SUMMARY
+            </div>
+
+            <div style="
+                color:#6B7280;
+                font-size:11px;
+                margin-top:-4px;
+            ">
+            AI Generated
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with status_col:
+
+        st.markdown(
+            f"""
+            <div style="
+                background:{status_colour};
+                color:white;
+                text-align:center;
+                border-radius:6px;
+                padding:6px;
+                font-size:10px;
+                font-weight:700;
+            ">
+            {status}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.write("")
+
+    # =====================================
+    # BODY
+    # =====================================
+
+    gauge_col, insight_col = st.columns([1, 2])
+
+    with gauge_col:
+
+        st.plotly_chart(
+            build_gauge(score),
+            use_container_width=True,
+            config={
+                "displayModeBar": False
+            }
+        )
+
+    with insight_col:
+
+        insights = []
+
+        if programme_drift > 0:
+            insights.append(
+                f"Programme is behind baseline by {programme_drift} days."
             )
 
-        with status_col:
+        if high_risk > 0:
+            insights.append(
+                f"{high_risk} activities currently carry negative float."
+            )
+
+        if critical_deliverables > 0:
+            insights.append(
+                f"{critical_deliverables} critical deliverables require attention."
+            )
+
+        if not insights:
+
+            insights.append(
+                "No significant delivery risks identified."
+            )
+
+        for item in insights:
+
             st.markdown(
                 f"""
                 <div style="
-                    background:{status_colour};
-                    color:white;
-                    text-align:center;
-                    border-radius:6px;
-                    padding:6px;
-                    font-size:11px;
-                    font-weight:700;
+                    color:#374151;
+                    font-size:13px;
+                    margin-bottom:12px;
                 ">
-                    {status}
+                ✅ {item}
                 </div>
                 """,
                 unsafe_allow_html=True
             )
 
-        st.write("")
+    st.divider()
 
-        # =====================================
-        # BODY
-        # =====================================
+    # =====================================
+    # FOOTER
+    # =====================================
 
-        gauge_col, insight_col = st.columns([1, 2])
+    footer_left, footer_right = st.columns([3, 1])
 
-        with gauge_col:
-            st.plotly_chart(
-                build_gauge(score),
-                use_container_width=True,
-                config={
-                    "displayModeBar": False
-                }
-            )
+    with footer_left:
 
-        with insight_col:
-            st.markdown(
-                f"""
-                <div style="
-                    color:#F8FAFC;
-                    font-size:14px;
-                    margin-top:8px;
-                ">
-                    ⊕ Programme is behind baseline by
-                    <b>{programme_drift} days</b>.
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+        st.markdown(
+            """
+            <div style="
+                color:#6B7280;
+                font-size:12px;
+                font-weight:600;
+            ">
+            Design Readiness Index
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-            st.markdown(
-                f"""
-                <div style="
-                    color:#F8FAFC;
-                    font-size:14px;
-                    margin-top:12px;
-                ">
-                    ⊕ <b>{high_risk}</b> activities are
-                    currently carrying negative float.
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+    with footer_right:
 
+        st.markdown(
+            f"""
+            <div style="
+                color:#16A34A;
+                font-size:20px;
+                font-weight:700;
+                text-align:right;
+            ">
+            {readiness}%
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown(
+        "</div>",
+        unsafe_allow_html=True
+    )
