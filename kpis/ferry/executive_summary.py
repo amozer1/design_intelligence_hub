@@ -7,13 +7,17 @@ from kpis.ferry.executive_summary_utils import (
 )
 
 
-GREEN = "#10B981"
+GREEN = "#16A34A"
 AMBER = "#F59E0B"
-RED = "#EF4444"
+RED = "#DC2626"
 
 TEXT = "#111827"
+BODY = "#374151"
 MUTED = "#6B7280"
-TRACK = "#E5E7EB"
+
+ICON_GREEN = "#10B981"
+
+TRACK = "#DCE3EB"
 
 
 def build_gauge(score):
@@ -22,10 +26,10 @@ def build_gauge(score):
         colour = GREEN
 
     elif score >= 60:
-        colour = "#34D399"
+        colour = AMBER
 
     else:
-        colour = GREEN
+        colour = RED
 
     fig = go.Figure()
 
@@ -36,7 +40,7 @@ def build_gauge(score):
                 100 - score,
                 100
             ],
-            hole=0.85,
+            hole=0.82,
             rotation=180,
             sort=False,
             direction="clockwise",
@@ -52,7 +56,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=125,
+        height=120,
         margin=dict(
             l=0,
             r=0,
@@ -66,11 +70,11 @@ def build_gauge(score):
             dict(
                 text=f"{score}%",
                 x=0.5,
-                y=0.43,
+                y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=28,
-                    color=TEXT
+                    size=22,
+                    color=colour
                 )
             )
         ]
@@ -93,19 +97,17 @@ def render(cl32):
 
     status_colour = RED
 
-    status_upper = str(status).upper()
-
-    if "TRACK" in status_upper:
+    if score >= 80:
         status_colour = GREEN
 
-    elif "WATCH" in status_upper:
+    elif score >= 60:
         status_colour = AMBER
 
     with st.container(border=True):
 
-        # =====================================
+        # ===================================
         # HEADER
-        # =====================================
+        # ===================================
 
         title_col, status_col = st.columns([5, 1])
 
@@ -117,15 +119,18 @@ def render(cl32):
                     color:#111827;
                     font-size:18px;
                     font-weight:700;
-                    letter-spacing:0.3px;
                 ">
                     EXECUTIVE SUMMARY
                 </div>
+                """,
+                unsafe_allow_html=True
+            )
 
+            st.markdown(
+                """
                 <div style="
                     color:#6B7280;
                     font-size:11px;
-                    font-weight:500;
                 ">
                     AI Generated
                 </div>
@@ -153,9 +158,9 @@ def render(cl32):
                 unsafe_allow_html=True
             )
 
-        # =====================================
+        # ===================================
         # BODY
-        # =====================================
+        # ===================================
 
         gauge_col, insight_col = st.columns([1, 2])
 
@@ -171,19 +176,21 @@ def render(cl32):
 
         with insight_col:
 
+            st.write("")
+
             st.markdown(
                 f"""
                 <div style="
-                    color:{TEXT};
+                    color:{BODY};
                     font-size:13px;
-                    margin-bottom:14px;
+                    margin-bottom:12px;
                 ">
                     <span style="
-                        color:{GREEN};
+                        color:{ICON_GREEN};
                         font-size:16px;
                         font-weight:700;
                     ">
-                    ⊕
+                        ⊕
                     </span>
                     Programme behind baseline by
                     <b>{programme_drift} days</b>
@@ -195,16 +202,16 @@ def render(cl32):
             st.markdown(
                 f"""
                 <div style="
-                    color:{TEXT};
+                    color:{BODY};
                     font-size:13px;
-                    margin-bottom:14px;
+                    margin-bottom:12px;
                 ">
                     <span style="
-                        color:{GREEN};
+                        color:{ICON_GREEN};
                         font-size:16px;
                         font-weight:700;
                     ">
-                    ⊕
+                        ⊕
                     </span>
                     <b>{high_risk}</b>
                     activities currently carry negative float
@@ -216,15 +223,15 @@ def render(cl32):
             st.markdown(
                 f"""
                 <div style="
-                    color:{TEXT};
+                    color:{BODY};
                     font-size:13px;
                 ">
                     <span style="
-                        color:{GREEN};
+                        color:{ICON_GREEN};
                         font-size:16px;
                         font-weight:700;
                     ">
-                    ⊕
+                        ⊕
                     </span>
                     <b>{critical_deliverables}</b>
                     critical deliverables require attention
@@ -235,9 +242,9 @@ def render(cl32):
 
         st.divider()
 
-        # =====================================
+        # ===================================
         # FOOTER
-        # =====================================
+        # ===================================
 
         footer_left, footer_right = st.columns([5, 1])
 
@@ -261,8 +268,8 @@ def render(cl32):
             st.markdown(
                 f"""
                 <div style="
-                    color:{GREEN};
-                    font-size:28px;
+                    color:#16A34A;
+                    font-size:26px;
                     font-weight:700;
                     text-align:right;
                 ">
