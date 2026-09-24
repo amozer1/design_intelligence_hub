@@ -58,15 +58,6 @@ def render_homepage(
             color:white !important;
         }}
 
-        /* EXECUTIVE SUMMARY PANEL */
-
-        div[data-testid="stVerticalBlockBorderWrapper"] {{
-            background:#24344D !important;
-            border:2px solid #64748B !important;
-            border-radius:12px !important;
-            padding:20px !important;
-        }}
-
         </style>
         """,
         unsafe_allow_html=True
@@ -87,11 +78,9 @@ def render_homepage(
     # EXECUTIVE SUMMARY
     # =============================================
 
-    with st.container(border=True):
-
-        render_executive_summary(
-            cl32
-        )
+    render_executive_summary(
+        cl32
+    )
 
     st.write("")
 

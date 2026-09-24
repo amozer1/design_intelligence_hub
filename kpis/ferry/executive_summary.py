@@ -7,15 +7,20 @@ from kpis.ferry.executive_summary_utils import (
 )
 
 
+PANEL_BG = "#24344D"
+BORDER = "#94A3B8"
+ACCENT = "#16A34A"
+
+
 def build_gauge(score):
 
-    colour = "#ff4d4f"
+    colour = "#FF3B30"
 
     if score >= 80:
-        colour = "#22c55e"
+        colour = "#22C55E"
 
     elif score >= 60:
-        colour = "#f59e0b"
+        colour = "#F59E0B"
 
     fig = go.Figure()
 
@@ -87,143 +92,140 @@ def render(cl32):
 
     status = get_status(score)
 
-    status_colour = "#dc2626"
+    status_colour = "#DC2626"
 
     if status == "ON TRACK":
-        status_colour = "#16a34a"
+        status_colour = "#16A34A"
 
     elif status == "WATCHLIST":
-        status_colour = "#ca8a04"
+        status_colour = "#CA8A04"
 
     # ==================================================
-    # PANEL
+    # PANEL START
     # ==================================================
 
-    st.markdown(
-        f"""
-        <div style="
-            background:#1E293B;
-            border:1px solid #475569;
-            border-radius:10px;
-            padding:12px 16px;
-            margin-bottom:10px;
-        ">
-        """,
-        unsafe_allow_html=True
-    )
+    panel = st.container(border=True)
 
-    # ==================================================
-    # HEADER
-    # ==================================================
-
-    h1, h2 = st.columns([5, 1])
-
-    with h1:
-
-        st.markdown(
-            """
-            <span style="
-                color:white;
-                font-size:14px;
-                font-weight:700;
-            ">
-            EXECUTIVE SUMMARY
-            </span>
-
-            <span style="
-                color:#94a3b8;
-                font-size:11px;
-                margin-left:6px;
-            ">
-            (AI GENERATED)
-            </span>
-            """,
-            unsafe_allow_html=True
-        )
-
-    with h2:
+    with panel:
 
         st.markdown(
             f"""
-            <div style="
-                background:{status_colour};
-                color:white;
-                text-align:center;
-                padding:4px 8px;
-                border-radius:6px;
-                font-size:11px;
-                font-weight:700;
-            ">
-            {status}
-            </div>
+            <style>
+
+            div[data-testid="stVerticalBlockBorderWrapper"] {{
+                background:{PANEL_BG} !important;
+                border:3px solid {BORDER} !important;
+                border-radius:12px !important;
+                padding:12px !important;
+            }}
+
+            </style>
             """,
             unsafe_allow_html=True
         )
 
-    st.write("")
+        # ==========================================
+        # HEADER
+        # ==========================================
 
-    # ==================================================
-    # BODY
-    # ==================================================
+        c1, c2 = st.columns([5, 1])
 
-    left, right = st.columns([1, 2])
+        with c1:
 
-    with left:
+            st.markdown(
+                """
+                **EXECUTIVE SUMMARY**
+                <span style="
+                    color:#94A3B8;
+                    font-size:11px;
+                    margin-left:6px;
+                ">
+                (AI GENERATED)
+                </span>
+                """,
+                unsafe_allow_html=True
+            )
 
-        st.plotly_chart(
-            build_gauge(score),
-            use_container_width=True,
-            config={
-                "displayModeBar": False
-            }
-        )
+        with c2:
 
-        st.caption(
-            "Design Readiness Index"
-        )
+            st.markdown(
+                f"""
+                <div style="
+                    background:{status_colour};
+                    color:white;
+                    padding:4px;
+                    text-align:center;
+                    border-radius:6px;
+                    font-size:11px;
+                    font-weight:700;
+                ">
+                {status}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
-        change = readiness - score
+        st.write("")
 
-        colour = "#22c55e"
+        # ==========================================
+        # BODY
+        # ==========================================
 
-        if change < 0:
-            colour = "#ef4444"
+        left, right = st.columns([1, 2])
 
-        st.markdown(
-            f"""
-            <span style="
-                color:{colour};
-                font-size:14px;
-                font-weight:700;
-            ">
-            {'↑' if change >= 0 else '↓'} {abs(change)}%
-            </span>
+        with left:
 
-            <span style="
-                color:#94a3b8;
-                font-size:11px;
-            ">
-            vs health score
-            </span>
-            """,
-            unsafe_allow_html=True
-        )
+            st.plotly_chart(
+                build_gauge(score),
+                use_container_width=True,
+                config={
+                    "displayModeBar": False
+                }
+            )
 
-    with right:
+            st.caption(
+                "Design Readiness Index"
+            )
 
-        st.write(
-            f"🟢 Programme is behind baseline by {programme_drift} days."
-        )
+            change = readiness - score
 
-        st.write(
-            f"🟢 {high_risk} activities with negative float."
-        )
+            arrow = "↑" if change >= 0 else "↓"
 
-        st.write(
-            f"🟢 Focus on {critical_deliverables} critical deliverables."
-        )
+            colour = "#22C55E"
 
-    st.markdown(
-        "</div>",
-        unsafe_allow_html=True
-    )
+            if change < 0:
+                colour = "#EF4444"
+
+            st.markdown(
+                f"""
+                <span style="
+                    color:{colour};
+                    font-size:14px;
+                    font-weight:700;
+                ">
+                {arrow} {abs(change)}%
+                </span>
+
+                <span style="
+                    color:#CBD5E1;
+                    font-size:11px;
+                ">
+                vs health score
+                </span>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with right:
+
+            st.write(
+                f"🟢 Programme is behind baseline by {programme_drift} days."
+            )
+
+            st.write(
+                f"🟢 {high_risk} activities with negative float."
+            )
+
+            st.write(
+                f"🟢 Focus on {critical_deliverables} critical deliverables."
+            )
