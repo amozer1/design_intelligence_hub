@@ -6,7 +6,7 @@ from kpis.ferry.executive_summary import (
     render as render_executive_summary
 )
 
-PAGE_BG = "#10203A"
+PAGE_BG = "#FFFFFF"
 
 
 def render_homepage(
@@ -22,40 +22,44 @@ def render_homepage(
         <style>
 
         .stApp {{
-            background: {PAGE_BG};
+            background:{PAGE_BG};
         }}
 
         [data-testid="stAppViewContainer"] {{
-            background: {PAGE_BG};
+            background:{PAGE_BG};
         }}
 
         [data-testid="stMain"] {{
-            background: {PAGE_BG};
+            background:{PAGE_BG};
         }}
 
         .main {{
-            background: {PAGE_BG};
+            background:{PAGE_BG};
         }}
 
         [data-testid="stHeader"] {{
-            display: none;
+            display:none;
         }}
 
         [data-testid="stToolbar"] {{
-            display: none;
+            display:none;
         }}
 
         .block-container {{
-            padding-top: 0rem !important;
-            max-width: 100%;
+            padding-top:0rem !important;
+            max-width:100%;
         }}
 
-        h1, h2, h3, h4, h5, h6 {{
-            color: white !important;
+        h1,h2,h3,h4,h5,h6 {{
+            color:black !important;
         }}
 
         p {{
-            color: white !important;
+            color:black !important;
+        }}
+
+        span {{
+            color:black;
         }}
 
         </style>
@@ -63,9 +67,9 @@ def render_homepage(
         unsafe_allow_html=True
     )
 
-    # =================================================
+    # =============================================
     # HEADER
-    # =================================================
+    # =============================================
 
     render_header(
         project=project,
@@ -74,9 +78,9 @@ def render_homepage(
 
     st.write("")
 
-    # =================================================
+    # =============================================
     # EXECUTIVE SUMMARY
-    # =================================================
+    # =============================================
 
     render_executive_summary(
         cl32
@@ -84,9 +88,9 @@ def render_homepage(
 
     st.write("")
 
-    # =================================================
-    # KPI ROW PLACEHOLDERS
-    # =================================================
+    # =============================================
+    # FUTURE KPI ROWS
+    # =============================================
 
     row1_col1, row1_col2, row1_col3, row1_col4 = st.columns(4)
 
