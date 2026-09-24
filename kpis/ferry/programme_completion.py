@@ -28,10 +28,10 @@ def variance_colour(days):
 def variance_text(days):
 
     if days < 0:
-        return f"{abs(days)} Days Late"
+        return f"{abs(days)} Days"
 
     if days > 0:
-        return f"{days} Days Early"
+        return f"{days} Days"
 
     return "On Time"
 
@@ -56,7 +56,7 @@ def render(cl32):
                 color:#111827;
                 font-size:16px;
                 font-weight:700;
-                margin-bottom:16px;
+                margin-bottom:20px;
             ">
                 PROGRAMME MILESTONES
             </div>
@@ -64,56 +64,63 @@ def render(cl32):
             unsafe_allow_html=True
         )
 
+        left_col, right_col = st.columns(2)
+
         # ===================================
         # PROGRAMME FINISH
         # ===================================
 
-        icon_col, content_col = st.columns([1, 6])
+        with left_col:
 
-        with icon_col:
+            icon_col, date_col = st.columns([1, 5])
 
-            st.markdown(
-                f"""
-                <div style="
-                    color:{ICON_BLUE};
-                    font-size:28px;
-                    margin-top:6px;
-                ">
-                    📅
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+            with icon_col:
 
-        with content_col:
+                st.markdown(
+                    f"""
+                    <div style="
+                        color:{ICON_BLUE};
+                        font-size:30px;
+                        margin-top:10px;
+                    ">
+                        📅
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-            st.markdown(
-                """
-                <div style="
-                    color:#6B7280;
-                    font-size:11px;
-                    font-weight:700;
-                    text-transform:uppercase;
-                ">
-                    Programme Finish
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+            with date_col:
 
-            st.markdown(
-                f"""
-                <div style="
-                    color:{TITLE};
-                    font-size:28px;
-                    font-weight:700;
-                    margin-top:4px;
-                ">
-                    {programme_finish}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+                st.markdown(
+                    """
+                    <div style="
+                        color:#6B7280;
+                        font-size:11px;
+                        font-weight:700;
+                        text-transform:uppercase;
+                        margin-bottom:6px;
+                    ">
+                        Programme Finish
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                st.markdown(
+                    f"""
+                    <div style="
+                        color:{TITLE};
+                        font-size:26px;
+                        font-weight:700;
+                    ">
+                        {programme_finish}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+            st.write("")
+            st.write("")
 
             baseline_col, badge_col = st.columns([3, 2])
 
@@ -124,7 +131,6 @@ def render(cl32):
                     <div style="
                         color:{MUTED};
                         font-size:11px;
-                        margin-top:8px;
                     ">
                         Baseline: {programme_baseline}
                     </div>
@@ -141,10 +147,9 @@ def render(cl32):
                         color:white;
                         text-align:center;
                         border-radius:8px;
-                        padding:6px;
+                        padding:8px 12px;
                         font-size:11px;
                         font-weight:700;
-                        margin-top:4px;
                     ">
                         {variance_text(programme_variance)}
                     </div>
@@ -152,58 +157,61 @@ def render(cl32):
                     unsafe_allow_html=True
                 )
 
-        st.divider()
-
         # ===================================
         # CONTRACT COMPLETION
         # ===================================
 
-        icon_col, content_col = st.columns([1, 6])
+        with right_col:
 
-        with icon_col:
+            icon_col, date_col = st.columns([1, 5])
 
-            st.markdown(
-                f"""
-                <div style="
-                    color:{ICON_GOLD};
-                    font-size:28px;
-                    margin-top:6px;
-                ">
-                    🤝
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+            with icon_col:
 
-        with content_col:
+                st.markdown(
+                    f"""
+                    <div style="
+                        color:{ICON_GOLD};
+                        font-size:30px;
+                        margin-top:10px;
+                    ">
+                        🤝
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-            st.markdown(
-                """
-                <div style="
-                    color:#6B7280;
-                    font-size:11px;
-                    font-weight:700;
-                    text-transform:uppercase;
-                ">
-                    Contract Completion
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+            with date_col:
 
-            st.markdown(
-                f"""
-                <div style="
-                    color:{TITLE};
-                    font-size:28px;
-                    font-weight:700;
-                    margin-top:4px;
-                ">
-                    {contract_finish}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+                st.markdown(
+                    """
+                    <div style="
+                        color:#6B7280;
+                        font-size:11px;
+                        font-weight:700;
+                        text-transform:uppercase;
+                        margin-bottom:6px;
+                    ">
+                        Contract Completion
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+                st.markdown(
+                    f"""
+                    <div style="
+                        color:{TITLE};
+                        font-size:26px;
+                        font-weight:700;
+                    ">
+                        {contract_finish}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+            st.write("")
+            st.write("")
 
             baseline_col, badge_col = st.columns([3, 2])
 
@@ -214,7 +222,6 @@ def render(cl32):
                     <div style="
                         color:{MUTED};
                         font-size:11px;
-                        margin-top:8px;
                     ">
                         Baseline: {contract_baseline}
                     </div>
@@ -231,13 +238,14 @@ def render(cl32):
                         color:white;
                         text-align:center;
                         border-radius:8px;
-                        padding:6px;
+                        padding:8px 12px;
                         font-size:11px;
                         font-weight:700;
-                        margin-top:4px;
                     ">
                         {variance_text(contract_variance)}
                     </div>
                     """,
                     unsafe_allow_html=True
                 )
+
+        st.write("")
