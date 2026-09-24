@@ -49,7 +49,7 @@ def build_gauge(score):
     )
 
     fig.update_layout(
-        height=65,
+        height=95,
         margin=dict(
             l=0,
             r=0,
@@ -66,7 +66,7 @@ def build_gauge(score):
                 y=0.46,
                 showarrow=False,
                 font=dict(
-                    size=18,
+                    size=22,
                     color=colour
                 )
             )
@@ -112,7 +112,7 @@ def render(cl32):
                     font-size:18px;
                     font-weight:700;
                     line-height:1;
-                    margin-bottom:4px;
+                    margin-bottom:8px;
                 ">
                     EXECUTIVE SUMMARY
                 </div>
@@ -129,8 +129,8 @@ def render(cl32):
                     color:white;
                     text-align:center;
                     border-radius:8px;
-                    padding:2px 8px;
-                    font-size:9px;
+                    padding:4px 8px;
+                    font-size:10px;
                     font-weight:700;
                     margin-top:2px;
                 ">
@@ -160,13 +160,13 @@ def render(cl32):
                 f"""
                 <div style="
                     color:{BODY};
-                    font-size:12px;
-                    margin-bottom:4px;
-                    line-height:1.2;
+                    font-size:13px;
+                    margin-bottom:8px;
+                    line-height:1.3;
                 ">
                     <span style="
                         color:{ICON_GREEN};
-                        font-size:14px;
+                        font-size:16px;
                         font-weight:700;
                     ">
                         ⊕
@@ -182,13 +182,13 @@ def render(cl32):
                 f"""
                 <div style="
                     color:{BODY};
-                    font-size:12px;
-                    margin-bottom:4px;
-                    line-height:1.2;
+                    font-size:13px;
+                    margin-bottom:8px;
+                    line-height:1.3;
                 ">
                     <span style="
                         color:{ICON_GREEN};
-                        font-size:14px;
+                        font-size:16px;
                         font-weight:700;
                     ">
                         ⊕
@@ -204,12 +204,12 @@ def render(cl32):
                 f"""
                 <div style="
                     color:{BODY};
-                    font-size:12px;
-                    line-height:1.2;
+                    font-size:13px;
+                    line-height:1.3;
                 ">
                     <span style="
                         color:{ICON_GREEN};
-                        font-size:14px;
+                        font-size:16px;
                         font-weight:700;
                     ">
                         ⊕
@@ -221,11 +221,19 @@ def render(cl32):
                 unsafe_allow_html=True
             )
 
-        st.divider()
-
         # ===================================
         # FOOTER
         # ===================================
+
+        st.markdown(
+            """
+            <div style="
+                margin-top:10px;
+                border-top:1px solid #D1D5DB;
+            "></div>
+            """,
+            unsafe_allow_html=True
+        )
 
         footer_left, footer_right = st.columns([5, 1])
 
@@ -235,9 +243,9 @@ def render(cl32):
                 """
                 <div style="
                     color:#6B7280;
-                    font-size:11px;
+                    font-size:12px;
                     font-weight:600;
-                    line-height:1;
+                    margin-top:8px;
                 ">
                     Design Readiness Index
                 </div>
@@ -251,9 +259,10 @@ def render(cl32):
                 f"""
                 <div style="
                     color:#16A34A;
-                    font-size:18px;
+                    font-size:22px;
                     font-weight:700;
                     text-align:right;
+                    margin-top:4px;
                     line-height:1;
                 ">
                     {readiness}%
