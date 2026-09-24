@@ -7,11 +7,6 @@ from kpis.ferry.executive_summary_utils import (
 )
 
 
-PANEL_BG = "#24344D"
-BORDER = "#94A3B8"
-ACCENT = "#16A34A"
-
-
 def build_gauge(score):
 
     colour = "#FF3B30"
@@ -79,13 +74,9 @@ def render(cl32):
     metrics = get_metrics(cl32)
 
     score = metrics["health_score"]
-
     readiness = metrics["design_readiness"]
-
     programme_drift = metrics["programme_drift"]
-
     high_risk = metrics["high_risk"]
-
     critical_deliverables = metrics[
         "critical_deliverables"
     ]
@@ -100,45 +91,48 @@ def render(cl32):
     elif status == "WATCHLIST":
         status_colour = "#CA8A04"
 
-    # ==================================================
-    # PANEL START
-    # ==================================================
+    # ======================================
+    # SELF-CONTAINED PANEL STYLE
+    # ======================================
+
+    st.markdown(
+        """
+        <style>
+
+        div[data-testid="stVerticalBlockBorderWrapper"]{
+
+            background:#334155 !important;
+
+            border:6px solid #FFFFFF !important;
+
+            border-radius:16px !important;
+
+            padding:18px !important;
+
+            box-shadow:
+                0 0 0 2px #00FF00,
+                0 0 20px rgba(255,255,255,.40) !important;
+        }
+
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
     panel = st.container(border=True)
 
     with panel:
 
-        st.markdown(
-            f"""
-            <style>
+        header_l, header_r = st.columns([5, 1])
 
-            div[data-testid="stVerticalBlockBorderWrapper"] {{
-                background:{PANEL_BG} !important;
-                border:3px solid {BORDER} !important;
-                border-radius:12px !important;
-                padding:12px !important;
-            }}
-
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-
-        # ==========================================
-        # HEADER
-        # ==========================================
-
-        c1, c2 = st.columns([5, 1])
-
-        with c1:
+        with header_l:
 
             st.markdown(
                 """
                 **EXECUTIVE SUMMARY**
                 <span style="
-                    color:#94A3B8;
+                    color:#CBD5E1;
                     font-size:11px;
-                    margin-left:6px;
                 ">
                 (AI GENERATED)
                 </span>
@@ -146,15 +140,15 @@ def render(cl32):
                 unsafe_allow_html=True
             )
 
-        with c2:
+        with header_r:
 
             st.markdown(
                 f"""
                 <div style="
                     background:{status_colour};
                     color:white;
-                    padding:4px;
                     text-align:center;
+                    padding:4px;
                     border-radius:6px;
                     font-size:11px;
                     font-weight:700;
@@ -164,12 +158,6 @@ def render(cl32):
                 """,
                 unsafe_allow_html=True
             )
-
-        st.write("")
-
-        # ==========================================
-        # BODY
-        # ==========================================
 
         left, right = st.columns([1, 2])
 
@@ -189,12 +177,12 @@ def render(cl32):
 
             change = readiness - score
 
-            arrow = "↑" if change >= 0 else "↓"
-
             colour = "#22C55E"
 
             if change < 0:
                 colour = "#EF4444"
+
+            arrow = "↑" if change >= 0 else "↓"
 
             st.markdown(
                 f"""
@@ -204,13 +192,6 @@ def render(cl32):
                     font-weight:700;
                 ">
                 {arrow} {abs(change)}%
-                </span>
-
-                <span style="
-                    color:#CBD5E1;
-                    font-size:11px;
-                ">
-                vs health score
                 </span>
                 """,
                 unsafe_allow_html=True
