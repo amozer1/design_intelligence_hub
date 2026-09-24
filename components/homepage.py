@@ -10,22 +10,6 @@ from kpis.ferry.programme_completion import (
     render as render_programme_completion
 )
 
-from kpis.ferry.total_deliverables import (
-    render as render_total_deliverables
-)
-
-from kpis.ferry.critical_deliverables import (
-    render as render_critical_deliverables
-)
-
-from kpis.ferry.average_float import (
-    render as render_average_float
-)
-
-from kpis.ferry.average_variance import (
-    render as render_average_variance
-)
-
 PAGE_BG = "#EAF2FF"
 
 
@@ -97,45 +81,39 @@ def render_homepage(
     st.write("")
 
     # ==========================================
-    # ROW 1
+    # KPI ROW 1
     # ==========================================
 
-    c1, c2, c3, c4, c5, c6 = st.columns(
-        [4, 4, 1.5, 1.5, 1.5, 1.5]
-    )
+    summary_col, programme_col = st.columns([5, 5])
 
-    with c1:
+    with summary_col:
 
         render_executive_summary(
             cl32
         )
 
-    with c2:
+    with programme_col:
 
         render_programme_completion(
             cl32
         )
 
-    with c3:
+    st.write("")
 
-        render_total_deliverables(
-            cl32
-        )
+    # ==========================================
+    # FUTURE KPI CARDS
+    # ==========================================
 
-    with c4:
-
-        render_critical_deliverables(
-            cl32
-        )
-
-    with c5:
-
-        render_average_float(
-            cl32
-        )
-
-    with c6:
-
-        render_average_variance(
-            cl32
-        )
+    # k1, k2, k3, k4 = st.columns(4)
+    #
+    # with k1:
+    #     render_programme_finish()
+    #
+    # with k2:
+    #     render_completion()
+    #
+    # with k3:
+    #     render_deliverables()
+    #
+    # with k4:
+    #     render_float()
