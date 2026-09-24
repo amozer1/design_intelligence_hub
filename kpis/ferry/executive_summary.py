@@ -6,11 +6,13 @@ from kpis.ferry.executive_summary_utils import (
     get_status,
 )
 
+
 PANEL_BG = "#DBEAFE"
 BORDER = "#3B82F6"
 
 
 def build_gauge(score):
+
     colour = "#EF4444"
 
     if score >= 80:
@@ -51,9 +53,9 @@ def build_gauge(score):
             t=0,
             b=0
         ),
+        showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        showlegend=False,
         annotations=[
             dict(
                 text=f"{score}%",
@@ -72,6 +74,7 @@ def build_gauge(score):
 
 
 def render(cl32):
+
     metrics = get_metrics(cl32)
 
     score = metrics["health_score"]
@@ -82,13 +85,16 @@ def render(cl32):
 
     status = get_status(score)
 
-    badge_colour = "#DC2626"
+    status_upper = str(status).upper()
 
-    if status == "ON TRACK":
+    if "TRACK" in status_upper:
         badge_colour = "#16A34A"
 
-    elif status == "WATCHLIST":
+    elif "WATCH" in status_upper:
         badge_colour = "#CA8A04"
+
+    else:
+        badge_colour = "#DC2626"
 
     st.markdown(
         f"""
@@ -109,9 +115,10 @@ def render(cl32):
 
     with st.container(border=True):
 
-        header_left, header_right = st.columns([5, 1])
+        header_left, header_right = st.columns([6, 1])
 
         with header_left:
+
             st.markdown(
                 """
                 <span style="
@@ -134,6 +141,7 @@ def render(cl32):
             )
 
         with header_right:
+
             st.markdown(
                 f"""
                 <div style="
@@ -151,9 +159,12 @@ def render(cl32):
                 unsafe_allow_html=True
             )
 
+        st.write("")
+
         left, right = st.columns([1, 2])
 
         with left:
+
             st.plotly_chart(
                 build_gauge(score),
                 use_container_width=True,
@@ -162,48 +173,67 @@ def render(cl32):
                 }
             )
 
-            st.caption(
-                "Design Readiness Index"
-            )
-
-            delta = readiness - score
-
-            arrow = "↑" if delta >= 0 else "↓"
-
-            delta_colour = "#16A34A"
-
-            if delta < 0:
-                delta_colour = "#DC2626"
+            st.caption("Design Readiness Index")
 
             st.markdown(
                 f"""
                 <span style="
-                    color:{delta_colour};
-                    font-size:13px;
+                    color:#1E293B;
+                    font-size:14px;
                     font-weight:700;
                 ">
-                {arrow} {abs(delta)}%
-                </span>
-
-                <span style="
-                    color:#64748B;
-                    font-size:11px;
-                ">
-                vs health score
+                {readiness}%
                 </span>
                 """,
                 unsafe_allow_html=True
             )
 
         with right:
-            st.markdown(
-                f"""
-                <div style="color:#1E293B;">
-                🟢 Programme is behind baseline by {programme_drift} days.
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
 
-            st.markdown(
-                f"""
+            if programme_drift > 0:
+
+                st.markdown(
+                    f"""
+                    <div style="color:#1E293B;">
+                    🔴 Programme is behind baseline by {programme_drift} days.
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+            if high_risk > 0:
+
+                st.markdown(
+                    f"""
+                    <div style="color:#1E293B;">
+                    🟠 {high_risk} activities with negative float.
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+            if critical_deliverables > 0:
+
+                st.markdown(
+                    f"""
+                    <div style="color:#1E293B;">
+                    🟡 Focus on {critical_deliverables} critical deliverables.
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+            if (
+                programme_drift <= 0
+                and high_risk <= 0
+                and critical_deliverables <= 0
+            ):
+
+                st.markdown(
+                    """
+                    <div style="color:#1E293B;">
+                    🟢 No material delivery risks identified.
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
