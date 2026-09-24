@@ -1,43 +1,137 @@
+import pandas as pd
 import streamlit as st
 
-from kpis.ferry.programme_completion_utils import (
-    calculate_variance,
-    variance_colour,
-    variance_text,
-)
 
-from kpis.ferry.programme_completion_styles import (
-    TITLE,
-    MUTED,
-    ICON_BLUE,
-    ICON_GOLD,
-)
+TITLE = "#111827"
+BODY = "#374151"
+MUTED = "#6B7280"
+
+GREEN = "#16A34A"
+RED = "#DC2626"
+
+ICON_BLUE = "#2563EB"
+ICON_GOLD = "#D4AF37"
 
 
-def render(
-    programme_finish,
-    programme_baseline,
-    contract_completion,
-    contract_baseline,
-):
+def format_date(value):
 
-    programme_variance = calculate_variance(
-        programme_finish,
-        programme_baseline
-    )
+    if pd.isna(value):
+        return "N/A"
 
-    contract_variance = calculate_variance(
-        contract_completion,
-        contract_baseline
-    )
+    try:
+        return pd.to_datetime(value).strftime(
+            "%d %b %Y"
+        )
+    except Exception:
+        return str(value)
+
+
+def variance_colour(days):
+
+    if days > 0:
+        return GREEN
+
+    if days < 0:
+        return RED
+
+    return "#6B7280"
+
+
+def variance_text(days):
+
+    if days > 0:
+        return f"{days} Days"
+
+    if days < 0:
+        return f"{abs(days)} Days"
+
+    return "On Time"
+
+
+def get_metrics(cl32):
+
+    latest_snapshot = cl32[
+        cl32["SnapshotDate"]
+        == cl32["SnapshotDate"].max()
+    ]
+
+    programme_row = latest_snapshot[
+        latest_snapshot["Activity Name"]
+        .astype(str)
+        .str.strip()
+        .str.lower()
+        .eq("planned project completion")
+    ]
+
+    contract_row = latest_snapshot[
+        latest_snapshot["Activity Name"]
+        .astype(str)
+        .str.strip()
+        .str.lower()
+        .eq("contract completion")
+    ]
+
+    programme_finish = "N/A"
+    programme_baseline = "N/A"
+    programme_variance = 0
+
+    contract_finish = "N/A"
+    contract_baseline = "N/A"
+    contract_variance = 0
+
+    if not programme_row.empty:
+
+        programme_finish = format_date(
+            programme_row.iloc[0]["Finish"]
+        )
+
+        programme_baseline = format_date(
+            programme_row.iloc[0]["BL1 Finish"]
+        )
+
+        programme_variance = int(
+            programme_row.iloc[0][
+                "Variance - BL1 Finish Date"
+            ]
+        )
+
+    if not contract_row.empty:
+
+        contract_finish = format_date(
+            contract_row.iloc[0]["Finish"]
+        )
+
+        contract_baseline = format_date(
+            contract_row.iloc[0]["BL1 Finish"]
+        )
+
+        contract_variance = int(
+            contract_row.iloc[0][
+                "Variance - BL1 Finish Date"
+            ]
+        )
+
+    return {
+        "programme_finish": programme_finish,
+        "programme_baseline": programme_baseline,
+        "programme_variance": programme_variance,
+        "contract_finish": contract_finish,
+        "contract_baseline": contract_baseline,
+        "contract_variance": contract_variance,
+    }
+
+
+def render(cl32):
+
+    metrics = get_metrics(cl32)
 
     with st.container(border=True):
 
         left_col, right_col = st.columns(2)
 
-        # ==================================
+        # =====================================
         # PROGRAMME FINISH
-        # ==================================
+        # =====================================
 
         with left_col:
 
@@ -47,18 +141,16 @@ def render(
                     color:#6B7280;
                     font-size:11px;
                     font-weight:700;
-                    margin-bottom:16px;
                     text-transform:uppercase;
+                    margin-bottom:14px;
                 ">
-                    Programme Finish
+                    PROGRAMME FINISH
                 </div>
                 """,
                 unsafe_allow_html=True
             )
 
-            icon_col, date_col = st.columns(
-                [1, 4]
-            )
+            icon_col, date_col = st.columns([1, 4])
 
             with icon_col:
 
@@ -66,7 +158,7 @@ def render(
                     f"""
                     <div style="
                         color:{ICON_BLUE};
-                        font-size:28px;
+                        font-size:30px;
                     ">
                         📅
                     </div>
@@ -80,10 +172,10 @@ def render(
                     f"""
                     <div style="
                         color:{TITLE};
-                        font-size:20px;
+                        font-size:22px;
                         font-weight:700;
                     ">
-                        {programme_finish}
+                        {metrics["programme_finish"]}
                     </div>
                     """,
                     unsafe_allow_html=True
@@ -91,9 +183,7 @@ def render(
 
             st.write("")
 
-            baseline_col, badge_col = st.columns(
-                [3, 2]
-            )
+            baseline_col, variance_col = st.columns([3, 2])
 
             with baseline_col:
 
@@ -104,34 +194,34 @@ def render(
                         font-size:11px;
                     ">
                         Baseline:
-                        {programme_baseline}
+                        {metrics["programme_baseline"]}
                     </div>
                     """,
                     unsafe_allow_html=True
                 )
 
-            with badge_col:
+            with variance_col:
 
                 st.markdown(
                     f"""
                     <div style="
-                        background:{variance_colour(programme_variance)};
+                        background:{variance_colour(metrics["programme_variance"])};
                         color:white;
-                        text-align:center;
                         border-radius:8px;
+                        text-align:center;
                         padding:6px;
                         font-size:11px;
                         font-weight:700;
                     ">
-                        {variance_text(programme_variance)}
+                        {variance_text(metrics["programme_variance"])}
                     </div>
                     """,
                     unsafe_allow_html=True
                 )
 
-        # ==================================
+        # =====================================
         # CONTRACT COMPLETION
-        # ==================================
+        # =====================================
 
         with right_col:
 
@@ -141,18 +231,16 @@ def render(
                     color:#6B7280;
                     font-size:11px;
                     font-weight:700;
-                    margin-bottom:16px;
                     text-transform:uppercase;
+                    margin-bottom:14px;
                 ">
-                    Contract Completion
+                    CONTRACT COMPLETION
                 </div>
                 """,
                 unsafe_allow_html=True
             )
 
-            icon_col, date_col = st.columns(
-                [1, 4]
-            )
+            icon_col, date_col = st.columns([1, 4])
 
             with icon_col:
 
@@ -160,7 +248,7 @@ def render(
                     f"""
                     <div style="
                         color:{ICON_GOLD};
-                        font-size:28px;
+                        font-size:30px;
                     ">
                         🤝
                     </div>
@@ -174,10 +262,10 @@ def render(
                     f"""
                     <div style="
                         color:{TITLE};
-                        font-size:20px;
+                        font-size:22px;
                         font-weight:700;
                     ">
-                        {contract_completion}
+                        {metrics["contract_finish"]}
                     </div>
                     """,
                     unsafe_allow_html=True
@@ -185,9 +273,7 @@ def render(
 
             st.write("")
 
-            baseline_col, badge_col = st.columns(
-                [3, 2]
-            )
+            baseline_col, variance_col = st.columns([3, 2])
 
             with baseline_col:
 
@@ -198,26 +284,26 @@ def render(
                         font-size:11px;
                     ">
                         Baseline:
-                        {contract_baseline}
+                        {metrics["contract_baseline"]}
                     </div>
                     """,
                     unsafe_allow_html=True
                 )
 
-            with badge_col:
+            with variance_col:
 
                 st.markdown(
                     f"""
                     <div style="
-                        background:{variance_colour(contract_variance)};
+                        background:{variance_colour(metrics["contract_variance"])};
                         color:white;
-                        text-align:center;
                         border-radius:8px;
+                        text-align:center;
                         padding:6px;
                         font-size:11px;
                         font-weight:700;
                     ">
-                        {variance_text(contract_variance)}
+                        {variance_text(metrics["contract_variance"])}
                     </div>
                     """,
                     unsafe_allow_html=True

@@ -95,10 +95,7 @@ def render_homepage(
     with programme_col:
 
         render_programme_completion(
-            programme_finish="20 Oct 2026",
-            programme_baseline="24 Sep 2026",
-            contract_completion="14 Sep 2026",
-            contract_baseline="07 Oct 2026",
+            cl32
         )
 
     st.write("")
