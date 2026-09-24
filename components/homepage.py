@@ -10,6 +10,10 @@ from kpis.ferry.programme_completion import (
     render as render_programme_completion
 )
 
+from kpis.ferry.total_deliverables import (
+    render as render_total_deliverables
+)
+
 PAGE_BG = "#EAF2FF"
 
 
@@ -101,19 +105,13 @@ def render_homepage(
     st.write("")
 
     # ==========================================
-    # FUTURE KPI CARDS
+    # KPI ROW 2
     # ==========================================
 
-    # k1, k2, k3, k4 = st.columns(4)
-    #
-    # with k1:
-    #     render_programme_finish()
-    #
-    # with k2:
-    #     render_completion()
-    #
-    # with k3:
-    #     render_deliverables()
-    #
-    # with k4:
-    #     render_float()
+    k1, k2, k3, k4 = st.columns(4)
+
+    with k1:
+
+        render_total_deliverables(
+            cl32
+        )
