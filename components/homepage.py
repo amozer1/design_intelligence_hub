@@ -6,7 +6,7 @@ from kpis.ferry.executive_summary import (
     render as render_executive_summary
 )
 
-PAGE_BG = "#EDF2F7"
+PAGE_BG = "#F3F4F6"
 
 
 def render_homepage(
