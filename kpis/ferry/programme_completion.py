@@ -56,7 +56,7 @@ def render(cl32):
                 color:#111827;
                 font-size:16px;
                 font-weight:700;
-                margin-bottom:20px;
+                margin-bottom:22px;
             ">
                 PROGRAMME MILESTONES
             </div>
@@ -80,8 +80,8 @@ def render(cl32):
                     f"""
                     <div style="
                         color:{ICON_BLUE};
-                        font-size:30px;
-                        margin-top:10px;
+                        font-size:32px;
+                        margin-top:8px;
                     ">
                         📅
                     </div>
@@ -98,7 +98,7 @@ def render(cl32):
                         font-size:11px;
                         font-weight:700;
                         text-transform:uppercase;
-                        margin-bottom:6px;
+                        margin-bottom:10px;
                     ">
                         Programme Finish
                     </div>
@@ -110,8 +110,9 @@ def render(cl32):
                     f"""
                     <div style="
                         color:{TITLE};
-                        font-size:26px;
+                        font-size:32px;
                         font-weight:700;
+                        line-height:1.1;
                     ">
                         {programme_finish}
                     </div>
@@ -119,6 +120,7 @@ def render(cl32):
                     unsafe_allow_html=True
                 )
 
+            st.write("")
             st.write("")
             st.write("")
 
@@ -171,8 +173,8 @@ def render(cl32):
                     f"""
                     <div style="
                         color:{ICON_GOLD};
-                        font-size:30px;
-                        margin-top:10px;
+                        font-size:32px;
+                        margin-top:8px;
                     ">
                         🤝
                     </div>
@@ -189,7 +191,7 @@ def render(cl32):
                         font-size:11px;
                         font-weight:700;
                         text-transform:uppercase;
-                        margin-bottom:6px;
+                        margin-bottom:10px;
                     ">
                         Contract Completion
                     </div>
@@ -201,8 +203,9 @@ def render(cl32):
                     f"""
                     <div style="
                         color:{TITLE};
-                        font-size:26px;
+                        font-size:32px;
                         font-weight:700;
+                        line-height:1.1;
                     ">
                         {contract_finish}
                     </div>
@@ -210,6 +213,7 @@ def render(cl32):
                     unsafe_allow_html=True
                 )
 
+            st.write("")
             st.write("")
             st.write("")
 
@@ -248,4 +252,5 @@ def render(cl32):
                     unsafe_allow_html=True
                 )
 
+        st.write("")
         st.write("")
