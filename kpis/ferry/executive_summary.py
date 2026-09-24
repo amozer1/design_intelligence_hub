@@ -21,11 +21,7 @@ def build_gauge(score):
 
     fig.add_trace(
         go.Pie(
-            values=[
-                score,
-                100 - score,
-                100
-            ],
+            values=[score, 100 - score, 100],
             hole=0.82,
             rotation=180,
             sort=False,
@@ -43,12 +39,7 @@ def build_gauge(score):
 
     fig.update_layout(
         height=140,
-        margin=dict(
-            l=0,
-            r=0,
-            t=0,
-            b=0
-        ),
+        margin=dict(l=0, r=0, t=0, b=0),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         showlegend=False,
@@ -90,119 +81,89 @@ def render(cl32):
     else:
         badge_colour = "#DC2626"
 
-    st.markdown(
-        """
-        <style>
+    # Header row
+    h1, h2 = st.columns([6, 1])
 
-        div[data-testid="stVerticalBlock"]{
-            background:#DBEAFE !important;
-            border:4px solid #2563EB !important;
-            border-radius:12px !important;
-            padding:16px !important;
-        }
+    with h1:
 
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+        st.markdown(
+            """
+            <span style="
+                color:#0F172A;
+                font-size:13px;
+                font-weight:700;
+            ">
+            EXECUTIVE SUMMARY
+            </span>
 
-    with st.container():
+            <span style="
+                color:#64748B;
+                font-size:11px;
+            ">
+            (AI GENERATED)
+            </span>
+            """,
+            unsafe_allow_html=True
+        )
 
-        header_left, header_right = st.columns([6, 1])
+    with h2:
 
-        with header_left:
+        st.markdown(
+            f"""
+            <div style="
+                background:{badge_colour};
+                color:white;
+                text-align:center;
+                padding:4px 8px;
+                border-radius:6px;
+                font-size:11px;
+                font-weight:700;
+            ">
+            {status}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-            st.markdown(
-                """
-                <span style="
-                    color:#0F172A;
-                    font-size:13px;
-                    font-weight:700;
-                ">
-                EXECUTIVE SUMMARY
-                </span>
+    st.divider()
 
-                <span style="
-                    color:#64748B;
-                    font-size:11px;
-                ">
-                (AI GENERATED)
-                </span>
-                """,
-                unsafe_allow_html=True
-            )
+    left, right = st.columns([1, 2])
 
-        with header_right:
+    with left:
 
-            st.markdown(
-                f"""
-                <div style="
-                    background:{badge_colour};
-                    color:white;
-                    text-align:center;
-                    padding:4px 8px;
-                    border-radius:6px;
-                    font-size:11px;
-                    font-weight:700;
-                ">
-                {status}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+        st.plotly_chart(
+            build_gauge(score),
+            use_container_width=True,
+            config={
+                "displayModeBar": False
+            }
+        )
 
-        left, right = st.columns([1, 2])
+        st.caption("Design Readiness Index")
 
-        with left:
+        st.markdown(
+            f"""
+            <span style="
+                color:#111827;
+                font-size:14px;
+                font-weight:700;
+            ">
+            {readiness}%
+            </span>
+            """,
+            unsafe_allow_html=True
+        )
 
-            st.plotly_chart(
-                build_gauge(score),
-                use_container_width=True,
-                config={
-                    "displayModeBar": False
-                }
-            )
+    with right:
 
-            st.caption("Design Readiness Index")
+        st.markdown(
+            f"🔴 Programme is behind baseline by **{programme_drift} days**."
+        )
 
-            st.markdown(
-                f"""
-                <span style="
-                    color:#0F172A;
-                    font-size:14px;
-                    font-weight:700;
-                ">
-                {readiness}%
-                </span>
-                """,
-                unsafe_allow_html=True
-            )
+        st.markdown(
+            f"🟠 **{high_risk}** activities with negative float."
+        )
 
-        with right:
-
-            st.markdown(
-                f"""
-                <div style="color:#0F172A;">
-                🔴 Programme is behind baseline by {programme_drift} days.
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-            st.markdown(
-                f"""
-                <div style="color:#0F172A;">
-                🟠 {high_risk} activities with negative float.
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-            st.markdown(
-                f"""
-                <div style="color:#0F172A;">
-                🟡 Focus on {critical_deliverables} critical deliverables.
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+        st.markdown(
+            f"🟡 Focus on **{critical_deliverables}** critical deliverables."
+        )
