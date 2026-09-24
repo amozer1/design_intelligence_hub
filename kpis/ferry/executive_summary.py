@@ -8,7 +8,7 @@ from kpis.ferry.executive_summary_utils import (
 
 
 GREEN = "#16A34A"
-AMBER = "#F59E0B"
+GOLD = "#D4AF37"
 RED = "#DC2626"
 
 TEXT = "#111827"
@@ -26,7 +26,7 @@ def build_gauge(score):
         colour = GREEN
 
     elif score >= 60:
-        colour = AMBER
+        colour = GOLD
 
     else:
         colour = RED
@@ -40,7 +40,7 @@ def build_gauge(score):
                 100 - score,
                 100
             ],
-            hole=0.82,
+            hole=0.75,
             rotation=180,
             sort=False,
             direction="clockwise",
@@ -73,7 +73,7 @@ def build_gauge(score):
                 y=0.42,
                 showarrow=False,
                 font=dict(
-                    size=22,
+                    size=26,
                     color=colour
                 )
             )
@@ -101,7 +101,7 @@ def render(cl32):
         status_colour = GREEN
 
     elif score >= 60:
-        status_colour = AMBER
+        status_colour = GOLD
 
     with st.container(border=True):
 
