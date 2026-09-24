@@ -6,6 +6,10 @@ from kpis.ferry.executive_summary import (
     render as render_executive_summary
 )
 
+from kpis.ferry.programme_completion import (
+    render as render_programme_completion
+)
+
 PAGE_BG = "#EAF2FF"
 
 
@@ -77,10 +81,10 @@ def render_homepage(
     st.write("")
 
     # ==========================================
-    # EXECUTIVE SUMMARY
+    # KPI ROW 1
     # ==========================================
 
-    summary_col, spacer_col = st.columns([5, 7])
+    summary_col, programme_col = st.columns([5, 5])
 
     with summary_col:
 
@@ -88,9 +92,14 @@ def render_homepage(
             cl32
         )
 
-    with spacer_col:
+    with programme_col:
 
-        st.empty()
+        render_programme_completion(
+            programme_finish="20 Oct 2026",
+            programme_baseline="24 Sep 2026",
+            contract_completion="14 Sep 2026",
+            contract_baseline="07 Oct 2026",
+        )
 
     st.write("")
 
