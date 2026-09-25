@@ -1,16 +1,13 @@
 def get_metrics(cl32):
 
-    activity_ids = (
+    ids = (
         cl32["Activity ID"]
         .fillna("")
         .astype(str)
         .str.strip()
     )
 
-    # Find Deliverables section
-    start_idx = activity_ids[
-        activity_ids == "Deliverables"
-    ].index
+    start_idx = ids[ids == "Deliverables"].index
 
     if len(start_idx) == 0:
         return {
@@ -19,10 +16,7 @@ def get_metrics(cl32):
 
     start = start_idx[0]
 
-    # Stop at Retired Activities
-    end_idx = activity_ids[
-        activity_ids == "Retired Activities"
-    ].index
+    end_idx = ids[ids == "Retired Activities"].index
 
     end = (
         end_idx[0]
@@ -32,7 +26,7 @@ def get_metrics(cl32):
 
     section = cl32.iloc[start + 1:end]
 
-    ids = (
+    section_ids = (
         section["Activity ID"]
         .fillna("")
         .astype(str)
@@ -41,31 +35,23 @@ def get_metrics(cl32):
 
     deliverable_count = 0
 
-    for value in ids:
+    rows = section_ids.tolist()
+
+    for i, current in enumerate(rows):
 
         if (
-            value
-            and value != "Deliverables"
-            and not value.startswith("FER-")
-            and value not in {
-                "Civils Design",
-                "Mechanical Design",
-                "Process Design",
-                "Client Review",
-                "Geotechnical",
-                "Detailed Shaft Design",
-                "New Manholes",
-                "Rising Mains",
-                "Instrumentation & Control",
-                "Storm Tank Air Vent",
-                "Ducting/Cable Troughs",
-                "Documents",
-                "Drawings",
-                "EICA Design",
-                "Client Review & Design Assurance",
-            }
+            current
+            and not current.startswith("FER-")
         ):
-            deliverable_count += 1
+
+            next_row = (
+                rows[i + 1]
+                if i < len(rows) - 1
+                else ""
+            )
+
+            if next_row.startswith("FER-"):
+                deliverable_count += 1
 
     return {
         "total_deliverables": deliverable_count
