@@ -22,6 +22,17 @@ def render(cl32):
         st.markdown(
             """
             <div style="
+                height: 178px;
+                display: flex;
+                flex-direction: column;
+            ">
+            """,
+            unsafe_allow_html=True,
+        )
+
+        st.markdown(
+            """
+            <div style="
                 color:#111827;
                 font-size:16px;
                 font-weight:700;
@@ -42,7 +53,7 @@ def render(cl32):
                 <div style="
                     color:{ICON_PURPLE};
                     font-size:28px;
-                    margin-top:4px;
+                    margin-top:6px;
                 ">
                     📄
                 </div>
@@ -69,11 +80,18 @@ def render(cl32):
         st.markdown(
             """
             <div style="
+                margin-top:auto;
                 color:#6B7280;
                 font-size:11px;
-                margin-top:12px;
             ">
                 Current CL32 Deliverables
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        st.markdown(
+            """
             </div>
             """,
             unsafe_allow_html=True,
