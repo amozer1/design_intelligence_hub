@@ -13,83 +13,34 @@ def render(cl32):
 
     metrics = get_metrics(cl32)
 
-    total_deliverables = metrics[
-        "total_deliverables"
-    ]
+    total_deliverables = (
+        metrics["total_deliverables"]
+    )
 
     with st.container(border=True):
 
-        st.markdown(
-            """
-            <style>
-            .deliverables-card {
-                height: 205px;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-            }
-            </style>
-
-            <div class="deliverables-card">
-            """,
-            unsafe_allow_html=True,
+        st.subheader(
+            "TOTAL DELIVERABLES"
         )
 
-        st.markdown(
-            """
-            <div style="
-                color:#111827;
-                font-size:16px;
-                font-weight:700;
-            ">
-                TOTAL DELIVERABLES
-            </div>
-            """,
-            unsafe_allow_html=True,
+        icon_col, value_col = st.columns(
+            [1, 3]
         )
 
-        st.markdown(
-            f"""
-            <div style="
-                display:flex;
-                align-items:center;
-                gap:12px;
-                margin-top:20px;
-            ">
-                <span style="
-                    color:{ICON_PURPLE};
-                    font-size:30px;
-                ">
-                    📄
-                </span>
+        with icon_col:
+            st.markdown("### 📄")
 
-                <span style="
-                    color:#111827;
-                    font-size:42px;
-                    font-weight:700;
-                ">
-                    {total_deliverables}
-                </span>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        with value_col:
+            st.markdown(
+                f"# {total_deliverables}"
+            )
 
-        st.markdown(
-            """
-            <div style="
-                color:#6B7280;
-                font-size:11px;
-            ">
-                Current CL32 Deliverables
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        # Add padding to align with Programme card
+        st.write("")
+        st.write("")
+        st.write("")
+        st.write("")
 
-        st.markdown(
-            """
-            </div>
-            """,
-            unsafe_allow_html=True,
+        st.caption(
+            "Current CL32 Deliverables"
         )
