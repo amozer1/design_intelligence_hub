@@ -13,19 +13,24 @@ def render(cl32):
 
     metrics = get_metrics(cl32)
 
-    total_deliverables = (
-        metrics["total_deliverables"]
-    )
+    total_deliverables = metrics[
+        "total_deliverables"
+    ]
 
     with st.container(border=True):
 
         st.markdown(
             """
-            <div style="
-                height: 178px;
+            <style>
+            .deliverables-card {
+                height: 205px;
                 display: flex;
                 flex-direction: column;
-            ">
+                justify-content: space-between;
+            }
+            </style>
+
+            <div class="deliverables-card">
             """,
             unsafe_allow_html=True,
         )
@@ -36,7 +41,6 @@ def render(cl32):
                 color:#111827;
                 font-size:16px;
                 font-weight:700;
-                margin-bottom:20px;
             ">
                 TOTAL DELIVERABLES
             </div>
@@ -44,43 +48,36 @@ def render(cl32):
             unsafe_allow_html=True,
         )
 
-        icon_col, value_col = st.columns([1, 3])
-
-        with icon_col:
-
-            st.markdown(
-                f"""
-                <div style="
+        st.markdown(
+            f"""
+            <div style="
+                display:flex;
+                align-items:center;
+                gap:12px;
+                margin-top:20px;
+            ">
+                <span style="
                     color:{ICON_PURPLE};
-                    font-size:28px;
-                    margin-top:6px;
+                    font-size:30px;
                 ">
                     📄
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+                </span>
 
-        with value_col:
-
-            st.markdown(
-                f"""
-                <div style="
+                <span style="
                     color:#111827;
-                    font-size:38px;
+                    font-size:42px;
                     font-weight:700;
-                    line-height:1;
                 ">
                     {total_deliverables}
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+                </span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
         st.markdown(
             """
             <div style="
-                margin-top:auto;
                 color:#6B7280;
                 font-size:11px;
             ">
