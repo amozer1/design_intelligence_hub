@@ -5,8 +5,6 @@ from kpis.ferry.deliverables_utils import (
 )
 
 from kpis.ferry.deliverables_styles import (
-    TITLE,
-    MUTED,
     ICON_PURPLE,
 )
 
@@ -15,15 +13,11 @@ def render(cl32):
 
     metrics = get_metrics(cl32)
 
-    total_deliverables = (
-        metrics["total_deliverables"]
-    )
+    total_deliverables = metrics[
+        "total_deliverables"
+    ]
 
     with st.container(border=True):
-
-        # ===================================
-        # HEADER
-        # ===================================
 
         st.markdown(
             """
@@ -39,11 +33,7 @@ def render(cl32):
             unsafe_allow_html=True,
         )
 
-        # ===================================
-        # KPI
-        # ===================================
-
-        icon_col, value_col = st.columns([1, 5])
+        icon_col, value_col = st.columns([1, 4])
 
         with icon_col:
 
@@ -51,8 +41,8 @@ def render(cl32):
                 f"""
                 <div style="
                     color:{ICON_PURPLE};
-                    font-size:32px;
-                    margin-top:8px;
+                    font-size:30px;
+                    margin-top:6px;
                 ">
                     📄
                 </div>
@@ -65,8 +55,8 @@ def render(cl32):
             st.markdown(
                 f"""
                 <div style="
-                    color:{TITLE};
-                    font-size:42px;
+                    color:#111827;
+                    font-size:40px;
                     font-weight:700;
                     line-height:1;
                 ">
@@ -77,12 +67,11 @@ def render(cl32):
             )
 
         st.write("")
-        st.write("")
 
         st.markdown(
-            f"""
+            """
             <div style="
-                color:{MUTED};
+                color:#6B7280;
                 font-size:11px;
             ">
                 Current CL32 Deliverables
