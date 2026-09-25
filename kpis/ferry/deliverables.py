@@ -22,23 +22,10 @@ def render(cl32):
         st.markdown(
             """
             <div style="
-                min-height:145px;
-            ">
-            """,
-            unsafe_allow_html=True,
-        )
-
-        # ===================================
-        # HEADER
-        # ===================================
-
-        st.markdown(
-            """
-            <div style="
                 color:#111827;
                 font-size:16px;
                 font-weight:700;
-                margin-bottom:22px;
+                margin-bottom:20px;
             ">
                 TOTAL DELIVERABLES
             </div>
@@ -46,13 +33,7 @@ def render(cl32):
             unsafe_allow_html=True,
         )
 
-        # ===================================
-        # KPI
-        # ===================================
-
-        icon_col, value_col = st.columns(
-            [1, 4]
-        )
+        icon_col, value_col = st.columns([1, 3])
 
         with icon_col:
 
@@ -60,8 +41,8 @@ def render(cl32):
                 f"""
                 <div style="
                     color:{ICON_PURPLE};
-                    font-size:30px;
-                    margin-top:6px;
+                    font-size:28px;
+                    margin-top:4px;
                 ">
                     📄
                 </div>
@@ -75,7 +56,7 @@ def render(cl32):
                 f"""
                 <div style="
                     color:#111827;
-                    font-size:40px;
+                    font-size:38px;
                     font-weight:700;
                     line-height:1;
                 ">
@@ -85,24 +66,14 @@ def render(cl32):
                 unsafe_allow_html=True,
             )
 
-        st.write("")
-        st.write("")
-        st.write("")
-
         st.markdown(
             """
             <div style="
                 color:#6B7280;
                 font-size:11px;
+                margin-top:12px;
             ">
                 Current CL32 Deliverables
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        st.markdown(
-            """
             </div>
             """,
             unsafe_allow_html=True,
