@@ -88,7 +88,9 @@ def render_homepage(
     # KPI ROW 1
     # ==========================================
 
-    summary_col, programme_col = st.columns([5, 5])
+    summary_col, programme_col, deliverables_col = st.columns(
+        [5, 5, 2]
+    )
 
     with summary_col:
 
@@ -101,16 +103,6 @@ def render_homepage(
         render_programme_completion(
             cl32
         )
-
-    st.write("")
-
-    # ==========================================
-    # KPI ROW 2
-    # ==========================================
-
-    deliverables_col, spacer_col = st.columns(
-        [3, 7]
-    )
 
     with deliverables_col:
 
