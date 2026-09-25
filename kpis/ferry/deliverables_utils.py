@@ -8,49 +8,65 @@ def get_metrics(cl32):
     )
 
     # Find Deliverables section
-    deliverables_idx = activity_ids[
+    start_idx = activity_ids[
         activity_ids == "Deliverables"
     ].index
 
-    if len(deliverables_idx) == 0:
+    if len(start_idx) == 0:
         return {
             "total_deliverables": 0
         }
 
-    start_idx = deliverables_idx[0]
+    start = start_idx[0]
 
     # Stop at Retired Activities
-    retired_idx = activity_ids[
+    end_idx = activity_ids[
         activity_ids == "Retired Activities"
     ].index
 
-    end_idx = (
-        retired_idx[0]
-        if len(retired_idx)
+    end = (
+        end_idx[0]
+        if len(end_idx)
         else len(cl32)
     )
 
-    deliverables_section = cl32.iloc[
-        start_idx + 1:end_idx
-    ]
+    section = cl32.iloc[start + 1:end]
 
-    section_ids = (
-        deliverables_section["Activity ID"]
+    ids = (
+        section["Activity ID"]
         .fillna("")
         .astype(str)
         .str.strip()
     )
 
-    # Deliverable packages:
-    # - Not FER activities
-    # - Not blank
-    deliverables = deliverables_section[
-        (section_ids != "")
-        & (~section_ids.str.startswith("FER-", na=False))
-    ]
+    deliverable_count = 0
+
+    for value in ids:
+
+        if (
+            value
+            and value != "Deliverables"
+            and not value.startswith("FER-")
+            and value not in {
+                "Civils Design",
+                "Mechanical Design",
+                "Process Design",
+                "Client Review",
+                "Geotechnical",
+                "Detailed Shaft Design",
+                "New Manholes",
+                "Rising Mains",
+                "Instrumentation & Control",
+                "Storm Tank Air Vent",
+                "Ducting/Cable Troughs",
+                "Documents",
+                "Drawings",
+                "EICA Design",
+                "Client Review & Design Assurance",
+            }
+        ):
+            deliverable_count += 1
 
     return {
-        "total_deliverables": len(
-            deliverables
-        )
+        "total_deliverables": deliverable_count
     }
