@@ -10,6 +10,10 @@ from kpis.ferry.programme_completion import (
     render as render_programme_completion
 )
 
+from kpis.ferry.deliverables import (
+    render as render_deliverables
+)
+
 PAGE_BG = "#EAF2FF"
 
 
@@ -84,7 +88,9 @@ def render_homepage(
     # KPI ROW 1
     # ==========================================
 
-    summary_col, programme_col = st.columns([5, 5])
+    summary_col, programme_col, deliverables_col = st.columns(
+        [5, 5, 2]
+    )
 
     with summary_col:
 
@@ -95,6 +101,12 @@ def render_homepage(
     with programme_col:
 
         render_programme_completion(
+            cl32
+        )
+
+    with deliverables_col:
+
+        render_deliverables(
             cl32
         )
 
