@@ -68,14 +68,9 @@ def render_homepage(
             color: #374151;
         }}
 
-        /* Keep KPI cards aligned */
-        div[data-testid="stVerticalBlockBorderWrapper"] {{
-            min-height: 180px;
-        }}
-
         </style>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
     # ==========================================
@@ -84,7 +79,7 @@ def render_homepage(
 
     render_header(
         project=project,
-        snapshot=snapshot
+        snapshot=snapshot,
     )
 
     st.write("")
@@ -94,7 +89,7 @@ def render_homepage(
     # ==========================================
 
     summary_col, programme_col, deliverables_col = st.columns(
-        [5, 5, 2]
+        3
     )
 
     with summary_col:
@@ -116,21 +111,3 @@ def render_homepage(
         )
 
     st.write("")
-
-    # ==========================================
-    # FUTURE KPI CARDS
-    # ==========================================
-
-    # k1, k2, k3, k4 = st.columns(4)
-    #
-    # with k1:
-    #     render_programme_finish()
-    #
-    # with k2:
-    #     render_completion()
-    #
-    # with k3:
-    #     render_deliverables()
-    #
-    # with k4:
-    #     render_float()
