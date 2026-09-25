@@ -7,7 +7,9 @@ def get_metrics(cl32):
         .str.strip()
     )
 
-    start_idx = ids[ids == "Deliverables"].index
+    start_idx = ids[
+        ids == "Deliverables"
+    ].index
 
     if len(start_idx) == 0:
         return {
@@ -16,7 +18,9 @@ def get_metrics(cl32):
 
     start = start_idx[0]
 
-    end_idx = ids[ids == "Retired Activities"].index
+    end_idx = ids[
+        ids == "Retired Activities"
+    ].index
 
     end = (
         end_idx[0]
@@ -33,26 +37,11 @@ def get_metrics(cl32):
         .str.strip()
     )
 
-    deliverable_count = 0
-
-    rows = section_ids.tolist()
-
-    for i, current in enumerate(rows):
-
-        if (
-            current
-            and not current.startswith("FER-")
-        ):
-
-            next_row = (
-                rows[i + 1]
-                if i < len(rows) - 1
-                else ""
-            )
-
-            if next_row.startswith("FER-"):
-                deliverable_count += 1
+    deliverables = section[
+        (section_ids != "")
+        & (~section_ids.str.startswith("FER-", na=False))
+    ]
 
     return {
-        "total_deliverables": deliverable_count
+        "total_deliverables": len(deliverables)
     }
