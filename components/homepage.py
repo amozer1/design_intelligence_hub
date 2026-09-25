@@ -68,6 +68,11 @@ def render_homepage(
             color: #374151;
         }}
 
+        /* Keep KPI cards aligned */
+        div[data-testid="stVerticalBlockBorderWrapper"] {{
+            min-height: 180px;
+        }}
+
         </style>
         """,
         unsafe_allow_html=True
