@@ -14,7 +14,7 @@ from kpis.ferry.deliverables import (
     render as render_deliverables
 )
 
-PAGE_BG = "#FFFFFF"  # Change this colour as required
+PAGE_BG = "#0F172A"  # Change this colour as required
 
 
 def render_homepage(
