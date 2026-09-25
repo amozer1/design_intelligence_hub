@@ -7,19 +7,15 @@ def get_metrics(cl32):
         .str.strip()
     )
 
-    names = (
-        cl32["Activity Name"]
-        .fillna("")
-        .astype(str)
-        .str.strip()
+    deliverables = ids.str.startswith(
+        "FER-",
+        na=False
     )
 
-    deliverables = cl32[
-        (ids != "")
-        & (~ids.str.startswith("FER-"))
-        & (names != "")
-    ]
+    total_deliverables = int(
+        deliverables.sum()
+    )
 
     return {
-        "total_deliverables": len(deliverables)
+        "total_deliverables": total_deliverables,
     }
