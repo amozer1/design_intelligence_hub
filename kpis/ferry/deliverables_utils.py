@@ -17,17 +17,9 @@ def get_metrics(cl32):
     deliverables = cl32[
         (ids != "")
         & (~ids.str.startswith("FER-"))
-        & (~names.isin([
-            "Key Dates",
-            "Contract Dates",
-            "Planned Dates",
-            "Deliverables",
-            "Retired Activities",
-        ]))
+        & (names != "")
     ]
 
-    total_deliverables = len(deliverables)
-
     return {
-        "total_deliverables": total_deliverables,
+        "total_deliverables": len(deliverables)
     }
