@@ -18,4 +18,3 @@ def get_metrics(cl32):
     return {
         "total_deliverables": 0
     }
-``
