@@ -68,6 +68,11 @@ def render_homepage(
             color: #374151;
         }}
 
+        /* Force all KPI cards to same height */
+        div[data-testid="stVerticalBlockBorderWrapper"] {{
+            height: 195px;
+        }}
+
         </style>
         """,
         unsafe_allow_html=True
@@ -89,7 +94,7 @@ def render_homepage(
     # ==========================================
 
     summary_col, programme_col, deliverables_col = st.columns(
-        [5, 5, 2]
+        [5, 5, 2.5]
     )
 
     with summary_col:

@@ -8,11 +8,15 @@ def get_metrics(cl32):
     )
 
     deliverables = cl32[
-        (ids != "")
-        & (~ids.str.startswith("FER-"))
+        ids.str.startswith(
+            "JMS",
+            na=False
+        )
     ]
 
-    total_deliverables = len(deliverables)
+    total_deliverables = len(
+        deliverables
+    )
 
     return {
         "total_deliverables": total_deliverables,

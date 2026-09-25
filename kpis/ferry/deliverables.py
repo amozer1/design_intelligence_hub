@@ -13,11 +13,24 @@ def render(cl32):
 
     metrics = get_metrics(cl32)
 
-    total_deliverables = metrics[
-        "total_deliverables"
-    ]
+    total_deliverables = (
+        metrics["total_deliverables"]
+    )
 
     with st.container(border=True):
+
+        st.markdown(
+            """
+            <div style="
+                min-height:145px;
+            ">
+            """,
+            unsafe_allow_html=True,
+        )
+
+        # ===================================
+        # HEADER
+        # ===================================
 
         st.markdown(
             """
@@ -33,7 +46,13 @@ def render(cl32):
             unsafe_allow_html=True,
         )
 
-        icon_col, value_col = st.columns([1, 4])
+        # ===================================
+        # KPI
+        # ===================================
+
+        icon_col, value_col = st.columns(
+            [1, 4]
+        )
 
         with icon_col:
 
@@ -67,6 +86,8 @@ def render(cl32):
             )
 
         st.write("")
+        st.write("")
+        st.write("")
 
         st.markdown(
             """
@@ -75,6 +96,13 @@ def render(cl32):
                 font-size:11px;
             ">
                 Current CL32 Deliverables
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        st.markdown(
+            """
             </div>
             """,
             unsafe_allow_html=True,
