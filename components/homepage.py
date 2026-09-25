@@ -14,7 +14,7 @@ from kpis.ferry.deliverables import (
     render as render_deliverables
 )
 
-PAGE_BG = "#EAF2FF"
+PAGE_BG = "#FFFFFF"  # Change this colour as required
 
 
 def render_homepage(
@@ -29,20 +29,13 @@ def render_homepage(
         f"""
         <style>
 
-        .stApp {{
-            background: {PAGE_BG};
-        }}
-
-        [data-testid="stAppViewContainer"] {{
-            background: {PAGE_BG};
-        }}
-
+        /* Main page background only */
         [data-testid="stMain"] {{
-            background: {PAGE_BG};
+            background-color: {PAGE_BG};
         }}
 
         .main {{
-            background: {PAGE_BG};
+            background-color: {PAGE_BG};
         }}
 
         [data-testid="stHeader"] {{
